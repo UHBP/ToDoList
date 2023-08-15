@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/resources/static/css/index.css" />
+    <title>Document</title>
+</head>
+<body>
+<div id="content">
+    <div id="titleLine">
+        <div id="title">ㅇㅇㅇ님의 ToDoList</div>
+        <div id="setting"></div>
+        <div id="addToDoList">ToDo 추가</div>
+    </div>
+    <div id="tagAndSelect">
+        <div id="tag">
+            <div style="background-color: lightcoral">전체</div>
+            <div style="background-color: orange">공부</div>
+            <div style="background-color: rgb(130, 186, 146)">운동</div>
+            <div style="background-color: skyblue">약속</div>
+            <div style="background-color: midnightblue">기타</div>
+            <div style="background-color: rgb(105, 59, 149)">공유</div>
+        </div>
+        <select id="selectOption">
+            <option selected>일반</option>
+            <option value="">마감일</option>
+        </select>
+    </div>
+    <div class="ToDoList">
+        <label class="custom-checkbox">
+            <div class="visible-checkbox" onclick="toggleState(this)"></div>
+        </label>
+        <div class="ToDoListTitle">제목</div>
+        <div class="DueDate">마감일</div>
+        <div class="ShareMember">공유</div>
+        <div class="pin">
+            <div class="pinned"><img src="./pin.png" /></div>
+            <div class="unpinned"></div>
+        </div>
+        <div>
+            <img class="dots" src="./dots.png" />
+        </div>
+        <div class="ToDoListSetting">
+            <div>완료하기</div>
+            <div id="share">공유하기</div>
+            <div>삭제하기</div>
+            <div>핀 표시</div>
+        </div>
+    </div>
+</div>
+<!-- Modal - title클릭 시 (클릭 시 해당 화면 내에서 팝업 뜨는 것) -->
+<div id="titleModal" class="modal">
+    <div class="titleModal-content">
+        <span class="close">&times;</span>
+        <p id="modalTitle"></p>
+        <div>생성일</div>
+        <div>마감일</div>
+        <div>메모 내용</div>
+        <div>수정</div>
+        <div>삭제</div>
+    </div>
+</div>
+<!-- Modal - 세팅 중 공유하기 클릭 시  -->
+<div id="shareModal" class="modal2">
+    <div class="shareModal-search">
+        <div class="close2">
+            <div class="close2-shape">x</div>
+        </div>
+        <div class="search-container">
+            <div class="search-icon">
+                <img src="./search.png" />
+            </div>
+            <form>
+                <input
+                        type="text"
+                        name="query"
+                        class="search-input"
+                        placeholder="공유할 대상 검색"
+                />
+            </form>
+        </div>
+        <div>
+            <div>검색 결과</div>
+            <div>아이디 1</div>
+            <div>아이디 2</div>
+        </div>
+    </div>
+</div>
+<div id="loginModal" class="modal3">
+    <div class="loginModal-content">
+        <div class="close3">
+            <div class="close3-shape">x</div>
+        </div>
+        <div class="login-title">TODOLIST</div>
+        <div class="login-container">
+            <div class="login-content">
+                <form>
+                    <!-- ID -->
+                    <div class="login-inf">
+                <span class="login-icon">
+                  <img src="./login.png" class="login-icon" />
+                </span>
+                        <input
+                                type="text"
+                                class="login-input"
+                                name="user_id"
+                                placeholder="Email을 입력해주세요"
+                        />
+                    </div>
+                    <!-- PW -->
+                    <div class="login-inf">
+                <span class="login-icon">
+                  <img src="./key.png" class="login-icon" />
+                </span>
+                        <input
+                                type="password"
+                                class="login-input"
+                                name="user_pw"
+                                placeholder="비밀번호를 입력해 주세요"
+                        />
+                    </div>
+
+                    <!-- 로그인 버튼 -->
+                    <button type="submit" id="login">LOGIN</button>
+                </form>
+                <button type="submit" id="join">JOIN</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function toggleState(element) {
+      switch (element.getAttribute("data-state")) {
+        case "unchecked":
+          element.setAttribute("data-state", "checked-o");
+          element.textContent = "O";
+          break;
+        case "checked-o":
+          element.setAttribute("data-state", "checked-x");
+          element.textContent = "X";
+          break;
+        case "checked-x":
+          element.setAttribute("data-state", "unchecked");
+          element.textContent = "";
+          break;
+        default:
+          element.setAttribute("data-state", "unchecked");
+          element.textContent = "";
+      }
+    }
+</script>
+<script>
+    //.dots 클릭 시 세팅 내용 보이게/ 안 보이게 조절
+    document.addEventListener("DOMContentLoaded", function () {
+      const settingIcon = document.querySelector(".dots");
+      const menuItems = document.querySelector(".ToDoListSetting");
+
+      settingIcon.addEventListener("click", function () {
+        if (
+          menuItems.style.display === "none" ||
+          menuItems.style.display === ""
+        ) {
+          menuItems.style.display = "block";
+        } else {
+          menuItems.style.display = "none";
+        }
+      });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var modal = document.getElementById("titleModal");
+      var title = document.querySelector(".ToDoListTitle");
+      var modalTitle = document.getElementById("modalTitle");
+      var span = document.getElementsByClassName("close")[0];
+
+      //.ToDoListTitle 클릭 시 모달 열림
+      title.onclick = function () {
+        modalTitle.textContent = this.textContent;
+        modal.style.display = "block";
+      };
+
+      // x 혹은 외부 클릭 시 모달 꺼짐
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      //모달 외부 클릭 시 모달 꺼짐
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var modal = document.getElementById("shareModal");
+      var share = document.getElementById("share");
+      var close = document.getElementsByClassName("close2-shape")[0];
+
+      //.ToDoListTitle 클릭 시 모달 열림
+      share.onclick = function () {
+        modal.style.display = "block";
+      };
+
+      // x 혹은 외부 클릭 시 모달 꺼짐
+      close.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      //모달 외부 클릭 시 모달 꺼짐
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var modal = document.getElementById("loginModal");
+      var add = document.getElementById("addToDoList");
+      var close = document.getElementsByClassName("close3-shape")[0];
+
+      //.ToDoListTitle 클릭 시 모달 열림
+      add.onclick = function () {
+        modal.style.display = "block";
+      };
+
+      // x 혹은 외부 클릭 시 모달 꺼짐
+      close.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      //모달 외부 클릭 시 모달 꺼짐
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    });
+</script>
+</html>

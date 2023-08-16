@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 
 @Slf4j
 @Component
-public class Encrypt {
+public class StringEncrypter {
 
     /**
      * 평문을 MD5로 해싱하여 변환
@@ -17,6 +17,7 @@ public class Encrypt {
      * @return
      */
     public String doHash(String str) {
+        //TODO 암호화에 Salt 추가
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
             messageDigest.update(str.getBytes());

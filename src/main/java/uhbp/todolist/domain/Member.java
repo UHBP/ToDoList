@@ -5,9 +5,14 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * MemberEntity
+ */
 @Table(name = "MEMBER")
 @Entity
 @Getter
+@EqualsAndHashCode
+@ToString
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Member {
@@ -24,23 +29,36 @@ public class Member {
     private String memberPw;
 
     @Column(name = "MEMBER_NICKNAME", unique = true, nullable = false)
-    private String memberNicname;
+    private String memberNickname;
 
     @Column(name = "MEMBER_JOINDATE", nullable = false)
     private LocalDate memberJoinDate;
 
     /**
+     * memberFactory에 사용되는 생성자
+     * @param memberId
+     * @param memberPw
+     * @param memberNickname
+     * @param memberJoindate
+     */
+    private Member(String memberId, String memberPw, String memberNickname, LocalDate memberJoindate) {
+        this.memberId = memberId;
+        this.memberPw = memberPw;
+        this.memberNickname = memberNickname;
+        this.memberJoinDate = memberJoindate;
+    }
+
+    /**
      * Member Entity를 생성하기 위한 정적 팩토리
      *
-     * @param memberIndex
      * @param memberId
      * @param memberPw
      * @param memberNickname
      * @param memberJoindate
      * @return Member
      */
-    public static Member memberFactory(Long memberIndex, String memberId, String memberPw, String memberNickname, LocalDate memberJoindate) {
-        return new Member(memberIndex, memberId, memberPw, memberNickname, memberJoindate);
+    public static Member memberFactory(String memberId, String memberPw, String memberNickname, LocalDate memberJoindate) {
+        return new Member(memberId, memberPw, memberNickname, memberJoindate);
     }
 
     /**

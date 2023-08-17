@@ -50,7 +50,7 @@ public class TodoList {
     /**
      * todoListFactory에 사용되는 생성자
      */
-    private TodoList(Long categoryIndex, Long todoGenmemberIndex, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate) {
+    private TodoList(TodoCategory categoryIndex, Member todoGenmemberIndex, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate) {
         this.categoryIndex = categoryIndex;
         this.todoGenmemberIndex = todoGenmemberIndex;
         this.todoTitle = todoTitle;
@@ -64,7 +64,7 @@ public class TodoList {
     /**
      * TodoList Entity를 생성하기 위한 정적 팩토리
      */
-    public static TodoList todoListFactory(Long categoryIndex, Long todoGenmemberIndex, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate) {
+    public static TodoList todoListFactory(TodoCategory categoryIndex, Member todoGenmemberIndex, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate) {
         return new TodoList(categoryIndex, todoGenmemberIndex, todoTitle, todoContent, todoGendate, todoUpdatedate, todoIspinned, todoDuedate);
     }
 }

@@ -12,7 +12,7 @@ import javax.persistence.*;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class TODO_CATEGORY {
+public class TodoCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CATEGORY_INDEX")
@@ -22,13 +22,13 @@ public class TODO_CATEGORY {
     private String categoryName;
 
 //    categoryFactory에 사용되는 생성자
-    private TODO_CATEGORY(String categoryName){
+    private TodoCategory(String categoryName){
         this.categoryName = categoryName;
     }
 
 //    cateogry Entity를 생성하기 위한 정적 팩토리
-    public static TODO_CATEGORY todoCategoryategoryFactory(String categoryName) {
-        return new TODO_CATEGORY(categoryName);
+    public static TodoCategory todoCategoryFactory(String categoryName) {
+        return new TodoCategory(categoryName);
     }
 }
 

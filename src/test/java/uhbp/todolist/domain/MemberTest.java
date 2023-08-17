@@ -45,5 +45,6 @@ class MemberTest {
 
         // 저장된 데이터와 불러온 데이터가 동일한지 확인
         Assertions.assertThat(foundMember).isEqualTo(newMember);
+        Assertions.assertThat(foundMember).isEqualTo(savedMember);
     }
 }

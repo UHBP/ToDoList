@@ -14,6 +14,7 @@ class StringEncrypterTest {
         String inputStr = "pw";
         String hashedStr = encrypter.doHash(inputStr);
 
+        log.info("HashedStr = {}",hashedStr);
         Assertions.assertTrue(encrypter.isMatch(inputStr, hashedStr));
     }
 }

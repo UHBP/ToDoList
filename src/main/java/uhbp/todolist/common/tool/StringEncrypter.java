@@ -1,6 +1,7 @@
 package uhbp.todolist.common.tool;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
@@ -12,8 +13,8 @@ public class StringEncrypter {
 
     static final private String HASH_ALGORITHM = "SHA-256";
 
-    //TODO 구현용 임시 salt. 실제 서비스 시 감추어야 함
-    private String tempSalt = "salt";
+    @Value("${encrypt.salt}")
+    private String tempSalt;
 
     /**
      * 평문을 해싱하여 변환
@@ -21,6 +22,8 @@ public class StringEncrypter {
     public String doHash(String str) {
         // 받아온 String 에 salt 추가
         str += tempSalt;
+
+        log.info("encrypt = {}", tempSalt);
 
         // 해시 알고리즘 시작
         try {

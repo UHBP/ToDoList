@@ -3,13 +3,15 @@ package uhbp.todolist.dto;
 import com.sun.istack.NotNull;
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginForm {
-    @NotNull
+public class MemberLoginForm {
+    @NotEmpty
     private String inputId;
-    @NotNull
+    @NotEmpty
     private String intpuPw;
 }

@@ -1,39 +1,54 @@
 package uhbp.todolist.Controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import uhbp.todolist.Service.MemberService;
-import uhbp.todolist.dto.LoginForm;
 import uhbp.todolist.dto.MemberJoinForm;
+import uhbp.todolist.dto.MemberLoginForm;
 
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
     MemberService memberService;
 
     @GetMapping("/login")
-    public ModelAndView login() {
-        ModelAndView modelAndView = new ModelAndView();
-        LoginForm loginForm = new LoginForm();
-        modelAndView.addObject("loginForm", new LoginForm());
-        modelAndView.setViewName("loginForm");
-        return modelAndView;
+    public String login(Model model) {
+        MemberLoginForm memberLoginForm = new MemberLoginForm();
+        model.addAttribute("loginForm", memberLoginForm);
+        return "login";
     }
 
+    // TODO 쿠키 기반 로그인 구현
     @PostMapping("/login")
-    public ModelAndView login(@ModelAttribute LoginForm input, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
+    public String login(@ModelAttribute MemberLoginForm input, BindingResult bindingResult) {
         Boolean memberExtist = memberService.isMemberExtist(input.getInputId(), input.getIntpuPw());
         if (memberExtist) {
-            modelAndView.setViewName("index");
-            return modelAndView;
+            return "";
         }
-        modelAndView.setViewName("loginForm");
-        return modelAndView;
+        return "";
+    }
+
+    @GetMapping("/join")
+    public String join(Model model) {
+        MemberJoinForm memberJoinForm = new MemberJoinForm();
+        model.addAttribute("joinForm", memberJoinForm);
+        return "join";
+    }
+
+    @PostMapping("/join")
+    public String join(@ModelAttribute MemberJoinForm joinForm, BindingResult bindingResult) {
+        log.info("Join Input Dto = {}", joinForm);
+        if (bindingResult.hasErrors()) {
+            return "join";
+        }
+        memberService.JoinMember(joinForm);
+        return "index";
     }
 }

@@ -25,6 +25,6 @@ public class MemberServiceImple implements MemberService {
     public void JoinMember(MemberJoinForm form) {
         String encryptPw = form.getMemberPw();
         Member member = Member.memberFactory(form.getMemberId(), encryptPw, form.getMemberNickName(), LocalDate.now());
-        memberRepository.save(member)
+        memberRepository.save(member);
     }
 }

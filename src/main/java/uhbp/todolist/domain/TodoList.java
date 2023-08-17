@@ -22,11 +22,11 @@ public class TodoList {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_INDEX", nullable = false, referencedColumnName = "CATEGORY_INDEX")
-    private TodoCategory categoryIndex;
+    private TodoCategory todoCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TODO_GENMEMBER_INDEX", nullable = false, referencedColumnName = "MEMBER_INDEX")
-    private Member todoGenmemberIndex;
+    private Member member;
 
     @Column(name = "TODO_TITLE", nullable = false)
     private String todoTitle;
@@ -49,9 +49,9 @@ public class TodoList {
     /**
      * todoListFactory에 사용되는 생성자
      */
-    private TodoList(TodoCategory categoryIndex, Member todoGenmemberIndex, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate) {
-        this.categoryIndex = categoryIndex;
-        this.todoGenmemberIndex = todoGenmemberIndex;
+    private TodoList(TodoCategory todoCategory, Member member, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate) {
+        this.todoCategory = todoCategory;
+        this.member = member;
         this.todoTitle = todoTitle;
         this.todoContent = todoContent;
         this.todoGendate = todoGendate;
@@ -63,7 +63,7 @@ public class TodoList {
     /**
      * TodoList Entity를 생성하기 위한 정적 팩토리
      */
-    public static TodoList todoListFactory(TodoCategory categoryIndex, Member todoGenmemberIndex, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate) {
-        return new TodoList(categoryIndex, todoGenmemberIndex, todoTitle, todoContent, todoGendate, todoUpdatedate, todoIspinned, todoDuedate);
+    public static TodoList todoListFactory(TodoCategory todoCategory, Member member, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate) {
+        return new TodoList(todoCategory, member, todoTitle, todoContent, todoGendate, todoUpdatedate, todoIspinned, todoDuedate);
     }
 }

@@ -1,6 +1,7 @@
 package uhbp.todolist.Service;
 
-public interface MemberService {
-    void JoinMember();
+import uhbp.todolist.dto.MemberJoinForm;
 
+public interface MemberService {
+    void JoinMember(MemberJoinForm form);
 }

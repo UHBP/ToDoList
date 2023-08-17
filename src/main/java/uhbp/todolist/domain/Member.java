@@ -36,10 +36,6 @@ public class Member {
 
     /**
      * memberFactory에 사용되는 생성자
-     * @param memberId
-     * @param memberPw
-     * @param memberNickname
-     * @param memberJoindate
      */
     private Member(String memberId, String memberPw, String memberNickname, LocalDate memberJoindate) {
         this.memberId = memberId;
@@ -50,12 +46,6 @@ public class Member {
 
     /**
      * Member Entity를 생성하기 위한 정적 팩토리
-     *
-     * @param memberId
-     * @param memberPw
-     * @param memberNickname
-     * @param memberJoindate
-     * @return Member
      */
     public static Member memberFactory(String memberId, String memberPw, String memberNickname, LocalDate memberJoindate) {
         return new Member(memberId, memberPw, memberNickname, memberJoindate);
@@ -63,9 +53,8 @@ public class Member {
 
     /**
      * 암호화된 PW 를 받아서, 비밀번호를 변경
-     * @param hashedNewPw
      */
-    public void changePw(String hashedNewPw){
+    public void changePw(String hashedNewPw) {
         this.memberPw = hashedNewPw;
     }
 }

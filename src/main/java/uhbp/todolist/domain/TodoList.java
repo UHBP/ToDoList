@@ -1,7 +1,6 @@
 package uhbp.todolist.domain;
 
 import lombok.*;
-import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.time.LocalDate;

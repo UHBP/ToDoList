@@ -15,11 +15,16 @@ public class MemberServiceImple implements MemberService {
     
     StringEncrypter encrypter;
     MemberRepository memberRepository;
-    
+
+    @Override
+    public Boolean isMemberExtist(String memberId, String memberPw) {
+        return null;
+    }
+
     @Override
     public void JoinMember(MemberJoinForm form) {
         String encryptPw = form.getMemberPw();
         Member member = Member.memberFactory(form.getMemberId(), encryptPw, form.getMemberNickName(), LocalDate.now());
-        Member savedMember = memberRepository.save(member);
+        memberRepository.save(member)
     }
 }

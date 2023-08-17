@@ -2,7 +2,7 @@
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-![header](https://capsule-render.vercel.app/api?type=waving&color=random&height=150&section=header&text=4Tunes&fontSize=70)<br>
+![header](https://capsule-render.vercel.app/api?type=Slice&color=random&height=150&section=header&text=TodoList&fontSize=70&fontAlign=75&fontAlignY=20&rotate=10)<br>
 ## 🗓️ TodoList 🗓️ <br>
 ## 💻 Using Stack 💻<br>
 #### 🛠 FrameWork

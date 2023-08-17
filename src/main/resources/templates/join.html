@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/join.css" />
+    <title>Document</title>
+</head>
+<body>
+<div id="joinModal" class="join">
+    <div class="joinModal-content">
+        <div class="join-title">TODOLIST</div>
+        <div class="join-container">
+            <div class="join-content">
+                <form>
+                    <!-- ID -->
+                    <div class="join-inf">
+                        <input
+                                type="text"
+                                class="join-input"
+                                name="user_id"
+                                placeholder="Email을 입력해주세요"
+                        />
+                    </div>
+                    <div class="join-inf">
+                        <input
+                                type="text"
+                                name="user_name"
+                                class="join-input"
+                                placeholder="닉네임"
+                        />
+                    </div>
+                    <!-- PW -->
+                    <div class="join-inf">
+                        <input
+                                type="password"
+                                class="join-input"
+                                name="user_pw"
+                                placeholder="비밀번호를 입력해 주세요"
+                        />
+                    </div>
+                    <!-- pw 2차 -->
+                    <div class="join-inf">
+                        <input
+                                type="password"
+                                name="user_pw"
+                                class="join-input"
+                                placeholder="비밀번호 확인"
+                        />
+                    </div>
+                    <!-- 로그인 버튼 -->
+                    <button type="submit" id="join">회원 가입</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -16,9 +16,7 @@ public class StringEncrypter {
     private String tempSalt = "salt";
 
     /**
-     * 평문을 MD5로 해싱하여 변환
-     * @param str
-     * @return
+     * 평문을 해싱하여 변환
      */
     public String doHash(String str) {
         // 받아온 String 에 salt 추가
@@ -42,10 +40,6 @@ public class StringEncrypter {
 
     /**
      * 평문(str) 과 hashedStr 이 일치하는지 비교
-     *
-     * @param str
-     * @param hashedStr
-     * @return
      */
     public boolean isMatch(String str, String hashedStr) {
         String input = doHash(str);

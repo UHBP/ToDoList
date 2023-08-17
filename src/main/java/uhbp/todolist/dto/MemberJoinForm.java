@@ -1,19 +1,17 @@
 package uhbp.todolist.dto;
 
 import lombok.Data;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Data
 public class MemberJoinForm {
-    @Email
-    @NotEmpty
+    @Email(message = "올바른 이메일 형식이여야 합니다. ")
+    @NotEmpty(message = "아이디는 필수입니다. ")
     private String memberId;
-    @NotEmpty
+    @NotEmpty(message = "비밀번호는 필수입니다. ")
     private String memberPw;
-    @NotEmpty
+    @NotEmpty(message = "닉네임은 필수입니다. ")
     private String memberNickName;
 }

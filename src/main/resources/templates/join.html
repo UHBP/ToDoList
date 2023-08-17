@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/resources/join.css" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/resources/css/join.css"/>
     <title>Document</title>
 </head>
 <body>
@@ -13,7 +13,7 @@
         <div class="join-container">
             <div class="join-content">
                 <form th:action="@{/member/join}" th:object="${joinForm}" method="post">
-                    <!-- ID -->
+                    <!-- /* ID */ -->
                     <div class="join-inf">
                         <input
                                 th:field="*{memberId}"
@@ -21,8 +21,9 @@
                                 class="join-input"
                                 name="user_id"
                                 placeholder="Email을 입력해주세요"
+                                required
                         />
-                        <p th:if="${#fields.hasErrors('memberId')}" th:errors="*{name}">Incorrect date</p>
+                        <p th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}">Incorrect date</p>
                     </div>
                     <div class="join-inf">
                         <input
@@ -31,10 +32,12 @@
                                 name="user_name"
                                 class="join-input"
                                 placeholder="닉네임"
+                                required
                         />
-                        <p th:if="${#fields.hasErrors('memberNickName')}" th:errors="*{name}">Incorrect date</p>
+                        <p th:if="${#fields.hasErrors('memberNickName')}" th:errors="*{memberNickName}">Incorrect
+                            date</p>
                     </div>
-                    <!-- PW -->
+                    <!-- /* PW */ -->
                     <div class="join-inf">
                         <input
                                 th:field="*{memberPw}"
@@ -42,20 +45,25 @@
                                 class="join-input"
                                 name="user_pw"
                                 placeholder="비밀번호를 입력해 주세요"
+                                required
                         />
-                        <p th:if="${#fields.hasErrors('memberPw')}" th:errors="*{name}">Incorrect date</p>
+                        <p th:if="${#fields.hasErrors('memberPw')}" th:errors="*{memberPw}">Incorrect date</p>
                     </div>
-                    <!-- pw 2차 -->
-<!--                    <div class="join-inf">-->
-<!--                        <input-->
-<!--                                type="password"-->
-<!--                                name="user_pw"-->
-<!--                                class="join-input"-->
-<!--                                placeholder="비밀번호 확인"-->
-<!--                        />-->
-<!--                    </div>-->
-                    <!-- 로그인 버튼 -->
+                    <!-- /* pw 2차 */ -->
+                    <!-- /*                        <div class="join-inf">*/ -->
+                    <!-- /*                        <input*/ -->
+                    <!-- /*                                type="password"*/ -->
+                    <!-- /*                                name="user_pw"*/ -->
+                    <!-- /*                                class="join-input"*/ -->
+                    <!-- /*                                placeholder="비밀번호 확인"*/ -->
+                    <!-- /*                        />*/ -->
+                    <!-- /*                    </div>*/ -->
+                    <!-- /* 로그인 버튼 */ -->
                     <button type="submit" id="join">회원 가입</button>
+
+                    <div th:if="${errors}">
+                        <p th:each="error : ${errors}" th:text="${error.getDefaultMessage()}"></p>
+                    </div>
                 </form>
             </div>
         </div>

@@ -1,7 +1,9 @@
 package uhbp.todolist.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uhbp.todolist.common.tool.StringEncrypter;
 import uhbp.todolist.domain.Member;
 import uhbp.todolist.dto.MemberJoinForm;
@@ -11,9 +13,13 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberServiceImple implements MemberService {
-    
+
+    @Autowired
     StringEncrypter encrypter;
+
+    @Autowired
     MemberRepository memberRepository;
 
     @Override

@@ -39,7 +39,7 @@ public class TodoShareApproveQueue {
     /**
      * 생성자
      */
-    public TodoShareApproveQueue(TodoList todoIndex, Member sharedMemberIndex, Member shareMemberIndex, LocalDate approveDate) {
+    private TodoShareApproveQueue(TodoList todoIndex, Member sharedMemberIndex, Member shareMemberIndex, LocalDate approveDate) {
         this.todoIndex = todoIndex;
         this.sharedMemberIndex = sharedMemberIndex;
         this.shareMemberIndex = shareMemberIndex;

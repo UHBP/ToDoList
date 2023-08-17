@@ -24,4 +24,13 @@ public class TodoMemberManage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TODO_INDEX", nullable = false, referencedColumnName="TODO_INDEX")
     private TodoList todoIndex;
+
+    private TodoMemberManage(Member member, TodoList todoList) {
+        this.memberIndex = member;
+        this.todoIndex = todoList;
+    }
+
+    public TodoMemberManage todoMemberManageFactory(Member member, TodoList todoList){
+        return new TodoMemberManage(member, todoList);
+    }
 }

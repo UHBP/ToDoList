@@ -1,6 +1,7 @@
 package uhbp.todolist.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,8 +12,8 @@ import uhbp.todolist.repository.MemberRepository;
 
 import java.time.LocalDate;
 
+@Slf4j
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class MemberServiceImple implements MemberService {
 
@@ -27,10 +28,15 @@ public class MemberServiceImple implements MemberService {
         return null;
     }
 
+    /**
+     * 회원 가입 후, 해당 회원의 기본키를 반환
+     */
     @Override
-    public void JoinMember(MemberJoinForm form) {
+    public int JoinMember(MemberJoinForm form) {
         String encryptPw = encrypter.doHash(form.getMemberPw());
         Member member = Member.memberFactory(form.getMemberId(), encryptPw, form.getMemberNickName(), LocalDate.now());
         memberRepository.save(member);
+        log.info("savedMember = {}", member);
+        return member.getMemberIndex().intValue();
     }
 }

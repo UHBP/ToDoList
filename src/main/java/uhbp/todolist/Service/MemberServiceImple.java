@@ -29,7 +29,7 @@ public class MemberServiceImple implements MemberService {
 
     @Override
     public void JoinMember(MemberJoinForm form) {
-        String encryptPw = form.getMemberPw();
+        String encryptPw = encrypter.doHash(form.getMemberPw());
         Member member = Member.memberFactory(form.getMemberId(), encryptPw, form.getMemberNickName(), LocalDate.now());
         memberRepository.save(member);
     }

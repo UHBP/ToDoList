@@ -1,265 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/index.css" />
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/index.css" />
+  <title>Document</title>
 </head>
 <body>
 <div id="content">
-    <div id="titleLine">
-        <div id="title">ㅇㅇㅇ님의 ToDoList</div>
-        <div id="setting"></div>
-        <div id="addToDoList">ToDo 추가</div>
+  <div id="titleLine">
+    <div id="title">ㅇㅇㅇ님의 ToDoList</div>
+    <div id="setting"></div>
+    <div id="addToDoList">ToDo 추가</div>
+  </div>
+  <div id="tagAndSelect">
+    <div id="tag">
+      <div style="background-color: lightcoral">전체</div>
+      <div style="background-color: orange">공부</div>
+      <div style="background-color: rgb(130, 186, 146)">운동</div>
+      <div style="background-color: skyblue">약속</div>
+      <div style="background-color: midnightblue">기타</div>
+      <div style="background-color: rgb(105, 59, 149)">공유</div>
     </div>
-    <div id="tagAndSelect">
-        <div id="tag">
-            <div style="background-color: lightcoral">전체</div>
-            <div style="background-color: orange">공부</div>
-            <div style="background-color: rgb(130, 186, 146)">운동</div>
-            <div style="background-color: skyblue">약속</div>
-            <div style="background-color: midnightblue">기타</div>
-            <div style="background-color: rgb(105, 59, 149)">공유</div>
-        </div>
-        <select id="selectOption">
-            <option selected>일반</option>
-            <option value="">마감일</option>
-        </select>
+    <select id="selectOption">
+      <option selected>일반</option>
+      <option value="">마감일</option>
+    </select>
+  </div>
+  <div class="ToDoList">
+    <div class="checkbox-wrap">
+      <input type="checkbox" class="ListCheckbox" />
     </div>
-    <div class="ToDoList">
-        <div class="checkbox-wrap">
-            <input type="checkbox" class="ListCheckbox" />
-        </div>
-        <div class="TodoTitle">제목</div>
-        <div class="DueDate">2023-08-17 18:00</div>
-        <div class="Category">공부</div>
-        <div class="ShareMember">닉네임</div>
-        <div class="pin">
-            <div class="pinned"><img src="./pin.png" /></div>
-            <div class="unpinned"></div>
-        </div>
-        <div>
-            <img class="dots" src="./dots.png" />
-        </div>
-        <div class="ToDoListSetting">
-            <div>완료하기</div>
-            <div id="share">공유하기</div>
-            <div>삭제하기</div>
-            <div>핀 표시</div>
-        </div>
+    <div class="TodoTitle">제목</div>
+    <div class="DueDate">2023-08-17 18:00</div>
+    <div class="Category">공부</div>
+    <div class="ShareMember">닉네임</div>
+    <div class="pin">
+      <div class="pinned"><img src="./pin.png" /></div>
+      <div class="unpinned"></div>
     </div>
+    <div>
+      <img class="dots" src="./dots.png" />
+    </div>
+    <div class="ToDoListSetting">
+      <div>완료하기</div>
+      <div id="share">공유하기</div>
+      <div>삭제하기</div>
+      <div>핀 표시</div>
+    </div>
+  </div>
 </div>
 <!-- Modal - title클릭 시 (클릭 시 해당 화면 내에서 팝업 뜨는 것) -->
 <div id="titleModal" class="modal">
-    <div class="titleModal-content">
-        <div class="close">
-            <div class="close-shape">x</div>
-        </div>
-        <p id="modalTitle"></p>
-        <div class="TodoGenDate">생성일</div>
-        <div class="TodoUpdateDate">수정일</div>
-        <div class="TodoDueDate">마감기한</div>
-        <div class="TodoContent">메모 내용</div>
-        <div>수정</div>
-        <div>삭제</div>
+  <div class="titleModal-content">
+    <div class="close">
+      <div class="close-shape">x</div>
     </div>
+    <p id="modalTitle"></p>
+    <div class="TodoGenDate">생성일</div>
+    <div class="TodoUpdateDate">수정일</div>
+    <div class="TodoDueDate">마감기한</div>
+    <div class="TodoContent">메모 내용</div>
+    <div>수정</div>
+    <div>삭제</div>
+  </div>
 </div>
 <!-- Modal - 세팅 중 공유하기 클릭 시  -->
 <div id="shareModal" class="modal2">
-    <div class="shareModal-search">
-        <div class="close2">
-            <div class="close2-shape">x</div>
-        </div>
-        <div class="search-container">
-            <div class="search-icon">
-                <img src="./search.png" />
-            </div>
-            <form>
-                <input
-                        type="text"
-                        name="query"
-                        class="search-input"
-                        placeholder="공유할 대상 검색"
-                />
-            </form>
-            <div class="shareButton">공유하기</div>
-        </div>
-        <br />
-        <div class="search-result">
-            <div class="search-result-content">
-                <div class="search-checkbox"><input type="checkbox" /></div>
-                <div class="search-id">아이디</div>
-                <div class="search-nickname">닉네임</div>
-            </div>
-        </div>
+  <div class="shareModal-search">
+    <div class="close2">
+      <div class="close2-shape">x</div>
     </div>
+    <div class="search-container">
+      <div class="search-icon">
+        <img src="./search.png" />
+      </div>
+      <form>
+        <input
+                type="text"
+                name="query"
+                class="search-input"
+                placeholder="공유할 대상 검색"
+        />
+      </form>
+      <div class="shareButton">공유하기</div>
+    </div>
+    <br />
+    <div class="search-result">
+      <div class="search-result-content">
+        <div class="search-checkbox"><input type="checkbox" /></div>
+        <div class="search-id">아이디</div>
+        <div class="search-nickname">닉네임</div>
+      </div>
+    </div>
+  </div>
 </div>
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // 모든 .ListCheckbox 요소들을 선택합니다.
-      const checkboxes = document.querySelectorAll(".ListCheckbox");
+  document.addEventListener("DOMContentLoaded", function () {
+    // 모든 .ListCheckbox 요소들을 선택합니다.
+    const checkboxes = document.querySelectorAll(".ListCheckbox");
 
-      checkboxes.forEach((checkbox) => {
-        checkbox.addEventListener("change", function () {
-          const todoList = this.closest(".ToDoList"); // 현재 체크박스가 속한 .ToDoList 찾기
-          const title = todoList.querySelector(".TodoTitle"); // 현재 체크박스가 속한 .ToDoList의 .TodoTitle 선택
-          const listdate = todoList.querySelector(".DueDate");
-          const listdatespan = listdate.querySelector("span");
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", function () {
+        const todoList = this.closest(".ToDoList"); // 현재 체크박스가 속한 .ToDoList 찾기
+        const title = todoList.querySelector(".TodoTitle"); // 현재 체크박스가 속한 .ToDoList의 .TodoTitle 선택
+        const listdate = todoList.querySelector(".DueDate");
+        const listdatespan = listdate.querySelector("span");
 
-          if (this.checked) {
-            // 체크박스가 체크되면 text-decoration과 color를 적용합니다.
-            title.style.textDecoration = "line-through";
-            title.style.color = "gray";
-            listdate.style.textDecoration = "line-through";
-            listdate.style.color = "gray";
-            if (listdatespan) {
-              listdatespan.style.textDecoration = "none";
-            }
-          } else {
-            // 체크박스가 해제되면 스타일을 원래대로 돌립니다.
-            title.style.textDecoration = "none";
-            title.style.color = "";
-            listdate.style.textDecoration = "none";
-            listdate.style.color = "";
-            if (listdatespan) {
-              listdatespan.style.textDecoration = "none";
-            }
+        if (this.checked) {
+          // 체크박스가 체크되면 text-decoration과 color를 적용합니다.
+          title.style.textDecoration = "line-through";
+          title.style.color = "gray";
+          listdate.style.textDecoration = "line-through";
+          listdate.style.color = "gray";
+          if (listdatespan) {
+            listdatespan.style.textDecoration = "none";
           }
-        });
-      });
-    });
-</script>
-<script>
-    //마감일에 따라서 마감 기한 지남 경고 주는 코드
-    document.addEventListener("DOMContentLoaded", function () {
-      let toDoLists = document.querySelectorAll(".ToDoList");
-
-      toDoLists.forEach((toDoList) => {
-        let checkbox = toDoList.querySelector(".ListCheckbox");
-        let dueDateDiv = toDoList.querySelector(".DueDate");
-
-        // 체크박스가 unchecked 상태이고
-        if (!checkbox.checked) {
-          let dueDateValue = new Date(dueDateDiv.textContent); // 마감일을 Date 객체로 변환 (마감일 형식은 YYYY-MM-DD나 다른 형식에 따라 파싱 코드를 수정해야 할 수 있습니다.)
-          let now = new Date();
-
-          // 마감일이 현재 시각보다 이전이면
-          if (dueDateValue < now) {
-            let breakTag = document.createElement("br");
-            dueDateDiv.appendChild(breakTag);
-            let overdueNote = document.createElement("span");
-            overdueNote.textContent = "(마감 기한 지남)";
-            overdueNote.style.color = "red";
-            dueDateDiv.appendChild(overdueNote);
+        } else {
+          // 체크박스가 해제되면 스타일을 원래대로 돌립니다.
+          title.style.textDecoration = "none";
+          title.style.color = "";
+          listdate.style.textDecoration = "none";
+          listdate.style.color = "";
+          if (listdatespan) {
+            listdatespan.style.textDecoration = "none";
           }
         }
       });
     });
+  });
 </script>
 <script>
-    //카테고리 값에 따라서 .ToDoList > .Category의 background-color값이 지정된 값으로 변환
-    //이 때, #tagAndSelect > #tag와 색을 동일하게 만들어줌
-    document.addEventListener("DOMContentLoaded", function () {
-      function setCategoryBackgroundColor(categoryDiv) {
-        let category = categoryDiv.textContent;
+  //마감일에 따라서 마감 기한 지남 경고 주는 코드
+  document.addEventListener("DOMContentLoaded", function () {
+    let toDoLists = document.querySelectorAll(".ToDoList");
 
-        switch (category) {
-          case "전체":
-            categoryDiv.style.backgroundColor = "lightcoral";
-            break;
-          case "공부":
-            categoryDiv.style.backgroundColor = "orange";
-            break;
-          case "운동":
-            categoryDiv.style.backgroundColor = "rgb(130, 186, 146)";
-            break;
-          case "약속":
-            categoryDiv.style.backgroundColor = "skyblue";
-            break;
-          case "기타":
-            categoryDiv.style.backgroundColor = "midnightblue";
-            break;
-          case "공유":
-            categoryDiv.style.backgroundColor = "rgb(105, 59, 149)";
-            break;
-          default:
-            categoryDiv.style.backgroundColor = ""; // 기본값이나 다른 색상으로 설정하실 수 있습니다.
+    toDoLists.forEach((toDoList) => {
+      let checkbox = toDoList.querySelector(".ListCheckbox");
+      let dueDateDiv = toDoList.querySelector(".DueDate");
+
+      // 체크박스가 unchecked 상태이고
+      if (!checkbox.checked) {
+        let dueDateValue = new Date(dueDateDiv.textContent); // 마감일을 Date 객체로 변환 (마감일 형식은 YYYY-MM-DD나 다른 형식에 따라 파싱 코드를 수정해야 할 수 있습니다.)
+        let now = new Date();
+
+        // 마감일이 현재 시각보다 이전이면
+        if (dueDateValue < now) {
+          let breakTag = document.createElement("br");
+          dueDateDiv.appendChild(breakTag);
+          let overdueNote = document.createElement("span");
+          overdueNote.textContent = "(마감 기한 지남)";
+          overdueNote.style.color = "red";
+          dueDateDiv.appendChild(overdueNote);
         }
       }
-
-      let categoryDivs = document.querySelectorAll(".ToDoList > .Category");
-      categoryDivs.forEach(setCategoryBackgroundColor);
     });
+  });
 </script>
 <script>
-    //.dots 클릭 시 세팅 내용 보이게/ 안 보이게 조절
-    document.addEventListener("DOMContentLoaded", function () {
-      const settingIcon = document.querySelector(".dots");
-      const menuItems = document.querySelector(".ToDoListSetting");
+  //카테고리 값에 따라서 .ToDoList > .Category의 background-color값이 지정된 값으로 변환
+  //이 때, #tagAndSelect > #tag와 색을 동일하게 만들어줌
+  document.addEventListener("DOMContentLoaded", function () {
+    function setCategoryBackgroundColor(categoryDiv) {
+      let category = categoryDiv.textContent;
 
-      settingIcon.addEventListener("click", function () {
-        if (
-          menuItems.style.display === "none" ||
-          menuItems.style.display === ""
-        ) {
-          menuItems.style.display = "block";
-        } else {
-          menuItems.style.display = "none";
-        }
-      });
-    });
+      switch (category) {
+        case "전체":
+          categoryDiv.style.backgroundColor = "lightcoral";
+          break;
+        case "공부":
+          categoryDiv.style.backgroundColor = "orange";
+          break;
+        case "운동":
+          categoryDiv.style.backgroundColor = "rgb(130, 186, 146)";
+          break;
+        case "약속":
+          categoryDiv.style.backgroundColor = "skyblue";
+          break;
+        case "기타":
+          categoryDiv.style.backgroundColor = "midnightblue";
+          break;
+        case "공유":
+          categoryDiv.style.backgroundColor = "rgb(105, 59, 149)";
+          break;
+        default:
+          categoryDiv.style.backgroundColor = ""; // 기본값이나 다른 색상으로 설정하실 수 있습니다.
+      }
+    }
+
+    let categoryDivs = document.querySelectorAll(".ToDoList > .Category");
+    categoryDivs.forEach(setCategoryBackgroundColor);
+  });
 </script>
 <script>
-    //모달창 1 - 타이틀 클릭시 열리는 것
-    document.addEventListener("DOMContentLoaded", function () {
-      var modal = document.getElementById("titleModal");
-      var title = document.querySelector(".TodoTitle");
-      var modalTitle = document.getElementById("modalTitle");
-      var span = document.getElementsByClassName("close")[0];
+  //.dots 클릭 시 세팅 내용 보이게/ 안 보이게 조절
+  document.addEventListener("DOMContentLoaded", function () {
+    const settingIcon = document.querySelector(".dots");
+    const menuItems = document.querySelector(".ToDoListSetting");
 
-      //.TodoTitle 클릭 시 모달 열림
-      title.onclick = function () {
-        modalTitle.textContent = this.textContent;
-        modal.style.display = "block";
-      };
+    settingIcon.addEventListener("click", function () {
+      if (
+        menuItems.style.display === "none" ||
+        menuItems.style.display === ""
+      ) {
+        menuItems.style.display = "block";
+      } else {
+        menuItems.style.display = "none";
+      }
+    });
+  });
+</script>
+<script>
+  //모달창 1 - 타이틀 클릭시 열리는 것
+  document.addEventListener("DOMContentLoaded", function () {
+    var modal = document.getElementById("titleModal");
+    var title = document.querySelector(".TodoTitle");
+    var modalTitle = document.getElementById("modalTitle");
+    var span = document.getElementsByClassName("close")[0];
 
-      // x 혹은 외부 클릭 시 모달 꺼짐
-      span.onclick = function () {
+    //.TodoTitle 클릭 시 모달 열림
+    title.onclick = function () {
+      modalTitle.textContent = this.textContent;
+      modal.style.display = "block";
+    };
+
+    // x 혹은 외부 클릭 시 모달 꺼짐
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    //모달 외부 클릭 시 모달 꺼짐
+    window.onclick = function (event) {
+      if (event.target == modal) {
         modal.style.display = "none";
-      };
-
-      //모달 외부 클릭 시 모달 꺼짐
-      window.onclick = function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      };
-    });
+      }
+    };
+  });
 </script>
 <script>
-    //모달창 2 - 공유하기 클릭 시
-    document.addEventListener("DOMContentLoaded", function () {
-      var modal = document.getElementById("shareModal");
-      var share = document.getElementById("share");
-      var close = document.getElementsByClassName("close2-shape")[0];
+  //모달창 2 - 공유하기 클릭 시
+  document.addEventListener("DOMContentLoaded", function () {
+    var modal = document.getElementById("shareModal");
+    var share = document.getElementById("share");
+    var close = document.getElementsByClassName("close2-shape")[0];
 
-      share.onclick = function () {
-        modal.style.display = "block";
-      };
+    share.onclick = function () {
+      modal.style.display = "block";
+    };
 
-      // x 혹은 외부 클릭 시 모달 꺼짐
-      close.onclick = function () {
+    // x 혹은 외부 클릭 시 모달 꺼짐
+    close.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    //모달 외부 클릭 시 모달 꺼짐
+    window.onclick = function (event) {
+      if (event.target == modal) {
         modal.style.display = "none";
-      };
-
-      //모달 외부 클릭 시 모달 꺼짐
-      window.onclick = function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      };
-    });
+      }
+    };
+  });
 </script>
 </html>

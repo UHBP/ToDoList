@@ -1,5 +1,6 @@
 package uhbp.todolist.session;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
@@ -12,10 +13,11 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Deprecated
+@Slf4j
 @Component
 public class SessionManager {
     public static final String SESSION_COOKIE_NAME = "memberCookie";
-    private Map<String, Objects> sessionMemberStore = new ConcurrentHashMap<>();
+    private Map<String, Object> sessionMemberStore = new ConcurrentHashMap<>();
 
     /**
      * 세션을 생성합니다.
@@ -23,12 +25,15 @@ public class SessionManager {
      * @param value
      * @param response
      */
-    public void createSession(Objects value, HttpServletResponse response) {
+    public void createSession(Object value, HttpServletResponse response) {
+        log.info("세션을 생성합니다. ");
+        log.info("Member = {}", value);
         String sessionMemberId = UUID.randomUUID().toString();
         sessionMemberStore.put(sessionMemberId, value);
 
         Cookie sessionMemberCookie = new Cookie(SESSION_COOKIE_NAME, sessionMemberId);
         response.addCookie(sessionMemberCookie);
+        log.info(sessionMemberStore.toString());
     }
 
     /**
@@ -38,11 +43,13 @@ public class SessionManager {
      * @param request
      * @return
      */
-    public Objects getSession(HttpServletRequest request) {
+    public Object getSession(HttpServletRequest request) {
         Cookie sessionCookie = findCookie(request);
         if (sessionCookie == null) {
+            log.info("쿠키가 없소용");
             return null;
         }
+        log.info("받아온 쿠키 = {}", sessionCookie);
         return sessionMemberStore.get(sessionCookie.getValue());
     }
 

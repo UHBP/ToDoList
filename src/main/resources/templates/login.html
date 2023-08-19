@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="resources/css/login.css" />
+    <link rel="stylesheet" href="/resources/css/login.css" />
     <title>Document</title>
 </head>
 <body>
@@ -12,13 +12,14 @@
         <div class="login-title">TODOLIST</div>
         <div class="login-container">
             <div class="login-content">
-                <form>
+                <form th:action="@{/member/login}" th:object="${loginForm}" method="post">
                     <!-- /* ID */ -->
                     <div class="login-inf">
                 <span class="login-icon">
                   <img src="/resources/img/login.png" class="login-icon" />
                 </span>
                         <input
+                                th:field="*{inputId}"
                                 type="text"
                                 class="login-input"
                                 name="user_id"
@@ -31,6 +32,7 @@
                   <img src="/resources/img/key.png" class="login-icon" />
                 </span>
                         <input
+                                th:field="*{inputPw}"
                                 type="password"
                                 class="login-input"
                                 name="user_pw"
@@ -41,7 +43,7 @@
                     <!-- /* 로그인 버튼 */ -->
                     <button type="submit" id="login">LOGIN</button>
                 </form>
-                <button type="submit" id="join">JOIN</button>
+                <button type="button" id="join" onclick="location.href='/member/join'">JOIN</button>
             </div>
         </div>
     </div>

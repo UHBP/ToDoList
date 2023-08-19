@@ -33,19 +33,23 @@ public class MemberController {
         return "login";
     }
 
-    // TODO 쿠키 기반 로그인 구현
+    // TODO Session 기반 로그인 구현
     @PostMapping("/login")
     public String login(@ModelAttribute @Valid MemberLoginForm input, BindingResult bindingResult, HttpServletResponse response) {
         log.info("current input = {}", input);
         Boolean memberExist = memberService.isMemberExist(input.getInputId(), input.getInputPw());
         log.info("ismemberExist = {}", memberExist);
         if (memberExist) {
-            Cookie memberUUID = new Cookie(UUID.randomUUID())
             return "index";
         }else {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 일치하지 않습니다. ");
             return "login";
         }
+    }
+
+    @GetMapping("logout")
+    public String logout(HttpServletResponse response){
+
     }
 
     @GetMapping("/join")

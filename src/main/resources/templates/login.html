@@ -44,6 +44,9 @@
                     <button type="submit" id="login">LOGIN</button>
                 </form>
                 <button type="button" id="join" onclick="location.href='/member/join'">JOIN</button>
+                <div th:if="${errors}" align="center">
+                    <p th:each="error : ${errors}" th:text="${error.getDefaultMessage()}"></p>
+                </div>
             </div>
         </div>
     </div>

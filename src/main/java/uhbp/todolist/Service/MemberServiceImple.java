@@ -25,6 +25,7 @@ public class MemberServiceImple implements MemberService {
 
     /**
      * Id 와 Pw 로 해당하는 멤버가 가입되어 있는지 여부를 반환
+     *
      * @param memberId
      * @param memberPw
      * @return
@@ -35,7 +36,7 @@ public class MemberServiceImple implements MemberService {
         if (findMember == null) {
             return false;
         } else {
-            if(encrypter.isMatch(memberPw, findMember.getMemberPw())){
+            if (encrypter.isMatch(memberPw, findMember.getMemberPw())) {
                 return true;
             }
         }
@@ -52,5 +53,23 @@ public class MemberServiceImple implements MemberService {
         memberRepository.save(member);
         log.info("savedMember = {}", member);
         return member.getMemberIndex().intValue();
+    }
+
+    /**
+     * 로그인을 처리하는 비즈니스 로직
+     *
+     * @param inputId
+     * @param inputPw
+     * @return
+     */
+    @Override
+    public Member login(String inputId, String inputPw) {
+        Member byMemberId = memberRepository.findByMemberId(inputId);
+        if(byMemberId != null){
+            if(encrypter.isMatch(inputPw, byMemberId.getMemberPw())){
+                return byMemberId;
+            }
+        }
+        return null;
     }
 }

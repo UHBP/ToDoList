@@ -23,9 +23,23 @@ public class MemberServiceImple implements MemberService {
     @Autowired
     MemberRepository memberRepository;
 
+    /**
+     * Id 와 Pw 로 해당하는 멤버가 가입되어 있는지 여부를 반환
+     * @param memberId
+     * @param memberPw
+     * @return
+     */
     @Override
-    public Boolean isMemberExtist(String memberId, String memberPw) {
-        return null;
+    public Boolean isMemberExist(String memberId, String memberPw) {
+        Member findMember = memberRepository.findByMemberId(memberId);
+        if (findMember == null) {
+            return false;
+        } else {
+            if(encrypter.isMatch(memberPw, findMember.getMemberPw())){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

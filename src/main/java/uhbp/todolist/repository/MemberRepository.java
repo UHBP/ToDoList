@@ -7,4 +7,6 @@ import uhbp.todolist.domain.Member;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
+    Member findByMemberId(String memberId);
+
 }

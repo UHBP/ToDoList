@@ -23,8 +23,6 @@ public class StringEncrypter {
         // 받아온 String 에 salt 추가
         str += tempSalt;
 
-        log.info("encrypt = {}", tempSalt);
-
         // 해시 알고리즘 시작
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(HASH_ALGORITHM);

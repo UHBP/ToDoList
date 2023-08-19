@@ -4,6 +4,6 @@ import uhbp.todolist.dto.MemberJoinForm;
 
 public interface MemberService {
 
-    Boolean isMemberExtist(String memberId, String memberPw);
+    Boolean isMemberExist(String memberId, String memberPw);
     int JoinMember(MemberJoinForm form);
 }

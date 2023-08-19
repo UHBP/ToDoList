@@ -8,14 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import uhbp.todolist.Service.MemberServiceImple;
+import uhbp.todolist.domain.Member;
 import uhbp.todolist.dto.MemberJoinForm;
 import uhbp.todolist.dto.MemberLoginForm;
+import uhbp.todolist.session.SessionManager;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/member")
@@ -23,8 +22,8 @@ import java.util.UUID;
 @Slf4j
 public class MemberController {
 
-    @Autowired
-    MemberServiceImple memberService;
+    private final MemberServiceImple memberService;
+    private final SessionManager sessionManager;
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -33,23 +32,27 @@ public class MemberController {
         return "login";
     }
 
-    // TODO Session 기반 로그인 구현
-    @PostMapping("/login")
-    public String login(@ModelAttribute @Valid MemberLoginForm input, BindingResult bindingResult, HttpServletResponse response) {
-        log.info("current input = {}", input);
-        Boolean memberExist = memberService.isMemberExist(input.getInputId(), input.getInputPw());
-        log.info("ismemberExist = {}", memberExist);
-        if (memberExist) {
-            return "index";
-        }else {
-            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 일치하지 않습니다. ");
+    // TODO 스프링 세션 기반 로그인 구현 후 삭제 예정
+    @Deprecated
+//    @PostMapping("/login")
+    public String login(@Valid MemberLoginForm loginForm, BindingResult bindingResult, HttpServletResponse response, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("loginForm", new MemberLoginForm());
+            model.addAttribute("errors", bindingResult.getAllErrors());
             return "login";
         }
-    }
 
-    @GetMapping("logout")
-    public String logout(HttpServletResponse response){
+        Member loginMember = memberService.login(loginForm.getInputId(), loginForm.getInputPw());
 
+        if (loginMember == null) {
+            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다. ");
+            model.addAttribute("loginForm", new MemberLoginForm());
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "login";
+        }
+
+        sessionManager.createSession(loginMember, response);
+        return "redirect:/";
     }
 
     @GetMapping("/join")

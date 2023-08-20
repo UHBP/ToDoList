@@ -23,8 +23,6 @@ public class StringEncrypter {
         // 받아온 String 에 salt 추가
         str += tempSalt;
 
-        log.info("encrypt = {}", tempSalt);
-
         // 해시 알고리즘 시작
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(HASH_ALGORITHM);
@@ -42,7 +40,10 @@ public class StringEncrypter {
     }
 
     /**
-     * 평문(str) 과 hashedStr 이 일치하는지 비교
+     * 평문과 암호화된 String 이 일치하는지 여부를 반환
+     * @param str 평문
+     * @param hashedStr 암호화된 String
+     * @return
      */
     public boolean isMatch(String str, String hashedStr) {
         String input = doHash(str);

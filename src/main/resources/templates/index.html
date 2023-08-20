@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/index.css" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/resources/css/index.css"/>
     <title>Document</title>
 </head>
 <body>
 <div id="content">
     <div id="titleLine">
-        <div id="title">ㅇㅇㅇ님의 ToDoList</div>
+        <div id="title">
+            <div th:if="${memberInfo}">
+                <span th:text="${memberInfo.memberNickname}"></span>
+            </div>
+            <div th:unless="${memberInfo}">
+                <span>No member info available.</span>
+            </div>
+            님의 ToDoList
+        </div>
         <div id="setting"></div>
         <div id="addToDoList">ToDo 추가</div>
     </div>
@@ -29,18 +37,18 @@
     </div>
     <div class="ToDoList">
         <div class="checkbox-wrap">
-            <input type="checkbox" class="ListCheckbox" />
+            <input type="checkbox" class="ListCheckbox"/>
         </div>
         <div class="TodoTitle">제목</div>
         <div class="DueDate">2023-08-17 18:00</div>
         <div class="Category">공부</div>
         <div class="ShareMember">닉네임</div>
         <div class="pin">
-            <div class="pinned"><img src="./pin.png" /></div>
+            <div class="pinned"><img src="/resources/img/pin.png"/></div>
             <div class="unpinned"></div>
         </div>
         <div>
-            <img class="dots" src="./dots.png" />
+            <img class="dots" src="/resources/img/dots.png"/>
         </div>
         <div class="ToDoListSetting">
             <div>완료하기</div>
@@ -50,7 +58,7 @@
         </div>
     </div>
 </div>
-<!-- Modal - title클릭 시 (클릭 시 해당 화면 내에서 팝업 뜨는 것) -->
+<!-- /* Modal - title클릭 시 (클릭 시 해당 화면 내에서 팝업 뜨는 것) */ -->
 <div id="titleModal" class="modal">
     <div class="titleModal-content">
         <div class="close">
@@ -65,7 +73,7 @@
         <div>삭제</div>
     </div>
 </div>
-<!-- Modal - 세팅 중 공유하기 클릭 시  -->
+<!-- /* Modal - 세팅 중 공유하기 클릭 시  */ -->
 <div id="shareModal" class="modal2">
     <div class="shareModal-search">
         <div class="close2">
@@ -73,7 +81,7 @@
         </div>
         <div class="search-container">
             <div class="search-icon">
-                <img src="./search.png" />
+                <img src="/resources/img/search.png"/>
             </div>
             <form>
                 <input
@@ -85,10 +93,10 @@
             </form>
             <div class="shareButton">공유하기</div>
         </div>
-        <br />
+        <br/>
         <div class="search-result">
             <div class="search-result-content">
-                <div class="search-checkbox"><input type="checkbox" /></div>
+                <div class="search-checkbox"><input type="checkbox"/></div>
                 <div class="search-id">아이디</div>
                 <div class="search-nickname">닉네임</div>
             </div>
@@ -130,6 +138,8 @@
         });
       });
     });
+
+
 </script>
 <script>
     //마감일에 따라서 마감 기한 지남 경고 주는 코드
@@ -157,6 +167,8 @@
         }
       });
     });
+
+
 </script>
 <script>
     //카테고리 값에 따라서 .ToDoList > .Category의 background-color값이 지정된 값으로 변환
@@ -192,6 +204,8 @@
       let categoryDivs = document.querySelectorAll(".ToDoList > .Category");
       categoryDivs.forEach(setCategoryBackgroundColor);
     });
+
+
 </script>
 <script>
     //.dots 클릭 시 세팅 내용 보이게/ 안 보이게 조절
@@ -210,6 +224,8 @@
         }
       });
     });
+
+
 </script>
 <script>
     //모달창 1 - 타이틀 클릭시 열리는 것
@@ -237,6 +253,8 @@
         }
       };
     });
+
+
 </script>
 <script>
     //모달창 2 - 공유하기 클릭 시
@@ -261,5 +279,7 @@
         }
       };
     });
+
+
 </script>
 </html>

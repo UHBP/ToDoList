@@ -2,19 +2,23 @@ package uhbp.todolist.Controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import uhbp.todolist.exception.NoSuchMemberException;
 import uhbp.todolist.Service.MemberServiceImple;
 import uhbp.todolist.domain.Member;
 import uhbp.todolist.dto.MemberJoinForm;
 import uhbp.todolist.dto.MemberLoginForm;
-import uhbp.todolist.session.SessionManager;
+import uhbp.todolist.session.CookieMemberStore;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import static uhbp.todolist.session.CookieMemberStore.SESSION_COOKIE_NAME;
 
 @Controller
 @RequestMapping("/member")
@@ -23,7 +27,7 @@ import javax.validation.Valid;
 public class MemberController {
 
     private final MemberServiceImple memberService;
-    private final SessionManager sessionManager;
+    private final CookieMemberStore cookieMemberStore;
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -32,27 +36,46 @@ public class MemberController {
         return "login";
     }
 
-    // TODO 스프링 세션 기반 로그인 구현 후 삭제 예정
-    @Deprecated
-//    @PostMapping("/login")
-    public String login(@Valid MemberLoginForm loginForm, BindingResult bindingResult, HttpServletResponse response, Model model) {
+    @PostMapping("/login")
+    public String login(@Valid MemberLoginForm loginForm, BindingResult bindingResult, Model model, HttpServletResponse response) {
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("loginForm", new MemberLoginForm());
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "login";
         }
 
-        Member loginMember = memberService.login(loginForm.getInputId(), loginForm.getInputPw());
-
-        if (loginMember == null) {
+        // Login 처리
+        Member loginMember = null;
+        try {
+            loginMember = memberService.login(loginForm.getInputId(), loginForm.getInputPw());
+        } catch (NoSuchMemberException e) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다. ");
             model.addAttribute("loginForm", new MemberLoginForm());
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "login";
         }
+        // Login 성공 시
+        String currentMemberUUID = cookieMemberStore.store(loginMember.getMemberIndex());
+        log.info("currentMemberUUID = {}", currentMemberUUID);
 
-        sessionManager.createSession(loginMember, response);
+        Cookie cookie = new Cookie(SESSION_COOKIE_NAME, currentMemberUUID);
+        cookie.setMaxAge(86400);// 하루
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
         return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response){
+        cookieMemberStore.remove(request);
+        Cookie expiredCookie = new Cookie(SESSION_COOKIE_NAME, null);
+        expiredCookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
+        expiredCookie.setPath("/"); // 모든 경로에서 삭제 됬음을 알린다.
+        response.addCookie(expiredCookie);
+
+        return "redirect:/member/login";
     }
 
     @GetMapping("/join")

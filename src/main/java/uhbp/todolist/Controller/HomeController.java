@@ -1,31 +1,28 @@
 package uhbp.todolist.Controller;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import uhbp.todolist.domain.Member;
-import uhbp.todolist.session.SessionManager;
+import uhbp.todolist.dto.MemberInfo;
+import uhbp.todolist.session.CookieMemberStore;
 
-import javax.servlet.http.HttpServletRequest;
+import static uhbp.todolist.session.CookieMemberStore.SESSION_COOKIE_NAME;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final SessionManager sessionManager;
+    private final CookieMemberStore cookieMemberStore;
 
     @GetMapping("/")
-    public String home(HttpServletRequest request){
-        log.info("홈 컨트롤러 호출");
-        Object session = sessionManager.getSession(request);
-        if(session != null){
-            log.info("currentSession = {}", (Member) session);
-        }else {
-            log.info("뭔가 뭔가 이상함");
+    public String home(@CookieValue(name = SESSION_COOKIE_NAME, required = false)String cookie, Model model){
+        if(cookie != null){
+            MemberInfo memberInfoByKey = cookieMemberStore.getViewUsingMemberFormByKey(cookie);
+            model.addAttribute("memberInfo", memberInfoByKey);
         }
         return "index";
     }

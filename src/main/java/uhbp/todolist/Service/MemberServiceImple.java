@@ -1,10 +1,10 @@
 package uhbp.todolist.Service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uhbp.todolist.exception.NoSuchMemberException;
 import uhbp.todolist.common.tool.StringEncrypter;
 import uhbp.todolist.domain.Member;
 import uhbp.todolist.dto.MemberJoinForm;
@@ -63,13 +63,13 @@ public class MemberServiceImple implements MemberService {
      * @return
      */
     @Override
-    public Member login(String inputId, String inputPw) {
+    public Member login(String inputId, String inputPw) throws NoSuchMemberException {
         Member byMemberId = memberRepository.findByMemberId(inputId);
         if(byMemberId != null){
             if(encrypter.isMatch(inputPw, byMemberId.getMemberPw())){
                 return byMemberId;
             }
         }
-        return null;
+        throw new NoSuchMemberException();
     }
 }

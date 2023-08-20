@@ -68,7 +68,7 @@ public class MemberController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response){
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
         cookieMemberStore.remove(request);
         Cookie expiredCookie = new Cookie(SESSION_COOKIE_NAME, null);
         expiredCookie.setMaxAge(0); // 쿠키의 expiration 타임을 0으로 하여 없앤다.
@@ -94,7 +94,15 @@ public class MemberController {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "join";
         }
+        // TODO 뭔가 더 간지나는 방법이 있을거같음
+        // 가입시 입력한 아이디가 중복되었는지 확인
+        if (memberService.isDuplicateMemberId(joinForm.getMemberId())) {
+            bindingResult.reject("duplicateId", "아이디가 중복되었습니다. ");
+            model.addAttribute("joinForm", new MemberJoinForm());
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "join";
+        }
         memberService.JoinMember(joinForm);
-        return "index";
+        return "redirect:/member/login";
     }
 }

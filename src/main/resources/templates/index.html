@@ -86,7 +86,7 @@
             </div>
             <form th:action="@{/share/search}" th:object="${shareTargetSearch}" method="post">
                 <input
-                        <!-- th:field="*{searchId}" 얘만 쓰면 에러남 개빡쳐 -->
+                        th:field="*{searchId}"
                         type="text"
                         name="query"
                         class="search-input"

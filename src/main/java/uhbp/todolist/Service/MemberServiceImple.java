@@ -65,11 +65,22 @@ public class MemberServiceImple implements MemberService {
     @Override
     public Member login(String inputId, String inputPw) throws NoSuchMemberException {
         Member byMemberId = memberRepository.findByMemberId(inputId);
-        if(byMemberId != null){
-            if(encrypter.isMatch(inputPw, byMemberId.getMemberPw())){
+        if (byMemberId != null) {
+            if (encrypter.isMatch(inputPw, byMemberId.getMemberPw())) {
                 return byMemberId;
             }
         }
         throw new NoSuchMemberException();
+    }
+
+    /**
+     * 입력된 멤버 아이디로 조회했을 떄, 해당하는 계정이 있으면 true, flase
+     * @param memberId
+     * @return
+     */
+    @Override
+    public boolean isDuplicateMemberId(String memberId) {
+        Member byMemberId = memberRepository.findByMemberId(memberId);
+        return byMemberId != null ? true : false;
     }
 }

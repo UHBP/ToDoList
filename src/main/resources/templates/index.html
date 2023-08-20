@@ -4,6 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="/resources/css/index.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -83,12 +84,14 @@
             <div class="search-icon">
                 <img src="/resources/img/search.png"/>
             </div>
-            <form>
+            <form th:action="@{/share/search}" th:object="${shareTargetSearch}" method="post">
                 <input
+                        <!-- th:field="*{searchId}" 얘만 쓰면 에러남 개빡쳐 -->
                         type="text"
                         name="query"
                         class="search-input"
                         placeholder="공유할 대상 검색"
+
                 />
             </form>
             <div class="shareButton">공유하기</div>
@@ -262,9 +265,19 @@
       var modal = document.getElementById("shareModal");
       var share = document.getElementById("share");
       var close = document.getElementsByClassName("close2-shape")[0];
+      var shareTargetSearch;
 
       share.onclick = function () {
-        modal.style.display = "block";
+        $.ajax({
+            url: '/share/init',
+            success: function(data){
+                modal.style.display = "block";
+                alert("컨트롤러 성공");
+            },
+            error: function(error){
+                alert("컨트롤러 실패");
+            }
+        });
       };
 
       // x 혹은 외부 클릭 시 모달 꺼짐

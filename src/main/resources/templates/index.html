@@ -40,9 +40,7 @@
             <input type="checkbox" class="ListCheckbox"/>
         </div>
         <div class="TodoTitle">제목</div>
-        <div class="TodoGenDate">23/8/21</div>
-        <div class="TodoUpdateDate">23/8/22</div>
-        <div class="DueDate">마감기한</div>
+        <div class="DueDate">2023/8/22</div>
         <div class="Category">공부</div>
         <div class="ShareMember">닉네임</div>
         <div class="pin">
@@ -53,7 +51,7 @@
             <img class="dots" src="/resources/img/dots.png"/>
         </div>
         <div class="ToDoListSetting">
-            <div>완료하기</div>
+            <div class="complete">완료하기</div>
             <div id="share">공유하기</div>
             <div>삭제하기</div>
             <div>핀 표시</div>
@@ -70,6 +68,7 @@
         <div class="TodoGenDate">23/8/21</div>
         <div class="TodoUpdateDate">23/8/22</div>
         <div class="TodoDueDate">마감기한  <input type="date" /></div>
+        <div class="TodoListCategory">카테고리</div>
         <form action="">
             <div class="TodoContent">메모 내용</div>
             <textarea class="TodoContentEdit"></textarea>
@@ -93,6 +92,7 @@
             <div class="TodoGenDate1">23/8/21</div>
             <div class="TodoUpdateDate1">23/8/22</div>
             <div class="TodoDueDate">마감기한  <input type="date" /></div>
+            <div class="TodoListCategory">카테고리</div>
             <textarea placeholder="내용" class="TodoContentAdd"></textarea>
             <div class="modalTitleButtons">
                 <button type="submit" class="TodoAddSubmit">추가</button>
@@ -132,36 +132,54 @@
 </div>
 </body>
 <script>
+    //TodoList의 체크박스 체크됬을때 상태 조절
     document.addEventListener("DOMContentLoaded", function () {
-      // 모든 .ListCheckbox 요소들을 선택
-      const checkboxes = document.querySelectorAll(".ListCheckbox");
+      function applyStylesByCheckboxState(checkbox) {
+        const todoList = checkbox.closest(".ToDoList");
+        const title = todoList.querySelector(".TodoTitle");
+        const listdate = todoList.querySelector(".DueDate");
+        const listdatespan = listdate.querySelector("span");
+        const completeButton = todoList.querySelector(".complete");
 
-      checkboxes.forEach((checkbox) => {
-        checkbox.addEventListener("change", function () {
-          const todoList = this.closest(".ToDoList"); // 현재 체크박스가 속한 .ToDoList 찾기
-          const title = todoList.querySelector(".TodoTitle"); // 현재 체크박스가 속한 .ToDoList의 .TodoTitle 선택
-          const listdate = todoList.querySelector(".DueDate");
-          const listdatespan = listdate.querySelector("span");
-
-          if (this.checked) {
-            // 체크박스가 체크되면 text-decoration과 color를 적용
-            title.style.textDecoration = "line-through";
-            title.style.color = "gray";
-            listdate.style.textDecoration = "line-through";
-            listdate.style.color = "gray";
-            if (listdatespan) {
-              listdatespan.style.textDecoration = "none";
-            }
-          } else {
-            // 체크박스가 해제되면 스타일을 원래대로
-            title.style.textDecoration = "none";
-            title.style.color = "";
-            listdate.style.textDecoration = "none";
-            listdate.style.color = "";
-            if (listdatespan) {
-              listdatespan.style.textDecoration = "none";
-            }
+        if (checkbox.checked) {
+          title.style.textDecoration = "line-through";
+          title.style.color = "gray";
+          listdate.style.textDecoration = "line-through";
+          listdate.style.color = "gray";
+          completeButton.textContent = "완료취소";
+          if (listdatespan) {
+            listdatespan.style.textDecoration = "none";
           }
+        } else {
+          title.style.textDecoration = "none";
+          title.style.color = "";
+          listdate.style.textDecoration = "none";
+          listdate.style.color = "";
+          completeButton.textContent = "완료하기";
+          if (listdatespan) {
+            listdatespan.style.textDecoration = "none";
+          }
+        }
+      }
+
+      // 체크박스 상태 변경 이벤트 리스너
+      document.querySelectorAll(".ListCheckbox").forEach(function (checkbox) {
+        checkbox.addEventListener("change", function () {
+          applyStylesByCheckboxState(this);
+        });
+      });
+
+      // 완료하기 버튼 클릭 이벤트 리스너
+      document.querySelectorAll(".complete").forEach(function (element) {
+        element.addEventListener("click", function () {
+          const parentToDoList = element.closest(".ToDoList");
+          const checkbox = parentToDoList.querySelector(".ListCheckbox");
+          if (element.textContent === "완료하기") {
+            checkbox.checked = true;
+          } else {
+            checkbox.checked = false;
+          }
+          applyStylesByCheckboxState(checkbox);
         });
       });
     });

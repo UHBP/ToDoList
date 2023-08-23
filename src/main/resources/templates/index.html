@@ -31,8 +31,8 @@
             <div style="background-color: rgb(105, 59, 149)">공유</div>
         </div>
         <select id="selectOption">
-            <option selected>일반</option>
-            <option value="">마감일</option>
+            <option selected>기본 순</option>
+            <option value="">마감일 순</option>
         </select>
     </div>
     <div class="ToDoList">
@@ -40,7 +40,9 @@
             <input type="checkbox" class="ListCheckbox"/>
         </div>
         <div class="TodoTitle">제목</div>
-        <div class="DueDate">2023-08-17 18:00</div>
+        <div class="TodoGenDate">23/8/21</div>
+        <div class="TodoUpdateDate">23/8/22</div>
+        <div class="DueDate">마감기한</div>
         <div class="Category">공부</div>
         <div class="ShareMember">닉네임</div>
         <div class="pin">
@@ -65,12 +67,37 @@
             <div class="close-shape">x</div>
         </div>
         <p id="modalTitle"></p>
-        <div class="TodoGenDate">생성일</div>
-        <div class="TodoUpdateDate">수정일</div>
-        <div class="TodoDueDate">마감기한</div>
-        <div class="TodoContent">메모 내용</div>
-        <div>수정</div>
-        <div>삭제</div>
+        <div class="TodoGenDate">23/8/21</div>
+        <div class="TodoUpdateDate">23/8/22</div>
+        <div class="TodoDueDate">마감기한  <input type="date" /></div>
+        <form action="">
+            <div class="TodoContent">메모 내용</div>
+            <textarea class="TodoContentEdit"></textarea>
+            <div class="modalTitleButtons">
+                <div class="TodoEdit">수정</div>
+                <button type="submit" class="TodoEditSubmit">수정완료</button>
+                <div class="TodoDelete">삭제</div>
+                <div class="TodoCancel">취소</div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Modal - Todo 추가 버튼 클릭 시 -->
+<div id="AddModal" class="modal1">
+    <div class="AddModal-content">
+        <div class="close1">
+            <div class="close1-shape">x</div>
+        </div>
+        <form action="">
+            <textarea placeholder="제목" id="modalTitle"></textarea>
+            <div class="TodoGenDate1">23/8/21</div>
+            <div class="TodoUpdateDate1">23/8/22</div>
+            <div class="TodoDueDate">마감기한  <input type="date" /></div>
+            <textarea placeholder="내용" class="TodoContentAdd"></textarea>
+            <div class="modalTitleButtons">
+                <button type="submit" class="TodoAddSubmit">추가</button>
+            </div>
+        </form>
     </div>
 </div>
 <!-- /* Modal - 세팅 중 공유하기 클릭 시  */ -->
@@ -106,7 +133,7 @@
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // 모든 .ListCheckbox 요소들을 선택합니다.
+      // 모든 .ListCheckbox 요소들을 선택
       const checkboxes = document.querySelectorAll(".ListCheckbox");
 
       checkboxes.forEach((checkbox) => {
@@ -117,7 +144,7 @@
           const listdatespan = listdate.querySelector("span");
 
           if (this.checked) {
-            // 체크박스가 체크되면 text-decoration과 color를 적용합니다.
+            // 체크박스가 체크되면 text-decoration과 color를 적용
             title.style.textDecoration = "line-through";
             title.style.color = "gray";
             listdate.style.textDecoration = "line-through";
@@ -126,7 +153,7 @@
               listdatespan.style.textDecoration = "none";
             }
           } else {
-            // 체크박스가 해제되면 스타일을 원래대로 돌립니다.
+            // 체크박스가 해제되면 스타일을 원래대로
             title.style.textDecoration = "none";
             title.style.color = "";
             listdate.style.textDecoration = "none";
@@ -138,8 +165,6 @@
         });
       });
     });
-
-
 </script>
 <script>
     //마감일에 따라서 마감 기한 지남 경고 주는 코드
@@ -167,8 +192,6 @@
         }
       });
     });
-
-
 </script>
 <script>
     //카테고리 값에 따라서 .ToDoList > .Category의 background-color값이 지정된 값으로 변환
@@ -204,8 +227,6 @@
       let categoryDivs = document.querySelectorAll(".ToDoList > .Category");
       categoryDivs.forEach(setCategoryBackgroundColor);
     });
-
-
 </script>
 <script>
     //.dots 클릭 시 세팅 내용 보이게/ 안 보이게 조절
@@ -229,13 +250,134 @@
 </script>
 <script>
     //모달창 1 - 타이틀 클릭시 열리는 것
-    document.addEventListener("DOMContentLoaded", function () {
-      var modal = document.getElementById("titleModal");
-      var title = document.querySelector(".TodoTitle");
-      var modalTitle = document.getElementById("modalTitle");
-      var span = document.getElementsByClassName("close")[0];
+     document.addEventListener("DOMContentLoaded", function () {
+       var modal = document.getElementById("titleModal");
+       var title = document.querySelector(".TodoTitle");
+       var modalTitle = document.getElementById("modalTitle");
+       var span = document.getElementsByClassName("close")[0];
 
-      //.TodoTitle 클릭 시 모달 열림
+       //.TodoTitle 클릭 시 모달 열림
+       title.onclick = function () {
+         modalTitle.textContent = this.textContent;
+         modal.style.display = "block";
+       };
+
+       // x 혹은 외부 클릭 시 모달 꺼짐
+       span.onclick = function () {
+         modal.style.display = "none";
+         contentDiv.style.display = "block";
+         contentTextarea.style.display = "none";
+         editButton.style.display = "block";
+         deleteButton.style.display = "block";
+         completeButton.style.display = "none";
+         cancelButton.style.display = "none";
+       };
+
+       //모달 외부 클릭 시 모달 꺼짐
+       window.onclick = function (event) {
+         if (event.target == modal) {
+           modal.style.display = "none";
+           contentDiv.style.display = "block";
+           contentTextarea.style.display = "none";
+           editButton.style.display = "block";
+           deleteButton.style.display = "block";
+           completeButton.style.display = "none";
+           cancelButton.style.display = "none";
+         }
+       };
+     });
+
+
+</script>
+<script>
+    //제목 클릭 시 생기는 모달에서 수정일 있을 시 생성일 안 보이고, 없을 시 생성일 보이게 하기
+    window.addEventListener("DOMContentLoaded", (event) => {
+      // 수정일 있을 경우
+      let updateDate = document.querySelector(".TodoUpdateDate");
+      let genDate = document.querySelector(".TodoGenDate");
+      if (updateDate && updateDate.textContent.trim() !== "") {
+        // 생성일 없애기
+        if (genDate) {
+          updateDate.style.display = "block";
+          genDate.style.display = "none";
+        }
+      } else {
+        // 수정일의 내용이 없을 경우
+        if (genDate) {
+          updateDate.style.display = "none";
+          genDate.style.display = "block";
+        }
+      }
+    });
+</script>
+<script>
+    // title클릭 시 나오는 모달의 설정 - 수정 클릭 시
+    document.addEventListener("DOMContentLoaded", function () {
+      const editButton = document.querySelector(".TodoEdit");
+      const completeButton = document.querySelector(".TodoEditSubmit");
+      const contentDiv = document.querySelector(".TodoContent");
+      const contentTextarea = document.querySelector(".TodoContentEdit");
+      const deleteButton = document.querySelector(".TodoDelete");
+      const cancelButton = document.querySelector(".TodoCancel");
+
+      editButton.addEventListener("click", function () {
+        // 기존 내용을 textarea로 복사
+        contentTextarea.value = contentDiv.textContent;
+
+        // 요소를 보이거나 숨김
+        contentDiv.style.display = "none";
+        contentTextarea.style.display = "block";
+        editButton.style.display = "none";
+        deleteButton.style.display = "none";
+        completeButton.style.display = "block";
+        cancelButton.style.display = "block";
+      });
+
+      completeButton.addEventListener("click", function () {
+        const updatedContent = contentTextarea.value;
+
+        //
+        $.ajax({
+          url: "/updateTodoContent", // 여기에 서버 엔드포인트 URL을 지정
+          method: "POST",
+          data: {
+            content: updatedContent,
+          },
+          success: function (response) {
+            // 성공 시 .TodoContent 갱신 및 원래 상태로 되돌리기
+            contentDiv.textContent = updatedContent;
+            contentDiv.style.display = "block";
+            contentTextarea.style.display = "none";
+            editButton.style.display = "block";
+            completeButton.style.display = "none";
+            deleteButton.style.display = "block";
+            cancelButton.style.display = "none";
+          },
+          error: function (error) {
+            console.error("Error updating content:", error);
+          },
+        });
+      });
+      cancelButton.addEventListener("click", function () {
+        // 수정 취소 클릭 시에 display상태
+        contentDiv.style.display = "block";
+        contentTextarea.style.display = "none";
+        editButton.style.display = "block";
+        deleteButton.style.display = "block";
+        completeButton.style.display = "none";
+        cancelButton.style.display = "none";
+      });
+    });
+</script>
+<script>
+    //모달창 1 - Todo 추가 클릭 시 열리는 것
+    document.addEventListener("DOMContentLoaded", function () {
+      var modal = document.getElementById("AddModal");
+      var title = document.getElementById("addToDoList");
+      var modalTitle = document.getElementById("modalTitle");
+      var span = document.getElementsByClassName("close1")[0];
+
+      //#addToDoList(ToDo 추가) 클릭 시
       title.onclick = function () {
         modalTitle.textContent = this.textContent;
         modal.style.display = "block";
@@ -244,17 +386,40 @@
       // x 혹은 외부 클릭 시 모달 꺼짐
       span.onclick = function () {
         modal.style.display = "none";
+        contentDiv.style.display = "block";
+        contentTextarea.style.display = "none";
       };
 
       //모달 외부 클릭 시 모달 꺼짐
       window.onclick = function (event) {
         if (event.target == modal) {
           modal.style.display = "none";
+          contentDiv.style.display = "block";
+          contentTextarea.style.display = "none";
         }
       };
     });
-
-
+</script>
+<script>
+    //todo추가 버튼 클릭해서 나오는 모달에서 수정일 있을 시 생성일 안 보이고, 없을 시 생성일 보이게 하기
+    window.addEventListener("DOMContentLoaded", (event) => {
+      // 수정일 있을 경우
+      let updateDate = document.querySelector(".TodoUpdateDate1");
+      let genDate = document.querySelector(".TodoGenDate1");
+      if (updateDate && updateDate.textContent.trim() !== "") {
+        // 생성일 없애기
+        if (genDate) {
+          updateDate.style.display = "block";
+          genDate.style.display = "none";
+        }
+      } else {
+        // 수정일의 내용이 없을 경우
+        if (genDate) {
+          updateDate.style.display = "none";
+          genDate.style.display = "block";
+        }
+      }
+    });
 </script>
 <script>
     //모달창 2 - 공유하기 클릭 시

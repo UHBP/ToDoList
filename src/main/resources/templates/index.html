@@ -19,7 +19,7 @@
             </div>
             님의 ToDoList
         </div>
-        <div id="setting"></div>
+        <div id="sse"></div>
         <div id="addToDoList">ToDo 추가</div>
     </div>
     <div id="tagAndSelect">
@@ -65,11 +65,18 @@
         <div class="close">
             <div class="close-shape">x</div>
         </div>
-        <p id="modalTitle"></p>
+        <p class="modalTitle"></p>
         <div class="TodoGenDate">23/8/21</div>
         <div class="TodoUpdateDate">23/8/22</div>
         <div class="TodoDueDate">마감기한  <input type="date" /></div>
-        <div class="TodoListCategory">카테고리</div>
+        <div class="TodoListCategory">카테고리
+            <select id="CategorySelect">
+                <option selected>공부</option>
+                <option value="">운동</option>
+                <option value="">약속</option>
+                <option value="">기타</option>
+            </select>
+        </div>
         <form action="">
             <div class="TodoContent">메모 내용</div>
             <textarea class="TodoContentEdit"></textarea>
@@ -89,11 +96,18 @@
             <div class="close1-shape">x</div>
         </div>
         <form action="">
-            <textarea placeholder="제목" id="modalTitle"></textarea>
+            <textarea placeholder="제목" class="modalTitle"></textarea>
             <div class="TodoGenDate1">23/8/21</div>
             <div class="TodoUpdateDate1">23/8/22</div>
             <div class="TodoDueDate">마감기한  <input type="date" /></div>
-            <div class="TodoListCategory">카테고리</div>
+            <div class="TodoListCategory">카테고리
+                <select class="CategorySelect">
+                    <option selected>공부</option>
+                    <option value="">운동</option>
+                    <option value="">약속</option>
+                    <option value="">기타</option>
+                </select>
+            </div>
             <textarea placeholder="내용" class="TodoContentAdd"></textarea>
             <div class="modalTitleButtons">
                 <button type="submit" class="TodoAddSubmit">추가</button>
@@ -122,6 +136,13 @@
             </form>
         </div>
         <br/>
+        <div class="search-result1">
+            <div class="search-result-content1">
+                <div class="search-checkbox1"></div>
+                <div class="search-id1">아이디</div>
+                <div class="search-nickname1">닉네임</div>
+            </div>
+        </div>
         <form th:action="@{/share/selected}" method="post">
             <div class="search-result">
                 <div class="search-result-content">
@@ -142,6 +163,7 @@
       // 검색 이미지 클릭 이벤트 감지
       $('#search-image').click(function(){
         $('.search-result').empty();
+        $('.search-result').css('visibility','visible');
         // 입력된 아이디 값 가져오기
         var inputId = $('.search-input').val();
 
@@ -326,7 +348,7 @@
      document.addEventListener("DOMContentLoaded", function () {
        var modal = document.getElementById("titleModal");
        var title = document.querySelector(".TodoTitle");
-       var modalTitle = document.getElementById("modalTitle");
+       var modalTitle = document.querySelector(".modalTitle");
        var span = document.getElementsByClassName("close")[0];
 
        //.TodoTitle 클릭 시 모달 열림
@@ -447,7 +469,7 @@
     document.addEventListener("DOMContentLoaded", function () {
       var modal = document.getElementById("AddModal");
       var title = document.getElementById("addToDoList");
-      var modalTitle = document.getElementById("modalTitle");
+      var modalTitle = document.querySelector(".modalTitle");
       var span = document.getElementsByClassName("close1")[0];
 
       //#addToDoList(ToDo 추가) 클릭 시

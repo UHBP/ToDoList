@@ -11,9 +11,16 @@ body {
   #title {
     font-size: 40px;
     margin: 2rem;
-    width: 65rem;
+    width: 60rem;
     display: flex;
     font-weight: bold;
+  }
+  #sse{
+    background-color: yellow;
+    width: 2rem;
+    place-self: center;
+    height: 2rem;
+    margin: 0 1.5rem;
   }
   #addToDoList {
     width: 8rem;
@@ -191,7 +198,7 @@ body {
         }
       }
     }
-    #modalTitle {
+    .modalTitle {
       text-align: center;
       font-size: 1.3rem;
     }
@@ -216,6 +223,7 @@ body {
       .TodoContent {
         height: 20rem;
         width: 40rem;
+        margin-top: 0.5rem;
         border: 1px solid black;
         font-size: 1rem;
       }
@@ -328,7 +336,7 @@ body {
       }
     }
     form {
-      #modalTitle {
+      .modalTitle {
         text-align: center;
         resize: none;
         font-size: 1rem;
@@ -354,6 +362,7 @@ body {
         font-size: 0.9rem;
       }
       .TodoContent {
+        margin-top: 0.5rem;
         height: 20rem;
         width: 40rem;
         border: 1px solid black;
@@ -364,6 +373,7 @@ body {
         width: 39.73rem;
         border: 1px solid black;
         resize: none;
+        margin-top: 0.5rem;
         font-size: 0.9rem;
       }
       .modalTitleButtons {
@@ -452,28 +462,40 @@ body {
       }
     }
     .search-input {
-      width: 12rem;
+      width: 22rem;
       height: 1.4rem;
       font-size: 1rem;
       text-align: center;
     }
-    .shareButton {
-      margin-left: 5rem;
-      float: right;
-      height: 2rem;
-      justify-content: center;
-      width: 5rem;
-      align-items: center;
-      border-radius: 5px;
-      display: flex;
-      background-color: slateblue;
-      cursor: pointer;
-      color: white;
-    }
+  }
+  .search-result1 {
+      margin-top: 2rem;
+      height: 19rem;
+      .search-result-content1 {
+        padding-top: 0.5rem;
+        display: flex;
+        width: 25rem;
+        .search-checkbox1 > input {
+          width: 1rem;
+          height: 1rem;
+        }
+        .search-id1 {
+          text-align: center;
+          width: 17.5rem;
+          margin-left: 1.4rem;
+        }
+        .search-nickname1 {
+          text-align: center;
+          width: 5rem;
+        }
+      }
   }
   .search-result {
-    margin-top: 2rem;
-    height: 21rem;
+    height: 17rem;
+    margin-top: 1.2rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    visibility: hidden;
     .search-result-content {
       padding-top: 0.5rem;
       display: flex;
@@ -490,6 +512,20 @@ body {
         text-align: center;
         width: 5rem;
       }
+    }
+  .shareButton {
+    margin-left: 5rem;
+    float: right;
+    height: 2rem;
+    justify-content: center;
+    width: 5rem;
+    align-items: center;
+    border-radius: 5px;
+    display: flex;
+    background-color: slateblue;
+    cursor: pointer;
+    color: white;
+    border: none;
     }
   }
 }

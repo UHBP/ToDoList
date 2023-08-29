@@ -538,6 +538,7 @@
 
       // x 혹은 외부 클릭 시 모달 꺼짐
       close.onclick = function () {
+        $('.search-input').val('');
         $('.search-result').empty();
         modal.style.display = "none";
       };
@@ -545,6 +546,7 @@
       //모달 외부 클릭 시 모달 꺼짐
       window.onclick = function (event) {
         if (event.target == modal) {
+          $('.search-input').val('');
           $('.search-result').empty();
           modal.style.display = "none";
         }

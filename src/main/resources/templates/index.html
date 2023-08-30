@@ -19,7 +19,7 @@
             님의 ToDoList
         </div>
         <div id="setting"></div>
-        <div id="addToDoList">ToDo 추가</div>
+        <div id="addToDoList" th:href="@{/todo/init}">ToDo 추가</div>
     </div>
     <div id="tagAndSelect">
         <div id="tag">
@@ -35,14 +35,14 @@
             <option value="">마감일 순</option>
         </select>
     </div>
-    <div class="ToDoList">
+    <div class="ToDoList" th:each="todoList : ${todoLists}">
         <div class="checkbox-wrap">
-            <input type="checkbox" class="ListCheckbox"/>
+            <input type="checkbox" class="ListCheckbox" th:checked="${todoList.todoIspinned}" />
         </div>
-        <div class="TodoTitle">제목</div>
-        <div class="DueDate">2023/8/22</div>
-        <div class="Category">공부</div>
-        <div class="ShareMember">닉네임</div>
+        <div class="TodoTitle" th:text="${todoList.todoTitle}"></div>
+        <div class="DueDate" th:text="${todoList.todoDuedate}"></div>
+        <div class="Category" th:text="${todoList.categoryIndex}"></div>
+        <div class="ShareMember" th:text="${todoListResponse.todoMember.memberNickname}"></div>
         <div class="pin">
             <div class="pinned"><img src="/resources/img/pin.png"/></div>
             <div class="unpinned"></div>
@@ -68,7 +68,14 @@
         <div class="TodoGenDate">23/8/21</div>
         <div class="TodoUpdateDate">23/8/22</div>
         <div class="TodoDueDate">마감기한  <input type="date" /></div>
-        <div class="TodoListCategory">카테고리</div>
+        <div class="TodoListCategory">카테고리
+            <select id="CategorySelect">
+                <option selected>공부</option>
+                <option value="">운동</option>
+                <option value="">약속</option>
+                <option value="">기타</option>
+            </select>
+        </div>
         <form action="">
             <div class="TodoContent">메모 내용</div>
             <textarea class="TodoContentEdit"></textarea>
@@ -87,13 +94,20 @@
         <div class="close1">
             <div class="close1-shape">x</div>
         </div>
-        <form action="">
-            <textarea placeholder="제목" id="modalTitle"></textarea>
-            <div class="TodoGenDate1">23/8/21</div>
-            <div class="TodoUpdateDate1">23/8/22</div>
-            <div class="TodoDueDate">마감기한  <input type="date" /></div>
-            <div class="TodoListCategory">카테고리</div>
-            <textarea placeholder="내용" class="TodoContentAdd"></textarea>
+        <form th:action="@{/todo/create}" method="post" th:object="${todoListRequest}">
+            <textarea placeholder="제목" id="modalTitle" name="todoTitle" th:field="*{todoTitle}"></textarea>
+            <div class="TodoGenDate1"></div>
+            <div class="TodoUpdateDate1"></div>
+            <div class="TodoDueDate">마감기한  <input type="date" name="todoDuedate" th:field="*{todoDuedate}" /></div>
+            <div class="TodoListCategory">카테고리
+                <select class="CategorySelect" name="categoryIndex" th:field="*{categoryIndex}">
+                    <option value="1">공부</option>
+                    <option value="2">운동</option>
+                    <option value="3">약속</option>
+                    <option value="4">기타</option>
+                </select>
+            </div>
+            <textarea placeholder="내용" class="TodoContentAdd" name="todoContent" th:field="*{todoContent}"></textarea>
             <div class="modalTitleButtons">
                 <button type="submit" class="TodoAddSubmit">추가</button>
             </div>
@@ -131,6 +145,19 @@
     </div>
 </div>
 </body>
+<!-- JavaScript로 선택한 카테고리를 처리 -->
+<script>
+    // select 요소 객체 가져오기
+    const categorySelect = document.getElementById('categorySelect');
+
+    // select 요소의 값이 변경되었을 때의 이벤트 리스너 등록
+    categorySelect.addEventListener('change', function() {
+    // 선택한 옵션의 value 값을 가져와서 categoryIndex에 설정
+    const selectedCategoryIndex = categorySelect.value;
+    document.getElementById('categoryIndex').value = selectedCategoryIndex;
+
+    });
+</script>
 <script>
     //TodoList의 체크박스 체크됬을때 상태 조절
     document.addEventListener("DOMContentLoaded", function () {

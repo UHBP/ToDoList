@@ -35,6 +35,12 @@ public class CookieMemberStore {
         return new MemberInfo(getMember.getMemberNickname());
     }
 
+    /**
+     * HttpServletRequest 를 받아서, requst 에 있는 쿠키를 확인하여<br>
+     * 해당 쿠키에 맞는 Member Entity 의 Index 를 반환합니다.
+     * @param request
+     * @return
+     */
     public Long findValueByKey(HttpServletRequest request) {
         Cookie memberCookie = findSessionCookie(request);
         if (memberCookie == null) {

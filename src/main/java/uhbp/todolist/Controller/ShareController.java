@@ -2,14 +2,19 @@ package uhbp.todolist.Controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uhbp.todolist.Service.ShareServiceImple;
 import uhbp.todolist.domain.Member;
+import uhbp.todolist.dto.ShareRequestData;
+import uhbp.todolist.session.CookieMemberStore;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -18,6 +23,7 @@ import java.util.List;
 public class ShareController {
 
     private final ShareServiceImple shareService;
+    private final CookieMemberStore cookieMemberStore;
 
     @RequestMapping("/init")
     public String gotoMain(){
@@ -35,15 +41,20 @@ public class ShareController {
     }
 
     @PostMapping("/selected")
-    public ResponseEntity<String> shareSelectedMembers(@RequestParam("selectedMembers") String[] selectedMembers){
-        // 체크박스 선택된 사용자의 아이디를 통해 해당 사용자의 Member 객체 불러오기
-        for(String memberId : selectedMembers){
-            log.info("선택된 아이디 = {}", memberId);
-            Member selectedMember = shareService.findById(memberId);
-            log.info("선택된 회원의 정보 = {}", selectedMember);
+    public ResponseEntity<String> shareSelectedMembers(@RequestBody ShareRequestData requestData, HttpServletRequest request){
+        // 현재 로그인한 사용자의 index
+        Long loginIndex = cookieMemberStore.findValueByKey(request);
 
-            // 불러온 Member 객체에서 memberIndex와 현재 로그인 중인 회원의 memberIndex, 선택한 todo의 index 대기큐에 저장하기
-        }
+        // 공유할 todo의 index
+        String todoIndex = requestData.getTodoIndex();
+        log.info("index = {}", todoIndex);
+
+        // 체크박스 선택된 사용자들의 아이디 리스트
+        List<String> selectedMembers = requestData.getSelectedMembers();
+
+        // 현재 로그인한 사용자의 loginIndex, 공유할 todo의 index, 공유받을 사용자들의 아이디 리스트 대기큐에 저장
+        shareService.shareTodo(loginIndex, todoIndex, selectedMembers);
+
         String result = "공유 완료";
         return ResponseEntity.ok(result);
     }

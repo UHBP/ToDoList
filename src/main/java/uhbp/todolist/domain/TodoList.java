@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Table(name = "TODO_LIST")
 @Getter
 @ToString
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class TodoList {
 
     @Id

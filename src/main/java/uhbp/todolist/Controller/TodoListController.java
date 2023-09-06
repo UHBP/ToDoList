@@ -7,7 +7,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import uhbp.todolist.Service.TodoListService;
 import uhbp.todolist.dto.TodoListRequest;
 import uhbp.todolist.exception.NoSuchMemberException;
@@ -22,10 +21,20 @@ import javax.validation.Valid;
 public class TodoListController {
     private final TodoListService todoListService;
 
-    // Create 할일 생성
+
+    // (Create) 할일 생성
     @PostMapping("/create")
-    public String createTodo(@ModelAttribute("todoListRequest") @Valid TodoListRequest todoListRequest, BindingResult bindingResult, @RequestParam("categoryIndex") Long categoryIndex, HttpServletRequest request) throws NoSuchMemberException {
-        todoListService.createTodo(todoListRequest, categoryIndex, request);
+    public String createTodo(@ModelAttribute("todoListRequest") @Valid TodoListRequest todoListRequest, BindingResult bindingResult, HttpServletRequest request) throws NoSuchMemberException {
+        todoListService.createTodo(todoListRequest, request);
         return "redirect:/";
     }
+
+
+      // (Update) 할일 수정
+//    @PostMapping("/update/{todoIndex}")
+//    public String updateTodo(@PathVariable Long todoIndex, @ModelAttribute("todoListRequest") TodoListRequest todoListRequest, BindingResult bindingResult, @RequestParam("categoryIndex") Long categoryIndex, HttpServletRequest request) throws NoSuchMemberException {
+//        todoListService.updateTodo(todoIndex, todoListRequest, categoryIndex, request);
+//        return "redirect:/";
+//    }
+
 }

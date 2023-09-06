@@ -100,11 +100,11 @@
             <div class="TodoUpdateDate1"></div>
             <div class="TodoDueDate">마감기한  <input type="date" name="todoDuedate" th:field="*{todoDuedate}" /></div>
             <div class="TodoListCategory">카테고리
-                <select class="CategorySelect" name="categoryIndex" th:field="*{categoryIndex}">
-                    <option value="1">공부</option>
-                    <option value="2">운동</option>
-                    <option value="3">약속</option>
-                    <option value="4">기타</option>
+                <select class="CategorySelect" name="todoCategory">
+                    <option value="STUDY">공부</option>
+                    <option value="EXERCISE">운동</option>
+                    <option value="APPOINTMENT">약속</option>
+                    <option value="OTHER">기타</option>
                 </select>
             </div>
             <textarea placeholder="내용" class="TodoContentAdd" name="todoContent" th:field="*{todoContent}"></textarea>

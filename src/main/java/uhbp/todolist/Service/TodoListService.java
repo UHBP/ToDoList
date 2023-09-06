@@ -8,11 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface TodoListService {
 
-    void createTodo(TodoListRequest todoListRequest, Long categoryIndex, HttpServletRequest request) throws NoSuchMemberException;
+    void createTodo(TodoListRequest todoListRequest, HttpServletRequest request) throws NoSuchMemberException;
 
     TodoList getTodoListById(Long todoIndex);
 
     void deleteTodoListById(Long todoIndex);
+
+//  void updateTodo(Long todoIndex, TodoListRequest todoListRequest, Long categoryIndex, HttpServletRequest request);
 
 //  Member getMemberById(Long memberId) throws NoSuchMemberException;
 

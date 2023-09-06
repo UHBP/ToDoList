@@ -5,7 +5,7 @@ import uhbp.todolist.domain.TodoList;
 
 import java.time.LocalDate;
 
-// Read, Update, Delete 에 사용
+// Read 에 사용
 // 할일 목록의 정보를 담음
 @Data
 public class TodoListResponse {
@@ -18,6 +18,7 @@ public class TodoListResponse {
     private LocalDate todoDuedate;
     private Long categoryIndex;
     private Long todoMemberIndex;
+    private String todoCategory;
 
     public static TodoListResponse fromEntity(TodoList todoList) {
         TodoListResponse response = new TodoListResponse();
@@ -28,7 +29,7 @@ public class TodoListResponse {
         response.setTodoUpdatedate(todoList.getTodoUpdatedate());
         response.setTodoIspinned(todoList.isTodoIspinned());
         response.setTodoDuedate(todoList.getTodoDuedate());
-        response.setCategoryIndex(todoList.getTodoCategory().getCategoryIndex());
+        response.setTodoCategory(todoList.getTodoCategory().name());
         return response;
     }
 }

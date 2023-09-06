@@ -1,6 +1,9 @@
 package uhbp.todolist.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,13 +18,57 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TodoList {
 
+    // Enum
+    public enum TodoCategory {
+        STUDY(1, "공부"), EXERCISE(2, "운동"), APPOINTMENT(3, "약속"), OTHER(4, "기타");
+
+        private final int categoryIndex;
+        private final String categoryName;
+
+        TodoCategory(int categoryIndex, String categoryName) {
+            this.categoryIndex = categoryIndex;
+            this.categoryName = categoryName;
+        }
+
+        public int getCategoryIndex() {
+            return categoryIndex;
+        }
+
+        public String getCategoryName() {
+            return categoryName;
+        }
+
+        // categoryName으로부터 해당 Enum 값을 가져오는 정적 메소드
+        public static TodoCategory fromCategoryName(String categoryName) {
+            if (categoryName == null) {
+                throw new NullPointerException("categoryName cannot be null");
+            }
+            for (TodoCategory category : TodoCategory.values()) {
+                if (category.getCategoryName().equalsIgnoreCase(categoryName)) {
+                    return category;
+                }
+            }
+            throw new IllegalArgumentException("Invalid TodoCategory Name: " + categoryName);
+        }
+
+        // categoryIndex로부터 해당 Enum 값을 가져오는 정적 메소드
+        public static TodoCategory fromCategoryIndex(int categoryIndex) {
+            for (TodoCategory category : TodoCategory.values()) {
+                if (category.getCategoryIndex() == categoryIndex) {
+                    return category;
+                }
+            }
+            throw new IllegalArgumentException("Invalid TodoCategory Index: " + categoryIndex);
+        }
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TODO_INDEX")
     private Long todoIndex;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CATEGORY_INDEX", nullable = false, referencedColumnName = "CATEGORY_INDEX")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "CATEGORY_INDEX", nullable = false)
     private TodoCategory todoCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)

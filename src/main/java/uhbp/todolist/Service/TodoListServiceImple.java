@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uhbp.todolist.domain.Member;
-import uhbp.todolist.domain.TodoCategory;
 import uhbp.todolist.domain.TodoList;
 import uhbp.todolist.dto.TodoListRequest;
 import uhbp.todolist.exception.NoSuchMemberException;
@@ -13,6 +12,7 @@ import uhbp.todolist.exception.TodoListNotFoundException;
 import uhbp.todolist.repository.MemberRepository;
 import uhbp.todolist.repository.TodoListRepository;
 import uhbp.todolist.session.CookieMemberStore;
+import uhbp.todolist.domain.TodoList.TodoCategory;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,19 +24,18 @@ import javax.servlet.http.HttpServletRequest;
 public class TodoListServiceImple implements TodoListService {
     private final TodoListRepository todoListRepository;
     private final MemberRepository memberRepository;
-    private final TodoCategoryService todoCategoryService;
     private final CookieMemberStore cookieMemberStore;
 
 
     // controller 이동
     @Override
-    public void createTodo(TodoListRequest todoListRequest, Long categoryIndex, HttpServletRequest request) throws NoSuchMemberException {
-        // log.info("받아온 객체 = {}", todoListRequest.toString());
+    public void createTodo(TodoListRequest todoListRequest, HttpServletRequest request) throws NoSuchMemberException {
+        log.info("받아온 객체 = {}", todoListRequest.toString());
         Member currentMember = getCurrentMember(request);
-        TodoCategory todoCategory = getTodoCategory(categoryIndex);
-        TodoList todoList = createTodoListEntity(todoListRequest, currentMember, todoCategory);
+        TodoList todoList = createTodoListEntity(todoListRequest, currentMember);
         saveTodoList(todoList);
     }
+
 
     // 현재 로그인한 회원 INDEX 가져오기
     private Member getCurrentMember(HttpServletRequest request) throws NoSuchMemberException {
@@ -45,15 +44,25 @@ public class TodoListServiceImple implements TodoListService {
                 .orElseThrow(() -> new NoSuchMemberException("로그인한 사용자 정보를 찾을 수 없습니다."));
     }
 
+
     // 할일 요청 객체로부터 할일 엔티티 생성
-    private TodoList createTodoListEntity(TodoListRequest todoListRequest, Member currentMember, TodoCategory todoCategory) {
-        return todoListRequest.toEntity(currentMember, todoCategory);
+    private TodoList createTodoListEntity(TodoListRequest todoListRequest, Member currentMember) {
+        int categoryIndex = todoListRequest.getTodoCategory();
+        if (categoryIndex < 0 || categoryIndex >= TodoCategory.values().length) {
+            throw new IllegalArgumentException("유효하지 않은 인덱스: " + categoryIndex);
+        }
+
+        TodoCategory category = TodoCategory.values()[categoryIndex];
+//      TodoCategory category = TodoCategory.fromCategoryIndex(categoryIndex);
+        return todoListRequest.toEntity(currentMember, category, false);
     }
 
-    // 선택한 카테고리 정보 가져오기
-    private TodoCategory getTodoCategory(Long categoryIndex) {
-        return todoCategoryService.getTodoCategoryById(categoryIndex);
-    }
+
+//    // 선택한 카테고리 정보 가져오기
+//    private TodoCategory getTodoCategory(Long categoryIndex) {
+//        return todoCategoryService.getTodoCategoryById(categoryIndex);
+//    }
+
 
     // 할일 저장
     private void saveTodoList(TodoList todoList) {
@@ -68,18 +77,31 @@ public class TodoListServiceImple implements TodoListService {
                 .orElseThrow(() -> new TodoListNotFoundException("해당 할 일을 찾을 수 없습니다."));
     }
 
-    // 할일 목록 삭제
+
+    // 할일 삭제
     @Override
     public void deleteTodoListById(Long todoIndex) {
         todoListRepository.deleteById(todoIndex);
     }
 
 
-//    현재 로그인한 회원 정보 가져오기
+//    // 할일 수정
 //    @Override
-//    public Member getMemberById(Long memberId) throws NoSuchMemberException {
-//        return memberRepository.findById(memberId)
-//                .orElseThrow(() -> new NoSuchMemberException("로그인한 사용자 정보를 찾을 수 없습니다."));
+//    public void updateTodo(Long todoIndex, TodoListRequest todoListRequest, Long categoryIndex, HttpServletRequest request) throws NoSuchMemberException {
+//        // 현재 로그인한 회원 정보 가져오기
+//        Member currentMember = getCurrentMember(request);
+//        // 선택한 카테고리 정보 가져오기
+//        TodoCategory todoCategory = todoCategoryService.getTodoCategoryById(categoryIndex);
+//        // 기존 할일 정보 조회
+//        TodoList existingTodo = todoListRepository.findById(todoIndex).orElseThrow(() -> new TodoListNotFoundException("해당 할 일을 찾을 수 없습니다."));
+//        // 업데이트 요청 시, 업데이트 날짜를 현재 날짜로 설정
+//        todoListRequest.toEntity(currentMember, todoCategory, true); // true로 업데이트 플래그 설정
+//        // 업데이트된 내용으로 기존 할일 엔티티 수정
+//        existingTodo.update(todoListRequest, currentMember, todoCategory);
+//        // todoUpdatedate 갱신
+//        existingTodo.updateTodoUpdatedate();
+//        // 할일 저장 (업데이트)
+//        todoListRepository.save(existingTodo);
 //    }
 
 }

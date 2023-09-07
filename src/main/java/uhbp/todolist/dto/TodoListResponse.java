@@ -29,7 +29,7 @@ public class TodoListResponse {
         response.setTodoUpdatedate(todoList.getTodoUpdatedate());
         response.setTodoIspinned(todoList.isTodoIspinned());
         response.setTodoDuedate(todoList.getTodoDuedate());
-        response.setTodoCategory(todoList.getTodoCategory().name());
+//      response.setTodoCategory(todoList.getTodoCategory().name());
         return response;
     }
 }

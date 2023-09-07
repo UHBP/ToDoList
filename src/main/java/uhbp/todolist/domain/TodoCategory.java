@@ -1,35 +1,26 @@
 package uhbp.todolist.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-import lombok.*;
-
-import javax.persistence.*;
-
-@Table(name = "TODO_CATEGORY")
-@Entity
 @Getter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class TodoCategory {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CATEGORY_INDEX")
-    private Long categoryIndex;
+@AllArgsConstructor
+public enum TodoCategory {
+    STUDY(1), EXERCISE(2), APPOINTMENT(3), OTHER(4);
+    private int categoryIndex;
 
-    @Column(name = "CATEGORY_NAME", nullable = false)
-    private String categoryName;
-
-//    categoryFactory에 사용되는 생성자
-    private TodoCategory(String categoryName){
-        this.categoryName = categoryName;
+    public int getIndex() {
+        return categoryIndex;
     }
 
-//    cateogry Entity를 생성하기 위한 정적 팩토리
-    public static TodoCategory todoCategoryFactory(String categoryName) {
-        return new TodoCategory(categoryName);
+    // index를 기반으로 Enum을 생성하는 정적 메서드
+    public static TodoCategory fromCategoryIndex(int categoryIndex) {
+        for (TodoCategory enumValue : values()) {
+            if (enumValue.getCategoryIndex() == categoryIndex) {
+                return enumValue;
+            }
+        }
+        throw new IllegalArgumentException("해당 인덱스를 가진 Enum 상수가 없습니다.");
     }
+
 }
-
-

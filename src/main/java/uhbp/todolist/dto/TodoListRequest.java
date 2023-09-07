@@ -2,27 +2,32 @@ package uhbp.todolist.dto;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-import uhbp.todolist.domain.Category;
 import uhbp.todolist.domain.Member;
+import uhbp.todolist.domain.TodoCategory;
 import uhbp.todolist.domain.TodoList;
 
 import java.time.LocalDate;
 
 // Create, Update 에 사용
 // 할일 목록을 생성 시 필요한 정보를 담음
+// 클라이언트에서 넘어온 요청을 처리, 클라이언트가 보내는 정보를 담고 이를 기반으로 할일 목록을 생성
 @Data
 public class TodoListRequest {
     private String todoTitle;
     private String todoContent;
-    private int todoCategory; // TodoCategory Enum 사용
+    private TodoCategory category; // TodoCategory Enum 사용
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate todoDuedate;
 
+    public int getCategory() {
+        return this.category.getIndex();
+    }
+
     // 생성 로직
-    public TodoList toEntity(Member member, Category category, boolean isupdate) {
+    public TodoList toEntity(Member member, TodoCategory category, boolean isUpdate) {
         LocalDate now = LocalDate.now();
-        LocalDate todoUpdatedate = isupdate ? now : null;
+        LocalDate todoUpdatedate = isUpdate ? now : null;
         return TodoList.todoListFactory(
                 category,
                 member,
@@ -35,4 +40,3 @@ public class TodoListRequest {
         );
     }
 }
-

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uhbp.todolist.domain.Member;
+import uhbp.todolist.domain.TodoCategory;
 import uhbp.todolist.domain.TodoList;
 import uhbp.todolist.dto.TodoListRequest;
 import uhbp.todolist.exception.NoSuchMemberException;
@@ -12,7 +13,6 @@ import uhbp.todolist.exception.TodoListNotFoundException;
 import uhbp.todolist.repository.MemberRepository;
 import uhbp.todolist.repository.TodoListRepository;
 import uhbp.todolist.session.CookieMemberStore;
-import uhbp.todolist.domain.TodoList.TodoCategory;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -47,13 +47,7 @@ public class TodoListServiceImple implements TodoListService {
 
     // 할일 요청 객체로부터 할일 엔티티 생성
     private TodoList createTodoListEntity(TodoListRequest todoListRequest, Member currentMember) {
-        int categoryIndex = todoListRequest.getTodoCategory();
-        if (categoryIndex < 0 || categoryIndex >= TodoCategory.values().length) {
-            throw new IllegalArgumentException("유효하지 않은 인덱스: " + categoryIndex);
-        }
-
-        TodoCategory category = TodoCategory.values()[categoryIndex];
-//      TodoCategory category = TodoCategory.fromCategoryIndex(categoryIndex);
+        TodoCategory category = TodoCategory.fromCategoryIndex(todoListRequest.getCategory());
         return todoListRequest.toEntity(currentMember, category, false);
     }
 

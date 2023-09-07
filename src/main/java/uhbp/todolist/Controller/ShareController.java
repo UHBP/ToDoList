@@ -25,12 +25,6 @@ public class ShareController {
     private final ShareServiceImple shareService;
     private final CookieMemberStore cookieMemberStore;
 
-    @RequestMapping("/init")
-    public String gotoMain(){
-        // HomeController로 redirect하면 해당 메소드에서 빈 객체 생성하여 form 데이터를 담을 객체 설정
-        return "redirect:/";
-    }
-
     @PostMapping("/search")
     @ResponseBody
     public ResponseEntity<List<Member>> shareTargetSearch(@RequestParam("searchId") String searchId, Model model){

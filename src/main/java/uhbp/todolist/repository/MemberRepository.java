@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import uhbp.todolist.domain.Member;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, CustomRepository {
     Member findByMemberId(String memberId);
 
 }

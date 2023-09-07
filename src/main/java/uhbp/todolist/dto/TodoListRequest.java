@@ -2,9 +2,9 @@ package uhbp.todolist.dto;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+import uhbp.todolist.domain.Category;
 import uhbp.todolist.domain.Member;
 import uhbp.todolist.domain.TodoList;
-import uhbp.todolist.domain.TodoList.TodoCategory;
 
 import java.time.LocalDate;
 
@@ -20,10 +20,9 @@ public class TodoListRequest {
     private LocalDate todoDuedate;
 
     // 생성 로직
-    public TodoList toEntity(Member member, TodoCategory categoryIndex, boolean isupdate) {
+    public TodoList toEntity(Member member, Category category, boolean isupdate) {
         LocalDate now = LocalDate.now();
         LocalDate todoUpdatedate = isupdate ? now : null;
-        TodoCategory category = TodoCategory.fromCategoryIndex(todoCategory);
         return TodoList.todoListFactory(
                 category,
                 member,

@@ -334,3 +334,4 @@ gradle-app.setting
 src/main/resources/application.properties
 
 #END
+src/main/resources/application.yml

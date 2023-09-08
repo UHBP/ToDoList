@@ -1,6 +1,9 @@
 package uhbp.todolist.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -20,8 +23,8 @@ public class TodoList {
     @Column(name = "TODO_INDEX")
     private Long todoIndex;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CATEGORY_INDEX", nullable = false, referencedColumnName = "CATEGORY_INDEX")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TODO_CATEGORY", nullable = false)
     private TodoCategory todoCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -19,8 +19,8 @@
             </div>
             님의 ToDoList
         </div>
-        <div id="sse"></div>
-        <div id="addToDoList">ToDo 추가</div>
+        <div id="setting"></div>
+        <div id="addToDoList" th:href="@{/todo/init}">ToDo 추가</div>
     </div>
     <div id="tagAndSelect">
         <div id="tag">
@@ -36,9 +36,9 @@
             <option value="">마감일 순</option>
         </select>
     </div>
-    <div class="ToDoList">
+    <div class="ToDoList" th:each="todoList : ${todoLists}">
         <div class="checkbox-wrap">
-            <input type="checkbox" class="ListCheckbox"/>
+            <input type="checkbox" class="ListCheckbox" th:checked="${todoList.todoIspinned}" />
         </div>
         <div class="TodoIndex" style="display:none;">18</div>
         <div class="TodoTitle">제목</div>
@@ -96,20 +96,21 @@
         <div class="close1">
             <div class="close1-shape">x</div>
         </div>
-        <form action="">
-            <textarea placeholder="제목" class="modalTitle"></textarea>
-            <div class="TodoGenDate1">23/8/21</div>
-            <div class="TodoUpdateDate1">23/8/22</div>
-            <div class="TodoDueDate">마감기한  <input type="date" /></div>
+        <form th:action="@{/todo/create}" method="post" th:object="${todoListRequest}">
+            <textarea placeholder="제목" id="modalTitle" name="todoTitle" th:field="*{todoTitle}"></textarea>
+            <div class="TodoGenDate1"></div>
+            <div class="TodoUpdateDate1"></div>
+            <div class="TodoDueDate">마감기한  <input type="date" name="todoDuedate" th:field="*{todoDuedate}" /></div>
             <div class="TodoListCategory">카테고리
-                <select class="CategorySelect">
-                    <option selected>공부</option>
-                    <option value="">운동</option>
-                    <option value="">약속</option>
-                    <option value="">기타</option>
+                <select class="CategorySelect" name="category">
+                    <option value="STUDY">공부</option>
+                    <option value="EXERCISE">운동</option>
+                    <option value="APPOINTMENT">약속</option>
+                    <option value="OTHER">기타</option>
                 </select>
             </div>
-            <textarea placeholder="내용" class="TodoContentAdd"></textarea>
+            <textarea placeholder="내용" class="TodoContentAdd" name="todoContent" th:field="*{todoContent}"></textarea>
+
             <div class="modalTitleButtons">
                 <button type="submit" class="TodoAddSubmit">추가</button>
             </div>

@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import uhbp.todolist.dto.MemberInfo;
+import uhbp.todolist.dto.TodoListRequest;
 import uhbp.todolist.dto.ShareTargetSearch;
 import uhbp.todolist.session.CookieMemberStore;
 
@@ -24,6 +25,7 @@ public class HomeController {
         if(cookie != null){
             MemberInfo memberInfoByKey = cookieMemberStore.getViewUsingMemberFormByKey(cookie);
             model.addAttribute("memberInfo", memberInfoByKey);
+            model.addAttribute("todoListRequest", new TodoListRequest());
             model.addAttribute("shareTargetSearch", new ShareTargetSearch());
         }
         return "index";

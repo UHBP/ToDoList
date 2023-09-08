@@ -14,9 +14,16 @@ body {
 #titleLine #title {
   font-size: 40px;
   margin: 2rem;
-  width: 65rem;
+  width: 60rem;
   display: flex;
   font-weight: bold;
+}
+#titleLine #sse{
+  background-color: yellow;
+  width: 2rem;
+  place-self: center;
+  height: 2rem;
+  margin: 0 1.5rem;
 }
 #titleLine #addToDoList {
   width: 8rem;
@@ -190,7 +197,7 @@ body {
   text-decoration: none;
   cursor: pointer;
 }
-.modal .titleModal-content #modalTitle {
+.modal .titleModal-content .modalTitle {
   text-align: center;
   font-size: 1.3rem;
 }
@@ -215,6 +222,7 @@ body {
   height: 20rem;
   width: 40rem;
   border: 1px solid black;
+  margin-top: 0.5rem;
   font-size: 1rem;
 }
 .modal .titleModal-content form .TodoContentEdit {
@@ -319,7 +327,7 @@ body {
   text-decoration: none;
   cursor: pointer;
 }
-.modal1 .AddModal-content form #modalTitle {
+.modal1 .AddModal-content form .modalTitle {
   text-align: center;
   resize: none;
   font-size: 1rem;
@@ -349,11 +357,13 @@ body {
   width: 40rem;
   border: 1px solid black;
   font-size: 1rem;
+  margin-top: 0.5rem;
 }
 .modal1 .AddModal-content form .TodoContentAdd {
   height: 19.73rem;
   width: 39.73rem;
   border: 1px solid black;
+  margin-top: 0.5rem;
   resize: none;
   font-size: 0.9rem;
 }
@@ -435,27 +445,39 @@ body {
   vertical-align: middle;
 }
 .modal2 .search-container .search-input {
-  width: 12rem;
+  width: 22rem;
   height: 1.4rem;
   font-size: 1rem;
   text-align: center;
 }
-.modal2 .search-container .shareButton {
-  margin-left: 5rem;
-  float: right;
-  height: 2rem;
-  justify-content: center;
-  width: 5rem;
-  align-items: center;
-  border-radius: 5px;
+.modal2 .search-result1 {
+  margin-top: 2rem;
+  height: 1rem;
+}
+.modal2 .search-result1 .search-result-content1 {
+  padding-top: 0.5rem;
   display: flex;
-  background-color: slateblue;
-  cursor: pointer;
-  color: white;
+  width: 25rem;
+}
+.modal2 .search-result1 .search-result-content1 .search-checkbox1 > input {
+  width: 1rem;
+  height: 1rem;
+}
+.modal2 .search-result1 .search-result-content1 .search-id1 {
+  text-align: center;
+  width: 17.5rem;
+  margin-left: 1.4rem;
+}
+.modal2 .search-result1 .search-result-content1 .search-nickname1 {
+  text-align: center;
+  width: 5rem;
 }
 .modal2 .search-result {
-  margin-top: 2rem;
-  height: 21rem;
+  height: 17rem;
+  margin-top: 1.2rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  visibility: hidden;
 }
 .modal2 .search-result .search-result-content {
   padding-top: 0.5rem;
@@ -473,6 +495,20 @@ body {
 .modal2 .search-result .search-result-content .search-nickname {
   text-align: center;
   width: 5rem;
+}
+.modal2 .shareButton {
+  margin-left: 5rem;
+  float: right;
+  height: 2rem;
+  justify-content: center;
+  width: 5rem;
+  align-items: center;
+  border-radius: 5px;
+  display: flex;
+  background-color: slateblue;
+  cursor: pointer;
+  color: white;
+  border: none;
 }
 
 /*# sourceMappingURL=index.css.map */

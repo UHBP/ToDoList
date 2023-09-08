@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Table(name = "TODO_LIST")
 @Getter
 @ToString
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class TodoList {
 
     @Id

@@ -20,9 +20,6 @@ public class TodoListRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate todoDuedate;
 
-    public int getCategory() {
-        return this.category.getIndex();
-    }
 
     // 생성 로직
     public TodoList toEntity(Member member, TodoCategory category, boolean isUpdate) {

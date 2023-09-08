@@ -21,7 +21,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("LoginIntercepter 진입");
+//        log.info("LoginIntercepter 진입");
         Long valueByKey = cookieMemberStore.findValueByKey(request);
         if(valueByKey == null){
             response.sendRedirect(request.getContextPath() + "/member/login");

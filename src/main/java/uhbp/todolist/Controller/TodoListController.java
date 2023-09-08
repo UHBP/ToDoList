@@ -24,7 +24,7 @@ public class TodoListController {
 
     // (Create) 할일 생성
     @PostMapping("/create")
-    public String createTodo(@ModelAttribute("todoListRequest") @Valid TodoListRequest todoListRequest, BindingResult bindingResult, HttpServletRequest request) throws NoSuchMemberException {
+    public String createTodo(@ModelAttribute("todoListRequest") TodoListRequest todoListRequest, HttpServletRequest request) throws NoSuchMemberException {
         todoListService.createTodo(todoListRequest, request);
         return "redirect:/";
     }

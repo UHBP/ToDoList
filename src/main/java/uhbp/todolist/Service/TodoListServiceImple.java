@@ -33,6 +33,7 @@ public class TodoListServiceImple implements TodoListService {
         log.info("받아온 객체 = {}", todoListRequest.toString());
         Member currentMember = getCurrentMember(request);
         TodoList todoList = createTodoListEntity(todoListRequest, currentMember);
+        log.info("final todo = {}", todoList);
         saveTodoList(todoList);
     }
 
@@ -47,7 +48,8 @@ public class TodoListServiceImple implements TodoListService {
 
     // 할일 요청 객체로부터 할일 엔티티 생성
     private TodoList createTodoListEntity(TodoListRequest todoListRequest, Member currentMember) {
-        TodoCategory category = TodoCategory.fromCategoryIndex(todoListRequest.getCategory());
+        log.info("Entry Point = {}", todoListRequest);
+        TodoCategory category = todoListRequest.getCategory();
         return todoListRequest.toEntity(currentMember, category, false);
     }
 

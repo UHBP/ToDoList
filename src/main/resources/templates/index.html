@@ -19,7 +19,7 @@
             </div>
             님의 ToDoList
         </div>
-        <div id="setting"></div>
+        <div id="sse"></div>
         <div id="addToDoList" th:href="@{/todo/init}">ToDo 추가</div>
     </div>
     <div id="tagAndSelect">
@@ -163,7 +163,6 @@
 <script>
     $(document).ready(function(){
         const eventSource = new EventSource("/sub");
-        alert(eventSource.text());
 
         eventSource.addEventListener("alarm", function(event){
             let message = event.data;
@@ -171,6 +170,7 @@
         });
 
         eventSource.addEventListener("error", function(event){
+
             eventSource.close();
         });
     });

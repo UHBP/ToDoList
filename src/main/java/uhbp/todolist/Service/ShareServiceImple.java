@@ -1,5 +1,6 @@
 package uhbp.todolist.Service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,9 @@ import uhbp.todolist.domain.TodoShareApproveQueue;
 import uhbp.todolist.repository.MemberRepository;
 import uhbp.todolist.repository.TodoListRepository;
 import uhbp.todolist.repository.TodoShareApproveQueueRepository;
+import uhbp.todolist.session.CookieMemberStore;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +21,10 @@ import java.util.Optional;
 @Service
 @Transactional
 @Slf4j
+@RequiredArgsConstructor
 public class ShareServiceImple implements ShareService {
+
+    private final AlarmServiceImpl alarmService;
 
     @Autowired
     MemberRepository memberRepository;
@@ -60,6 +66,9 @@ public class ShareServiceImple implements ShareService {
             TodoShareApproveQueue shareTodo = TodoShareApproveQueue.todoShareApproveQueueFactory(todo, selectedMember, loginMember, LocalDate.now());
             // 위에서 생성한 Entity를 DB에 저장
             shareRepository.save(shareTodo);
+
+            // sse 알림
+            alarmService.alarmShareEvent(loginIndex);
         }
     }
 

@@ -36,11 +36,11 @@
             <option value="">마감일 순</option>
         </select>
     </div>
-    <div class="ToDoList" th:each="todoList : ${todoLists}">
+    <div class="ToDoList">
         <div class="checkbox-wrap">
-            <input type="checkbox" class="ListCheckbox" th:checked="${todoList.todoIspinned}" />
+            <input type="checkbox" class="ListCheckbox"> <!--th:checked="${todoList.todoIspinned}"-->
         </div>
-        <div class="TodoIndex" style="display:none;">18</div>
+        <div class="TodoIndex" style="display:none;">1</div>
         <div class="TodoTitle">제목</div>
         <div class="DueDate">2023/8/22</div>
         <div class="Category">공부</div>
@@ -160,6 +160,21 @@
     </div>
 </div>
 </body>
+<script>
+    $(document).ready(function(){
+        const eventSource = new EventSource("/sub");
+        alert(eventSource.text());
+
+        eventSource.addEventListener("alarm", function(event){
+            let message = event.data;
+            alert(message);
+        });
+
+        eventSource.addEventListener("error", function(event){
+            eventSource.close();
+        });
+    });
+</script>
 <script>
     // Todo를 공유할 회원의 아이디 검색하는 코드
     $(document).ready(function(){

@@ -3,7 +3,6 @@ package uhbp.todolist.Controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +11,6 @@ import uhbp.todolist.dto.TodoListRequest;
 import uhbp.todolist.exception.NoSuchMemberException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -30,10 +28,10 @@ public class TodoListController {
     }
 
 
-      // (Update) 할일 수정
+//    // (Update) 할일 수정
 //    @PostMapping("/update/{todoIndex}")
-//    public String updateTodo(@PathVariable Long todoIndex, @ModelAttribute("todoListRequest") TodoListRequest todoListRequest, BindingResult bindingResult, @RequestParam("categoryIndex") Long categoryIndex, HttpServletRequest request) throws NoSuchMemberException {
-//        todoListService.updateTodo(todoIndex, todoListRequest, categoryIndex, request);
+//    public String updateTodo(Long todoIndex, @ModelAttribute("todoListRequest") TodoListRequest todoListRequest, @RequestParam("categoryIndex") Long categoryIndex, HttpServletRequest request) throws NoSuchMemberException {
+//        todoListService.updateTodo(todoIndex, todoListRequest, request);
 //        return "redirect:/";
 //    }
 

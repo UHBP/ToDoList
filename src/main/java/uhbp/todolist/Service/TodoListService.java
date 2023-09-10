@@ -11,13 +11,14 @@ public interface TodoListService {
 
     void createTodo(TodoListRequest todoListRequest, HttpServletRequest request) throws NoSuchMemberException;
 
-    // 할일 목록 조회
     List<TodoList> readTodo(HttpServletRequest request) throws NoSuchMemberException;
 
-    void deleteTodoListById(Long todoIndex);
+//    // 할일 수정
+//    void updateTodo(Long todoIndex, TodoListRequest updateRequest, HttpServletRequest request) throws NoSuchMemberException;
 
-//  void updateTodo(Long todoIndex, TodoListRequest todoListRequest, Long categoryIndex, HttpServletRequest request);
+    // 할일 수정
+    void updateTodo(Long todoIndex, TodoListRequest todoListRequest);
 
-//  Member getMemberById(Long memberId) throws NoSuchMemberException;
+    void deleteTodo(Long todoIndex);
 
 }

@@ -11,4 +11,6 @@ import java.util.List;
 public interface TodoListRepository extends JpaRepository<TodoList, Long> {
     List<TodoList> findAllByMember(Member currentMember);
 
+    void deleteByTodoIndex(Long todoIndex);
+
 }

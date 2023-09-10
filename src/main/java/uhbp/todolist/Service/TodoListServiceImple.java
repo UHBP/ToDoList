@@ -56,8 +56,9 @@ public class TodoListServiceImple implements TodoListService {
 
     // 할일 목록 조회
     @Override
-    public List<TodoList> getAllTodoLists() {
-        return todoListRepository.findAll();
+    public List<TodoList> readTodo(HttpServletRequest request) throws NoSuchMemberException {
+        Member currentMember = getCurrentMember(request);
+        return todoListRepository.findAllByMember(currentMember);
     }
 
 

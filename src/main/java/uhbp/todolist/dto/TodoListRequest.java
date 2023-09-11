@@ -20,6 +20,7 @@ public class TodoListRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate todoDuedate;
 
+
     // 생성 로직
     public TodoList toEntity(Member member, TodoCategory category, boolean isUpdate) {
         LocalDate now = LocalDate.now();

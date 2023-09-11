@@ -21,4 +21,10 @@ public interface TodoListService {
 
     void deleteTodo(Long todoIndex);
 
+//    // 마감일순 정렬
+//    List<TodoList> dueDateAscTodo();
+//
+//    // 기본순 정렬
+//    List<TodoList> genDateAscTodo();
+
 }

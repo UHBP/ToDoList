@@ -1,12 +1,16 @@
 package uhbp.todolist.repository;
 
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import uhbp.todolist.domain.Member;
+import uhbp.todolist.domain.QTodoList;
+import uhbp.todolist.domain.TodoList;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 
 import static uhbp.todolist.domain.QMember.member;
@@ -33,5 +37,29 @@ public class CustomRepositoryImpl implements CustomRepository {
                 .selectFrom(member)
                 .where(member.memberId.like("%" + searchId + "%"))
                 .fetch();  // fetch() : 조회 대상 전체를 반환
+    }
+
+    @Override
+    public List<TodoList> findAllByOrderByTodoDuedateAsc() {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QTodoList todoList = QTodoList.todoList;
+
+        // OrderSpecifier : Querydsl 라이브러리에서 제공하는 클래스, JPA 쿼리에서 정렬 순서를 지정할 때 사용
+        OrderSpecifier<LocalDate> orderByDueDateAsc = todoList.todoDuedate.asc();
+
+        return queryFactory.selectFrom(todoList)
+                .orderBy(todoList.todoIspinned.desc(), orderByDueDateAsc)
+                .fetch();
+    }
+
+    @Override
+    public List<TodoList> findAllByOrderByTodoGendateAsc() {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QTodoList todoList = QTodoList.todoList;
+        OrderSpecifier<LocalDate> orderByGenDateAsc = todoList.todoGendate.asc();
+
+        return queryFactory.selectFrom(todoList)
+                .orderBy(todoList.todoIspinned.desc(), orderByGenDateAsc)
+                .fetch();
     }
 }

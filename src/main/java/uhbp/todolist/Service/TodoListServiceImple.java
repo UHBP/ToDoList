@@ -119,4 +119,17 @@ public class TodoListServiceImple implements TodoListService {
 //            throw new NoSuchMemberException("삭제할 할일을 찾을 수 없습니다.");
 //        }
 //    }
+
+//    // 마감일순 정렬
+//    @Override
+//    public List<TodoList> dueDateAscTodo() {
+//        return todoListRepository.findAllByOrderByTodoDuedateAsc();
+//    }
+//
+//    // 기본순 정렬
+//    @Override
+//    public List<TodoList> genDateAscTodo() {
+//        return todoListRepository.findAllByOrderByTodoGendateAsc();
+//    }
+
 }

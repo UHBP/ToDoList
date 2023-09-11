@@ -32,9 +32,9 @@
             <div style="background-color: midnightblue">기타</div>
             <div style="background-color: rgb(105, 59, 149)">공유</div>
         </div>
-        <select id="selectOption">
-            <option selected>기본 순</option>
-            <option value="">마감일 순</option>
+        <select id="selectOption" name="sortingOption">
+            <option value="gendate-asc">기본 순</option>
+            <option value="duedate-asc">마감일 순</option>
         </select>
     </div>
     <div class="ToDoList" th:each="todoList : ${todoLists}">
@@ -165,6 +165,28 @@
     </div>
 </div>
 </body>
+<script>
+    // Sort & Pin
+    document.getElementById('selectOption').addEventListener('change', function() {
+        // 선택한 옵션 값을 가져옴
+       const selectedOption = this.value;
+
+       // 서버로 선택한 옵션 값을 전송
+       fetch('/todo?sortingOption=' + selectedOption)
+        .then(response => {
+            if(response.ok) {
+                window.location.href = "redirect:/";
+            } else {
+                console.error('정렬 실패');
+            }
+        })
+        .catch(error => {
+             console.error('정렬 실패');
+        });
+    });
+
+</script>
+
 <script>
     // Todo를 공유할 회원의 아이디 검색하는 코드
     $(document).ready(function(){

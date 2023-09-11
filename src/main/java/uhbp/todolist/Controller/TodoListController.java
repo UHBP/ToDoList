@@ -3,15 +3,15 @@ package uhbp.todolist.Controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import uhbp.todolist.Service.TodoListService;
+import uhbp.todolist.domain.TodoList;
 import uhbp.todolist.dto.TodoListRequest;
 import uhbp.todolist.exception.NoSuchMemberException;
+import uhbp.todolist.repository.TodoListRepository;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class TodoListController {
     private final TodoListService todoListService;
+    private final TodoListRepository todoListRepository;
 
 
     // (Create) 할일 생성
@@ -50,4 +51,18 @@ public class TodoListController {
         todoListService.deleteTodo(todoIndex);
         return "redirect:/";
     }
+
+
+    // (Sort & Pin) 마감일순
+    @GetMapping("/duedate-asc")
+    public List<TodoList> dueDateAscTodo() {
+        return todoListRepository.findAllByOrderByTodoDuedateAsc();
+    }
+
+    // (Sort & Pin) 기본순
+    @GetMapping("/gendate-asc")
+    public List<TodoList> genDateAscTodo() {
+        return todoListRepository.findAllByOrderByTodoGendateAsc();
+    }
+
 }

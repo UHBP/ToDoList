@@ -9,6 +9,7 @@ import uhbp.todolist.Service.TodoListService;
 import uhbp.todolist.domain.TodoList;
 import uhbp.todolist.dto.TodoListRequest;
 import uhbp.todolist.exception.NoSuchMemberException;
+import uhbp.todolist.exception.TodoListNotFoundException;
 import uhbp.todolist.repository.TodoListRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,5 +67,18 @@ public class TodoListController {
         model.addAttribute("todoLists", todoLists);
         // log.info("받아온 정렬 리스트 = {}", todoLists);
         return "index::sortTodo"; // th:fragment 해당 템플릿 조각을 렌더링
+    }
+
+
+    // (Pin) 할일 상단 고정
+    @PostMapping("/pin")
+    public String pinTodo(@PathVariable Long todoIndex) {
+        TodoList todoList = todoListRepository.findById(todoIndex)
+                .orElseThrow(() -> new TodoListNotFoundException("할일 목록을 찾을 수 없습니다."));
+        todoList.setTodoIspinned(true);
+        log.info("핀 = {}", todoList);
+        todoListRepository.save(todoList);
+
+        return "redirect:/";
     }
 }

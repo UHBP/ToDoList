@@ -4,6 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="/resources/css/index.css"/>
+    <link rel="stylesheet" href="/resources/css/font.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Document</title>
 </head>
@@ -38,7 +39,7 @@
     </div>
     <div class="ToDoList" th:each="todoList : ${todoLists}">
         <div class="checkbox-wrap">
-            <input type="checkbox" class="ListCheckbox" />
+            <input type="checkbox" class="ListCheckbox"/>
         </div>
         <div class="TodoIndex" th:text="${todoList.todoIndex}" style="display:none;"></div>
         <div class="TodoTitle" th:text="${todoList.todoTitle}"></div>
@@ -57,7 +58,7 @@
             <div id="share">공유하기</div>
             <!-- 삭제 버튼을 클릭했을 때 todoIndex를 파라미터로 전달 -->
             <form th:action="@{/todo/delete}" method="post">
-                <input type="hidden" th:name="todoIndex" th:value="${todoList.todoIndex}" />
+                <input type="hidden" th:name="todoIndex" th:value="${todoList.todoIndex}"/>
                 <button type="submit">삭제하기</button>
             </form>
             <div>핀 표시</div>
@@ -73,7 +74,7 @@
         <p class="modalTitle"></p>
         <div class="TodoGenDate">23/8/21</div>
         <div class="TodoUpdateDate">23/8/22</div>
-        <div class="TodoDueDate">마감기한  <input type="date" /></div>
+        <div class="TodoDueDate">마감기한 <input type="date"/></div>
         <div class="TodoListCategory">카테고리
             <select id="CategorySelect">
                 <option selected>공부</option>
@@ -105,7 +106,7 @@
             <textarea placeholder="제목" id="modalTitle" name="todoTitle" th:field="*{todoTitle}"></textarea>
             <div class="TodoGenDate1"></div>
             <div class="TodoUpdateDate1"></div>
-            <div class="TodoDueDate">마감기한  <input type="date" name="todoDuedate" th:field="*{todoDuedate}" /></div>
+            <div class="TodoDueDate">마감기한 <input type="date" name="todoDuedate" th:field="*{todoDuedate}"/></div>
             <div class="TodoListCategory">카테고리
                 <select class="CategorySelect" name="category">
                     <option value="STUDY">공부</option>
@@ -214,6 +215,7 @@
         });
       });
     });
+
 </script>
 <script>
     // todoIndex와 선택한 회원의 아이디를 컨트롤러로 넘기는 코드
@@ -256,6 +258,7 @@
             });
         });
     });
+
 </script>
 <script>
     //TodoList의 체크박스 체크됬을때 상태 조절
@@ -309,6 +312,7 @@
         });
       });
     });
+
 </script>
 <script>
     //마감일에 따라서 마감 기한 지남 경고 주는 코드
@@ -336,6 +340,7 @@
         }
       });
     });
+
 </script>
 <script>
     //카테고리 값에 따라서 .ToDoList > .Category의 background-color값이 지정된 값으로 변환
@@ -372,7 +377,9 @@
         // 초기 배경색 설정
         setCategoryBackgroundColor(categoryElement);
     });
+
 });
+
 
 </script>
 <script>
@@ -398,9 +405,11 @@
                     }
                 }
 
+
                 event.stopPropagation(); // 이 이벤트가 상위 Dom에 적용 안되게 막음
             });
         });
+
 
         // menuItem 외부 클릭 시 menuItem 숨김
         document.addEventListener("click", function () {
@@ -410,6 +419,7 @@
             }
         });
     });
+
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -471,7 +481,9 @@
             updateDate.style.display = "none";
             genDate.style.display = "block";
         }
+
     }
+
 
     // 수정 버튼 클릭시의 동작을 정의
     editButton.addEventListener("click", function () {
@@ -520,6 +532,7 @@
     });
 });
 
+
 </script>
 <script>
     //모달창 1 - Todo 추가 클릭 시 열리는 것
@@ -551,6 +564,7 @@
         }
       };
     });
+
 </script>
 <script>
     //todo추가 버튼 클릭해서 나오는 모달에서 수정일 있을 시 생성일 안 보이고, 없을 시 생성일 보이게 하기
@@ -572,6 +586,7 @@
         }
       }
     });
+
 </script>
 <script>
     //모달창 2 - 공유하기 클릭 시
@@ -611,6 +626,7 @@
         }
       };
     });
+
 
 
 </script>

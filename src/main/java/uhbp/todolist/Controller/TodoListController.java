@@ -3,8 +3,10 @@ package uhbp.todolist.Controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uhbp.todolist.Service.TodoListService;
+import uhbp.todolist.domain.Member;
 import uhbp.todolist.domain.TodoList;
 import uhbp.todolist.dto.TodoListRequest;
 import uhbp.todolist.exception.NoSuchMemberException;
@@ -53,16 +55,33 @@ public class TodoListController {
     }
 
 
-    // (Sort & Pin) 마감일순
-    @GetMapping("/duedate-asc")
-    public List<TodoList> dueDateAscTodo() {
-        return todoListRepository.findAllByOrderByTodoDuedateAsc();
-    }
+//    // (Sort & Pin) 마감일순
+//    @GetMapping("/sort/duedate")
+//    public String dueDateAscTodo(Model model) {
+//        List<TodoList> sortedTodoList = todoListRepository.findAllByOrderByTodoDuedateAsc();
+//        model.addAttribute("todoLists", sortedTodoList);
+//        return "redirect:/";
+//    }
+//
+//    // (Sort & Pin) 기본순
+//    @GetMapping("/sort/gendate")
+//    public String genDateAscTodo(Model model) {
+//        List<TodoList> sortedTodoList = todoListRepository.findAllByOrderByTodoGendateAsc();
+//        model.addAttribute("todoLists", sortedTodoList);
+//        return "redirect:/";
+//    }
 
-    // (Sort & Pin) 기본순
-    @GetMapping("/gendate-asc")
-    public List<TodoList> genDateAscTodo() {
-        return todoListRepository.findAllByOrderByTodoGendateAsc();
+    @GetMapping("/sortedList")
+    public String sortedList(Model model, @RequestParam String sortingOption, HttpServletRequest request) throws NoSuchMemberException {
+        List<TodoList> todoLists;
+        Member currentMember = getCurrentMember(request);
+        if (sortingOption.equals("gendate")) {
+            todoLists = todoListRepository.findAllByOrderByTodoGendateAsc(currentMember);
+        } else {
+            todoLists = todoListRepository.findAllByOrderByTodoDuedateAsc(currentMember);
+        }
+        model.addAttribute("todoLists", todoLists);
+        log.info("받아온 정렬 리스트 = {}", todoLists);
+        return  "index::todoList"; // 해당 템플릿 조각을 렌더링
     }
-
 }

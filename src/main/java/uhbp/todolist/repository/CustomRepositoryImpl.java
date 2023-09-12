@@ -40,7 +40,7 @@ public class CustomRepositoryImpl implements CustomRepository {
     }
 
     @Override
-    public List<TodoList> findAllByOrderByTodoDuedateAsc() {
+    public List<TodoList> findAllByOrderByTodoDuedateAsc(Member currentMember) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QTodoList todoList = QTodoList.todoList;
 
@@ -48,17 +48,19 @@ public class CustomRepositoryImpl implements CustomRepository {
         OrderSpecifier<LocalDate> orderByDueDateAsc = todoList.todoDuedate.asc();
 
         return queryFactory.selectFrom(todoList)
+                .where(todoList.member.eq(currentMember))
                 .orderBy(todoList.todoIspinned.desc(), orderByDueDateAsc)
                 .fetch();
     }
 
     @Override
-    public List<TodoList> findAllByOrderByTodoGendateAsc() {
+    public List<TodoList> findAllByOrderByTodoGendateAsc(Member currentMember) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QTodoList todoList = QTodoList.todoList;
         OrderSpecifier<LocalDate> orderByGenDateAsc = todoList.todoGendate.asc();
 
         return queryFactory.selectFrom(todoList)
+                .where(todoList.member.eq(currentMember))
                 .orderBy(todoList.todoIspinned.desc(), orderByGenDateAsc)
                 .fetch();
     }

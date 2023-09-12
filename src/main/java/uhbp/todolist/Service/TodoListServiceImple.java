@@ -39,8 +39,9 @@ public class TodoListServiceImple implements TodoListService {
     }
 
 
+    @Override
     // 현재 로그인한 회원 INDEX 가져오기
-    private Member getCurrentMember(HttpServletRequest request) throws NoSuchMemberException {
+    public Member getCurrentMember(HttpServletRequest request) throws NoSuchMemberException {
         Long currentMemberIndex = cookieMemberStore.findValueByKey(request);
         return memberRepository.findById(currentMemberIndex)
                 .orElseThrow(() -> new NoSuchMemberException("로그인한 사용자 정보를 찾을 수 없습니다."));

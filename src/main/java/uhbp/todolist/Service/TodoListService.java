@@ -1,5 +1,6 @@
 package uhbp.todolist.Service;
 
+import uhbp.todolist.domain.Member;
 import uhbp.todolist.domain.TodoList;
 import uhbp.todolist.dto.TodoListRequest;
 import uhbp.todolist.exception.NoSuchMemberException;
@@ -10,6 +11,9 @@ import java.util.List;
 public interface TodoListService {
 
     void createTodo(TodoListRequest todoListRequest, HttpServletRequest request) throws NoSuchMemberException;
+
+    // 현재 로그인한 회원 INDEX 가져오기
+    Member getCurrentMember(HttpServletRequest request) throws NoSuchMemberException;
 
     List<TodoList> readTodo(HttpServletRequest request) throws NoSuchMemberException;
 

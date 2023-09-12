@@ -341,179 +341,185 @@
     //카테고리 값에 따라서 .ToDoList > .Category의 background-color값이 지정된 값으로 변환
     //이 때, #tagAndSelect > #tag와 색을 동일하게 만들어줌
     document.addEventListener("DOMContentLoaded", function () {
-      function setCategoryBackgroundColor(categoryDiv) {
-        let category = categoryDiv.textContent;
+    var categoryElements = document.querySelectorAll('.ToDoList .Category');
+
+    function setCategoryBackgroundColor(categoryElement) {
+        let category = categoryElement.textContent.trim();
 
         switch (category) {
-          case "전체":
-            categoryDiv.style.backgroundColor = "lightcoral";
-            break;
-          case "공부":
-            categoryDiv.style.backgroundColor = "orange";
-            break;
-          case "운동":
-            categoryDiv.style.backgroundColor = "rgb(130, 186, 146)";
-            break;
-          case "약속":
-            categoryDiv.style.backgroundColor = "skyblue";
-            break;
-          case "기타":
-            categoryDiv.style.backgroundColor = "midnightblue";
-            break;
-          case "공유":
-            categoryDiv.style.backgroundColor = "rgb(105, 59, 149)";
-            break;
-          default:
-            categoryDiv.style.backgroundColor = ""; // 기본값이나 다른 색상으로 설정하실 수 있습니다.
+            case "STUDY":
+                categoryElement.style.backgroundColor = "orange";
+                categoryElement.textContent = "공부";;
+                break;
+            case "EXERCISE":
+                categoryElement.style.backgroundColor = "rgb(130, 186, 146)";
+                categoryElement.textContent ="운동";
+                break;
+            case "APPOINTMENT":
+                categoryElement.style.backgroundColor = "skyblue";
+                categoryElement.textContent ="약속";
+                break;
+            case "OTHER":
+                categoryElement.style.backgroundColor = "midnightblue";
+                categoryElement.textContent="그 외";
+                break;
+            default:
+                categoryElement.style.backgroundColor = ""; // 기본값이나 다른 색상으로 설정하실 수 있습니다.
         }
-      }
+    }
 
-      let categoryDivs = document.querySelectorAll(".ToDoList > .Category");
-      categoryDivs.forEach(setCategoryBackgroundColor);
+    categoryElements.forEach(function (categoryElement) {
+        // 초기 배경색 설정
+        setCategoryBackgroundColor(categoryElement);
     });
+});
+
 </script>
 <script>
-    //.dots 클릭 시 세팅 내용 보이게/ 안 보이게 조절
     document.addEventListener("DOMContentLoaded", function () {
-      const settingIcon = document.querySelector(".dots");
-      const menuItems = document.querySelector(".ToDoListSetting");
+    const settingIcons = document.querySelectorAll(".dots");
+    let currentOpenMenuItem = null;
 
-      settingIcon.addEventListener("click", function () {
-        if (
-          menuItems.style.display === "none" ||
-          menuItems.style.display === ""
-        ) {
-          menuItems.style.display = "block";
-        } else {
-          menuItems.style.display = "none";
-        }
-      });
-    });
+        settingIcons.forEach(function(settingIcon) {
+            settingIcon.addEventListener("click", function (event) {
+                let menuItem = this.parentElement.nextElementSibling;
 
+                if (currentOpenMenuItem && currentOpenMenuItem !== menuItem) {
+                    currentOpenMenuItem.style.display = "none";
+                }
 
-</script>
-<script>
-    //모달창 1 - 타이틀 클릭시 열리는 것
-     document.addEventListener("DOMContentLoaded", function () {
-       var modal = document.getElementById("titleModal");
-       var title = document.querySelector(".TodoTitle");
-       var modalTitle = document.querySelector(".modalTitle");
-       var span = document.getElementsByClassName("close")[0];
+                if (menuItem && menuItem.classList.contains("ToDoListSetting")) {
+                    if (menuItem.style.display === "none" || menuItem.style.display === "") {
+                        menuItem.style.display = "block";
+                        currentOpenMenuItem = menuItem;
+                    } else {
+                        menuItem.style.display = "none";
+                        currentOpenMenuItem = null;
+                    }
+                }
 
-       //.TodoTitle 클릭 시 모달 열림
-       title.onclick = function () {
-         modalTitle.textContent = this.textContent;
-         modal.style.display = "block";
-       };
-
-       // x 혹은 외부 클릭 시 모달 꺼짐
-       span.onclick = function () {
-         modal.style.display = "none";
-         contentDiv.style.display = "block";
-         contentTextarea.style.display = "none";
-         editButton.style.display = "block";
-         deleteButton.style.display = "block";
-         completeButton.style.display = "none";
-         cancelButton.style.display = "none";
-       };
-
-       //모달 외부 클릭 시 모달 꺼짐
-       window.onclick = function (event) {
-         if (event.target == modal) {
-           modal.style.display = "none";
-           contentDiv.style.display = "block";
-           contentTextarea.style.display = "none";
-           editButton.style.display = "block";
-           deleteButton.style.display = "block";
-           completeButton.style.display = "none";
-           cancelButton.style.display = "none";
-         }
-       };
-     });
-
-
-</script>
-<script>
-    //제목 클릭 시 생기는 모달에서 수정일 있을 시 생성일 안 보이고, 없을 시 생성일 보이게 하기
-    window.addEventListener("DOMContentLoaded", (event) => {
-      // 수정일 있을 경우
-      let updateDate = document.querySelector(".TodoUpdateDate");
-      let genDate = document.querySelector(".TodoGenDate");
-      if (updateDate && updateDate.textContent.trim() !== "") {
-        // 생성일 없애기
-        if (genDate) {
-          updateDate.style.display = "block";
-          genDate.style.display = "none";
-        }
-      } else {
-        // 수정일의 내용이 없을 경우
-        if (genDate) {
-          updateDate.style.display = "none";
-          genDate.style.display = "block";
-        }
-      }
-    });
-</script>
-<script>
-    // title클릭 시 나오는 모달의 설정 - 수정 클릭 시
-    document.addEventListener("DOMContentLoaded", function () {
-      const todoIndex = document.querySelector("#todoIndex").value;
-      const editButton = document.querySelector(".TodoEdit");
-      const completeButton = document.querySelector(".TodoEditSubmit");
-      const contentDiv = document.querySelector(".TodoContent");
-      const contentTextarea = document.querySelector(".TodoContentEdit");
-      const deleteButton = document.querySelector(".TodoDelete");
-      const cancelButton = document.querySelector(".TodoCancel");
-
-      editButton.addEventListener("click", function () {
-        // 기존 내용을 textarea로 복사
-        contentTextarea.value = contentDiv.textContent;
-
-        // 요소를 보이거나 숨김
-        contentDiv.style.display = "none";
-        contentTextarea.style.display = "block";
-        editButton.style.display = "none";
-        deleteButton.style.display = "none";
-        completeButton.style.display = "block";
-        cancelButton.style.display = "block";
-      });
-
-      completeButton.addEventListener("click", function () {
-        const updatedContent = contentTextarea.value;
-
-        //
-        $.ajax({
-          url: "/todo/update/${todoIndex}, // 여기에 서버 엔드포인트 URL을 지정
-          method: "POST",
-          data: {
-            todoIndex: todoIndex,
-            content: updatedContent,
-          },
-          success: function (response) {
-            // 성공 시 .TodoContent 갱신 및 원래 상태로 되돌리기
-            contentDiv.textContent = updatedContent;
-            contentDiv.style.display = "block";
-            contentTextarea.style.display = "none";
-            editButton.style.display = "block";
-            completeButton.style.display = "none";
-            deleteButton.style.display = "block";
-            cancelButton.style.display = "none";
-          },
-          error: function (error) {
-            console.error("Error updating content:", error);
-          },
+                event.stopPropagation(); // 이 이벤트가 상위 Dom에 적용 안되게 막음
+            });
         });
-      });
-      cancelButton.addEventListener("click", function () {
-        // 수정 취소 클릭 시에 display상태
+
+        // menuItem 외부 클릭 시 menuItem 숨김
+        document.addEventListener("click", function () {
+            if (currentOpenMenuItem) {
+                currentOpenMenuItem.style.display = "none";
+                currentOpenMenuItem = null;
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // 전역 변수
+    const modal = document.getElementById("titleModal");
+    const titles = document.querySelectorAll(".TodoTitle");
+    const modalTitle = document.querySelector(".modalTitle");
+    const span = document.getElementsByClassName("close")[0];
+    const todoIndex = document.querySelector("#todoIndex").value;
+    const editButton = document.querySelector(".TodoEdit");
+    const completeButton = document.querySelector(".TodoEditSubmit");
+    const contentDiv = document.querySelector(".TodoContent");
+    const contentTextarea = document.querySelector(".TodoContentEdit");
+    const deleteButton = document.querySelector(".TodoDelete");
+    const cancelButton = document.querySelector(".TodoCancel");
+
+    // .TodoTitle 클릭 시 모달창을 연다.
+    titles.forEach(function(title) { // forEach 사용
+        title.onclick = function () {
+            modalTitle.textContent = this.textContent;
+            modal.style.display = "block";
+        };
+    });
+
+    // x 혹은 모달 외부 클릭 시 모달창을 닫는다.
+    window.onclick = function(event) {
+    if (event.target === modal) {
+        modal.style.display = "none";
         contentDiv.style.display = "block";
         contentTextarea.style.display = "none";
         editButton.style.display = "block";
         deleteButton.style.display = "block";
         completeButton.style.display = "none";
         cancelButton.style.display = "none";
-      });
+        }
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+        contentDiv.style.display = "block";
+        contentTextarea.style.display = "none";
+        editButton.style.display = "block";
+        deleteButton.style.display = "block";
+        completeButton.style.display = "none";
+        cancelButton.style.display = "none";
+    };
+
+
+    // 수정일 있을 경우 생성일을 숨기고, 없을 경우 생성일을 보여준다.
+    const updateDate = document.querySelector(".TodoUpdateDate");
+    const genDate = document.querySelector(".TodoGenDate");
+    if (updateDate && updateDate.textContent.trim() !== "") {
+        if (genDate) {
+            updateDate.style.display = "block";
+            genDate.style.display = "none";
+        }
+    } else {
+        if (genDate) {
+            updateDate.style.display = "none";
+            genDate.style.display = "block";
+        }
+    }
+
+    // 수정 버튼 클릭시의 동작을 정의
+    editButton.addEventListener("click", function () {
+        contentTextarea.value = contentDiv.textContent;
+        contentDiv.style.display = "none";
+        contentTextarea.style.display = "block";
+        editButton.style.display = "none";
+        deleteButton.style.display = "none";
+        completeButton.style.display = "block";
+        cancelButton.style.display = "block";
     });
+
+    // 수정 완료 버튼 클릭시의 동작을 정의
+    completeButton.addEventListener("click", function () {
+        const updatedContent = contentTextarea.value;
+        $.ajax({
+            url: "/todo/update/${todoIndex}",
+            method: "POST",
+            data: {
+                todoIndex: todoIndex,
+                content: updatedContent,
+            },
+            success: function (response) {
+                contentDiv.textContent = updatedContent;
+                contentDiv.style.display = "block";
+                contentTextarea.style.display = "none";
+                editButton.style.display = "block";
+                completeButton.style.display = "none";
+                deleteButton.style.display = "block";
+                cancelButton.style.display = "none";
+            },
+            error: function (error) {
+                console.error("내용 업데이트 중 오류:", error);
+            },
+        });
+    });
+
+    // 취소 버튼 클릭시의 동작을 정의
+    cancelButton.addEventListener("click", function () {
+        contentDiv.style.display = "block";
+        contentTextarea.style.display = "none";
+        editButton.style.display = "block";
+        deleteButton.style.display = "block";
+        completeButton.style.display = "none";
+        cancelButton.style.display = "none";
+    });
+});
+
 </script>
 <script>
     //모달창 1 - Todo 추가 클릭 시 열리는 것

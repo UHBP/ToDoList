@@ -40,7 +40,7 @@
         </form>
     </div>
     <!-- /* 할일 목록 (정렬 th:fragment 사용) */ -->
-    <div id="todoListContainer" th:fragment="todoList">
+    <div id="todoListContainer" th:fragment="sortTodo">
     <div class="ToDoList" th:each="todoList : ${todoLists}">
         <div class="checkbox-wrap">
             <input type="checkbox" class="ListCheckbox"/>
@@ -171,7 +171,7 @@
 </div>
 </body>
 <script>
-    // Sort & Pin
+    // Sort
     document.getElementById('selectOption').addEventListener('change', function () {
         // 선택한 옵션 값을 가져옴
         const selectedOption = this.value;
@@ -179,7 +179,7 @@
         // 서버로 선택한 옵션 값을 전송
         $.ajax({
             type: 'GET',
-            url: '/todo/sortedList',
+            url: '/todo/sort',
             data: { sortingOption: selectedOption },
             success: function (data) {
                 // 성공적으로 데이터를 받았을 때
@@ -192,39 +192,6 @@
         });
     });
 </script>
-<!-- <script>
-    $(document).ready(function() {
-        $('#selectOption').on('change', function() {
-            var sortingOption = $(this).val();
-            $('#todoList').html('로딩중...');
-
-            $.get('/todo/sortedList', {sortingOption: sortingOption})
-                .done(function(data) {
-                    $('#todoList').html(data);
-                });
-        });
-    });
-</script>
-<script>
-    // Sort & Pin
-    document.getElementById('selectOption').addEventListener('change', function() {
-        // 선택한 옵션 값을 가져옴
-       const selectedOption = this.value;
-
-       // 서버로 선택한 옵션 값을 전송
-       fetch('/todo/sort/' + selectedOption)
-        .then(response => {
-            if(response.ok) {
-                console.log('정렬 성공');
-            } else {
-                console.error('정렬 실패');
-            }
-        })
-        .catch(error => {
-             console.error('정렬 실패');
-        });
-    });
-</script> -->
 
 <script>
     // Todo를 공유할 회원의 아이디 검색하는 코드

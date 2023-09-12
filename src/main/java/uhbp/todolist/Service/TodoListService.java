@@ -1,6 +1,5 @@
 package uhbp.todolist.Service;
 
-import uhbp.todolist.domain.Member;
 import uhbp.todolist.domain.TodoList;
 import uhbp.todolist.dto.TodoListRequest;
 import uhbp.todolist.exception.NoSuchMemberException;
@@ -12,9 +11,6 @@ public interface TodoListService {
 
     void createTodo(TodoListRequest todoListRequest, HttpServletRequest request) throws NoSuchMemberException;
 
-    // 현재 로그인한 회원 INDEX 가져오기
-    Member getCurrentMember(HttpServletRequest request) throws NoSuchMemberException;
-
     List<TodoList> readTodo(HttpServletRequest request) throws NoSuchMemberException;
 
 //    // 할일 수정
@@ -25,10 +21,8 @@ public interface TodoListService {
 
     void deleteTodo(Long todoIndex);
 
-//    // 마감일순 정렬
-//    List<TodoList> dueDateAscTodo();
-//
-//    // 기본순 정렬
-//    List<TodoList> genDateAscTodo();
+    List<TodoList> genDateAscTodo(HttpServletRequest request) throws NoSuchMemberException;
+
+    List<TodoList> dueDateAscTodo(HttpServletRequest request) throws NoSuchMemberException;
 
 }

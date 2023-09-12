@@ -39,9 +39,8 @@ public class TodoListServiceImple implements TodoListService {
     }
 
 
-    @Override
     // 현재 로그인한 회원 INDEX 가져오기
-    public Member getCurrentMember(HttpServletRequest request) throws NoSuchMemberException {
+    private Member getCurrentMember(HttpServletRequest request) throws NoSuchMemberException {
         Long currentMemberIndex = cookieMemberStore.findValueByKey(request);
         return memberRepository.findById(currentMemberIndex)
                 .orElseThrow(() -> new NoSuchMemberException("로그인한 사용자 정보를 찾을 수 없습니다."));
@@ -101,36 +100,25 @@ public class TodoListServiceImple implements TodoListService {
         );
     }
 
-
     // 할일 삭제
     @Override
     public void deleteTodo(Long todoIndex) {
         todoListRepository.deleteByTodoIndex(todoIndex);
     }
 
-//    @Override
-//    public void deleteTodo(Long todoIndex, HttpServletRequest request) throws NoSuchMemberException {
-//        Member currentMember = getCurrentMember(request);
-//        // 삭제하려는 할일이 현재 로그인한 회원의 것인지 확인
-//        TodoList todoToDelete = todoListRepository.findByTodoIndexAndMember(todoIndex, currentMember);
-//        if (todoToDelete != null) {
-//            // 할일 삭제
-//            todoListRepository.delete(todoToDelete);
-//        } else {
-//            throw new NoSuchMemberException("삭제할 할일을 찾을 수 없습니다.");
-//        }
-//    }
 
-//    // 마감일순 정렬
-//    @Override
-//    public List<TodoList> dueDateAscTodo() {
-//        return todoListRepository.findAllByOrderByTodoDuedateAsc();
-//    }
-//
-//    // 기본순 정렬
-//    @Override
-//    public List<TodoList> genDateAscTodo() {
-//        return todoListRepository.findAllByOrderByTodoGendateAsc();
-//    }
+    // 기본 순 정렬
+    @Override
+    public List<TodoList> genDateAscTodo(HttpServletRequest request) throws NoSuchMemberException {
+        Member currentMember = getCurrentMember(request);
+        return todoListRepository.findAllByOrderByTodoGendateAsc(currentMember);
+    }
+
+    // 마감일 순 정렬
+    @Override
+    public List<TodoList> dueDateAscTodo(HttpServletRequest request) throws NoSuchMemberException {
+        Member currentMember = getCurrentMember(request);
+        return todoListRepository.findAllByOrderByTodoDuedateAsc(currentMember);
+    }
 
 }

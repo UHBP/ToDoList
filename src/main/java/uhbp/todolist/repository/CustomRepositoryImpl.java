@@ -39,12 +39,25 @@ public class CustomRepositoryImpl implements CustomRepository {
                 .fetch();  // fetch() : 조회 대상 전체를 반환
     }
 
+
     @Override
-    public List<TodoList> findAllByOrderByTodoDuedateAsc(Member currentMember) {
+    public List<TodoList> findAllByOrderByTodoGendateAsc(Member currentMember) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QTodoList todoList = QTodoList.todoList;
 
         // OrderSpecifier : Querydsl 라이브러리에서 제공하는 클래스, JPA 쿼리에서 정렬 순서를 지정할 때 사용
+        OrderSpecifier<LocalDate> orderByGenDateAsc = todoList.todoGendate.asc();
+
+        return queryFactory.selectFrom(todoList)
+                .where(todoList.member.eq(currentMember))
+                .orderBy(todoList.todoIspinned.desc(), orderByGenDateAsc)
+                .fetch();
+    }
+
+    @Override
+    public List<TodoList> findAllByOrderByTodoDuedateAsc(Member currentMember) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QTodoList todoList = QTodoList.todoList;
         OrderSpecifier<LocalDate> orderByDueDateAsc = todoList.todoDuedate.asc();
 
         return queryFactory.selectFrom(todoList)
@@ -53,15 +66,4 @@ public class CustomRepositoryImpl implements CustomRepository {
                 .fetch();
     }
 
-    @Override
-    public List<TodoList> findAllByOrderByTodoGendateAsc(Member currentMember) {
-        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        QTodoList todoList = QTodoList.todoList;
-        OrderSpecifier<LocalDate> orderByGenDateAsc = todoList.todoGendate.asc();
-
-        return queryFactory.selectFrom(todoList)
-                .where(todoList.member.eq(currentMember))
-                .orderBy(todoList.todoIspinned.desc(), orderByGenDateAsc)
-                .fetch();
-    }
 }

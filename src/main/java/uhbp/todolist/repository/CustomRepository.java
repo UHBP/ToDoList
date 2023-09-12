@@ -9,7 +9,7 @@ public interface CustomRepository {
 
     List<Member> findMember(String searchId);
 
-    List<TodoList> findAllByOrderByTodoDuedateAsc(Member currentMember);
     List<TodoList> findAllByOrderByTodoGendateAsc(Member currentMember);
+    List<TodoList> findAllByOrderByTodoDuedateAsc(Member currentMember);
 
 }

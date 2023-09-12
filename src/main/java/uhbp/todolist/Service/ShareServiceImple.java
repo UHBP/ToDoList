@@ -64,7 +64,6 @@ public class ShareServiceImple implements ShareService {
 
             // 팩토리를 통해 Entity 생성
             TodoShareApproveQueue shareTodo = TodoShareApproveQueue.todoShareApproveQueueFactory(todo, selectedMember, loginMember, LocalDate.now());
-            System.out.println("팩토리 : " + shareTodo);
             // 위에서 생성한 Entity를 DB에 저장
             shareRepository.save(shareTodo);
 

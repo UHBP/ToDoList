@@ -23,13 +23,12 @@ public class SseController {
 
     @GetMapping(value="/sub", consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribe(HttpServletRequest request){
-        System.out.println("컨트롤러 진입");
         // 현재 로그인한 사용자의 index
         Long loginIndex = cookieMemberStore.findValueByKey(request);
 
         // 현재 사용자를 위한 SseEmitter 생성
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
-        System.out.println("에미터 : " + emitter);
+
         try {
             // 연결
             emitter.send(SseEmitter.event().name("connect"));
@@ -39,7 +38,6 @@ public class SseController {
 
         // 사용자의 index 값을 key 값으로 하여 emitter를 Map에 저장
         sseEmitters.put(loginIndex, emitter);
-        System.out.println("emitter map : " + sseEmitters);
 
         // 만료, 타임아웃, 에러 발생 시 해당 emitter 삭제
         emitter.onCompletion(() -> sseEmitters.remove(loginIndex));

@@ -1,5 +1,6 @@
 package uhbp.todolist.Service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,9 @@ import uhbp.todolist.domain.Member;
 import uhbp.todolist.domain.TodoShareApproveQueue;
 import uhbp.todolist.repository.MemberRepository;
 import uhbp.todolist.repository.TodoShareApproveQueueRepository;
+import uhbp.todolist.session.CookieMemberStore;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import java.io.IOException;
@@ -19,7 +22,10 @@ import static uhbp.todolist.Controller.SseController.sseEmitters;
 @Service
 @Transactional
 @Slf4j
+@RequiredArgsConstructor
 public class AlarmServiceImpl implements AlarmService{
+
+    private final CookieMemberStore cookieMemberStore;
     @Autowired
     private TodoShareApproveQueueRepository shareRepository;
 
@@ -33,7 +39,6 @@ public class AlarmServiceImpl implements AlarmService{
         Member sharedMember = memberRepository.findById(loginIndex).get();
         // 현재 로그인한 사용자에게 공유된 todo가 있는지 조회
         List<TodoShareApproveQueue> approvals = shareRepository.findBySharedMemberIndex(sharedMember);
-        System.out.println("공유된 거: " + approvals);
 
         // 공유된 todo가 있는 경우
         if(approvals != null){
@@ -43,8 +48,6 @@ public class AlarmServiceImpl implements AlarmService{
                 if(sseEmitters.containsKey(loginIndex)) {
                     // 해당 emitter를 가져옴
                     SseEmitter emitter = sseEmitters.get(loginIndex);
-                    System.out.println("login index: " + loginIndex);
-                    System.out.println("에미터: " + emitter);
                     try {
                         // 해당 emitter에 이벤트 발행
                         emitter.send(SseEmitter.event().name("alarm").data("공유 요청이 들어왔습니다."));
@@ -54,5 +57,15 @@ public class AlarmServiceImpl implements AlarmService{
                 }
             }
         }
+    }
+
+    @Override
+    public int countShare(HttpServletRequest request) {
+        // 현재 로그인한 사용자의 index
+        long memberIndex = cookieMemberStore.findValueByKey(request);
+        Member loginMember = memberRepository.findById(memberIndex).get();
+        int shareCount = shareRepository.findBySharedMemberIndex(loginMember).size();
+
+        return shareCount;
     }
 }

@@ -19,7 +19,10 @@
             </div>
             님의 ToDoList
         </div>
-        <div id="sse"></div>
+        <div id="sse">
+            <img src="/resources/img/notification_black.png"/>
+            <span th:text="${shareCount}" style="color:white; border-radius:50%; background-color:red; width:20px; height:20px"></span>
+        </div>
         <div id="addToDoList" th:href="@{/todo/init}">ToDo 추가</div>
     </div>
     <div id="tagAndSelect">
@@ -40,7 +43,7 @@
         <div class="checkbox-wrap">
             <input type="checkbox" class="ListCheckbox"> <!--th:checked="${todoList.todoIspinned}"-->
         </div>
-        <div class="TodoIndex" style="display:none;">1</div>
+        <div class="TodoIndex" style="display:none;">7</div>
         <div class="TodoTitle">제목</div>
         <div class="DueDate">2023/8/22</div>
         <div class="Category">공부</div>
@@ -161,6 +164,7 @@
 </div>
 </body>
 <script>
+    // SSE를 위한 에미터 등록하는 코드 & 실시간으로 공유알림(alarm) 받는 코드
     $(document).ready(function(){
         const eventSource = new EventSource("/sub");
 
@@ -170,7 +174,6 @@
         });
 
         eventSource.addEventListener("error", function(event){
-
             eventSource.close();
         });
     });

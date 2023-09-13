@@ -59,7 +59,7 @@ public class TodoListServiceImple implements TodoListService {
     @Override
     public List<TodoList> readTodo(HttpServletRequest request) throws NoSuchMemberException {
         Member currentMember = getCurrentMember(request);
-        return todoListRepository.findAllByMember(currentMember);
+        return todoListRepository.findAllByMemberOrderByTodoIspinnedDesc(currentMember);
     }
 
 
@@ -120,5 +120,16 @@ public class TodoListServiceImple implements TodoListService {
         Member currentMember = getCurrentMember(request);
         return todoListRepository.findAllByOrderByTodoDuedateAsc(currentMember);
     }
+
+    // 핀 설정
+    @Override
+    public void setTodoIspinned(Long todoIndex, boolean isPinned) {
+        TodoList todoList = todoListRepository.findById(todoIndex)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 할일 목록이 존재하지 않습니다."));
+        todoList.setTodoIspinned(isPinned);
+        todoListRepository.save(todoList);
+
+    }
+
 
 }

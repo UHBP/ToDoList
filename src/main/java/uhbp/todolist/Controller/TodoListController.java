@@ -9,7 +9,6 @@ import uhbp.todolist.Service.TodoListService;
 import uhbp.todolist.domain.TodoList;
 import uhbp.todolist.dto.TodoListRequest;
 import uhbp.todolist.exception.NoSuchMemberException;
-import uhbp.todolist.exception.TodoListNotFoundException;
 import uhbp.todolist.repository.TodoListRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,13 +71,16 @@ public class TodoListController {
 
     // (Pin) 할일 상단 고정
     @PostMapping("/pin")
-    public String pinTodo(@PathVariable Long todoIndex) {
-        TodoList todoList = todoListRepository.findById(todoIndex)
-                .orElseThrow(() -> new TodoListNotFoundException("할일 목록을 찾을 수 없습니다."));
-        todoList.setTodoIspinned(true);
-        log.info("핀 = {}", todoList);
-        todoListRepository.save(todoList);
-
+    public String pinTodo(@RequestParam("todoIndex") Long todoIndex) {
+        todoListService.setTodoIspinned(todoIndex, true);
         return "redirect:/";
     }
+
+    // (Pin) 할일 상단 고정 해제
+    @PostMapping("/unpin")
+    public String unpinTodo(@RequestParam("todoIndex") Long todoIndex) {
+        todoListService.setTodoIspinned(todoIndex, false);
+        return "redirect:/";
+    }
+
 }

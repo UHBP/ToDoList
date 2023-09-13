@@ -9,7 +9,11 @@ import java.util.List;
 
 @Repository
 public interface TodoListRepository extends JpaRepository<TodoList, Long>, CustomRepository {
-    List<TodoList> findAllByMember(Member currentMember);
+    // 할일 목록 Read
+    // List<TodoList> findAllByMember(Member currentMember);
+
+    // 할일 목록 Read + Pin 포함
+    List<TodoList> findAllByMemberOrderByTodoIspinnedDesc(Member currnetMember);
 
     void deleteByTodoIndex(Long todoIndex);
 

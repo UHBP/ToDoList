@@ -173,26 +173,92 @@
 </div>
 </body>
 <script>
-    // Sort
-    document.getElementById('selectOption').addEventListener('change', function () {
-        // 선택한 옵션 값을 가져옴
-        const selectedOption = this.value;
+    //특정 ㅇㅇ순 정렬할 때 스크립트
+    //마감기한 지났을 때 색깔,상태 조정
+function setDueDateWarnings() {
+    let toDoLists = document.querySelectorAll(".ToDoList");
 
-        // 서버로 선택한 옵션 값을 전송
-        $.ajax({
-            type: 'GET',
-            url: '/todo/sort',
-            data: { sortingOption: selectedOption },
-            success: function (data) {
-                // 성공적으로 데이터를 받았을 때
-                $('#todoListContainer').html(data);
-                console.log('정렬 성공');
-            },
-            error: function () {
-                console.error('정렬 실패');
+    toDoLists.forEach((toDoList) => {
+        let checkbox = toDoList.querySelector(".ListCheckbox");
+        let dueDateDiv = toDoList.querySelector(".DueDate");
+
+        if (!checkbox.checked) {
+            let dueDateValue = new Date(dueDateDiv.textContent);
+            let now = new Date();
+
+            if (dueDateValue < now) {
+                let breakTag = document.createElement("br");
+                dueDateDiv.appendChild(breakTag);
+                let overdueNote = document.createElement("span");
+                overdueNote.textContent = "(마감 기한 지남)";
+                overdueNote.style.color = "red";
+                dueDateDiv.appendChild(overdueNote);
             }
-        });
+        }
     });
+}
+
+    //카테고리 종류에 따른 색깔 지정
+function setCategoryBackgroundColors() {
+    var categoryElements = document.querySelectorAll('.ToDoList .Category');
+
+    function setCategoryBackgroundColor(categoryElement) {
+        let category = categoryElement.textContent.trim();
+
+        switch (category) {
+            case "STUDY":
+                categoryElement.style.backgroundColor = "orange";
+                categoryElement.textContent = "공부";
+                break;
+            case "EXERCISE":
+                categoryElement.style.backgroundColor = "rgb(130, 186, 146)";
+                categoryElement.textContent = "운동";
+                break;
+            case "APPOINTMENT":
+                categoryElement.style.backgroundColor = "skyblue";
+                categoryElement.textContent = "약속";
+                break;
+            case "OTHER":
+                categoryElement.style.backgroundColor = "midnightblue";
+                categoryElement.textContent = "그 외";
+                break;
+            default:
+                categoryElement.style.backgroundColor = "";
+        }
+    }
+
+    categoryElements.forEach(function (categoryElement) {
+        setCategoryBackgroundColor(categoryElement);
+    });
+}
+
+// 페이지가 처음 로드될 때 적용
+document.addEventListener("DOMContentLoaded", function () {
+    setDueDateWarnings();
+    setCategoryBackgroundColors();
+});
+
+// 정렬 관련 Ajax
+document.getElementById('selectOption').addEventListener('change', function () {
+    const selectedOption = this.value;
+
+    $.ajax({
+        type: 'GET',
+        url: '/todo/sort',
+        data: { sortingOption: selectedOption },
+        success: function (data) {
+            $('#todoListContainer').html(data);
+            // 정렬 후에도 해당 함수를 다시 호출하여 적용
+            setDueDateWarnings();
+            setCategoryBackgroundColors();
+            console.log('정렬 성공');
+        },
+        error: function () {
+            console.error('정렬 실패');
+        }
+    });
+});
+
 </script>
 
 <script>
@@ -342,74 +408,6 @@
         });
       });
     });
-
-</script>
-<script>
-    //마감일에 따라서 마감 기한 지남 경고 주는 코드
-    document.addEventListener("DOMContentLoaded", function () {
-      let toDoLists = document.querySelectorAll(".ToDoList");
-
-      toDoLists.forEach((toDoList) => {
-        let checkbox = toDoList.querySelector(".ListCheckbox");
-        let dueDateDiv = toDoList.querySelector(".DueDate");
-
-        // 체크박스가 unchecked 상태이고
-        if (!checkbox.checked) {
-          let dueDateValue = new Date(dueDateDiv.textContent); // 마감일을 Date 객체로 변환 (마감일 형식은 YYYY-MM-DD나 다른 형식에 따라 파싱 코드를 수정해야 할 수 있습니다.)
-          let now = new Date();
-
-          // 마감일이 현재 시각보다 이전이면
-          if (dueDateValue < now) {
-            let breakTag = document.createElement("br");
-            dueDateDiv.appendChild(breakTag);
-            let overdueNote = document.createElement("span");
-            overdueNote.textContent = "(마감 기한 지남)";
-            overdueNote.style.color = "red";
-            dueDateDiv.appendChild(overdueNote);
-          }
-        }
-      });
-    });
-
-</script>
-<script>
-    //카테고리 값에 따라서 .ToDoList > .Category의 background-color값이 지정된 값으로 변환
-    //이 때, #tagAndSelect > #tag와 색을 동일하게 만들어줌
-    document.addEventListener("DOMContentLoaded", function () {
-    var categoryElements = document.querySelectorAll('.ToDoList .Category');
-
-    function setCategoryBackgroundColor(categoryElement) {
-        let category = categoryElement.textContent.trim();
-
-        switch (category) {
-            case "STUDY":
-                categoryElement.style.backgroundColor = "orange";
-                categoryElement.textContent = "공부";;
-                break;
-            case "EXERCISE":
-                categoryElement.style.backgroundColor = "rgb(130, 186, 146)";
-                categoryElement.textContent ="운동";
-                break;
-            case "APPOINTMENT":
-                categoryElement.style.backgroundColor = "skyblue";
-                categoryElement.textContent ="약속";
-                break;
-            case "OTHER":
-                categoryElement.style.backgroundColor = "midnightblue";
-                categoryElement.textContent="그 외";
-                break;
-            default:
-                categoryElement.style.backgroundColor = ""; // 기본값이나 다른 색상으로 설정하실 수 있습니다.
-        }
-    }
-
-    categoryElements.forEach(function (categoryElement) {
-        // 초기 배경색 설정
-        setCategoryBackgroundColor(categoryElement);
-    });
-
-});
-
 
 </script>
 <script>

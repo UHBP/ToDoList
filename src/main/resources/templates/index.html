@@ -162,7 +162,41 @@
 
     </div>
 </div>
+<!--modal - 알람 클릭 시-->
+<div id="alarmModal" class="modal3">
+    <div class="alarmModal-content">
+        <div class="close3">
+            <div class="close3-shape">x</div>
+        </div>
+<!--        여기에다가 추가 하면 댐-->
+    </div>
+</div>
 </body>
+<script>
+    //모달창 1 - .alarmTitle 클릭시 열리는 것
+     document.addEventListener("DOMContentLoaded", function () {
+       var modal = document.getElementById("alarmModal");
+       var span = document.getElementsByClassName("close3")[0];
+       var alarm = document.getElementById("sse");
+
+       //.alarmTitle 클릭 시 모달 열림
+       alarm.onclick = function () {
+         modal.style.display = "block";
+       };
+
+       // x 혹은 외부 클릭 시 모달 꺼짐
+       span.onclick = function () {
+         modal.style.display = "none";
+       };
+
+       //모달 외부 클릭 시 모달 꺼짐
+       window.onclick = function (event) {
+         if (event.target == modal) {
+           modal.style.display = "none";
+         }
+       };
+     });
+</script>
 <script>
     // SSE를 위한 에미터 등록하는 코드 & 실시간으로 공유알림(alarm) 받는 코드
     $(document).ready(function(){
@@ -444,8 +478,6 @@
          }
        };
      });
-
-
 </script>
 <script>
     //제목 클릭 시 생기는 모달에서 수정일 있을 시 생성일 안 보이고, 없을 시 생성일 보이게 하기

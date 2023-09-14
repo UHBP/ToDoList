@@ -21,7 +21,7 @@
         </div>
         <div id="sse">
             <img src="/resources/img/notification_black.png"/>
-            <span th:text="${shareCount}" style="color:white; border-radius:50%; background-color:red; width:20px; height:20px"></span>
+            <span th:if="${shareCount > 0}" th:text="${shareCount}" style="color:white; border-radius:50%; background-color:red; width:20px; height:20px"></span>
         </div>
         <div id="addToDoList" th:href="@{/todo/init}">ToDo 추가</div>
     </div>
@@ -168,7 +168,34 @@
         <div class="close3">
             <div class="close3-shape">x</div>
         </div>
-<!--        여기에다가 추가 하면 댐-->
+
+        <div style="font-weight:bold;">회원님에게 공유된 ToDoList 내역</div>
+        <br>
+        <div>
+            <div>
+                <div class="approve-checkbox1"></div>
+                <div class="shared-nickname1">공유자</div>
+                <div class="shared-title1">제목</div>
+                <div class="shared-content1">내용</div>
+                <div class="shared-date1">공유일자</div>
+            </div>
+        </div>
+
+        <form>
+            <div>
+                <div>
+                    <div class="approve-checkbox"></div>
+                    <div class="shared-nickname">공유자</div>
+                    <div class="shared-title">제목</div>
+                    <div class="shared-content">내용</div>
+                    <div class="shared-date">공유일자</div>
+                </div>
+            </div>
+            <button class="approve">승인</button>
+            <button class="refuse">거절</button>
+        </form>
+
+
     </div>
 </div>
 </body>
@@ -181,7 +208,22 @@
 
        //.alarmTitle 클릭 시 모달 열림
        alarm.onclick = function () {
-         modal.style.display = "block";
+        $.ajax({
+          type: 'POST',
+          url: '/share/getSharedTodo',
+          success: function(response){
+            if(typeof response === 'string' && response === "새로운 알림이 없습니다."){
+                alert(response);
+            } else{
+                alert("컨트롤러 통신 성공 !");
+                console.log(response);
+                modal.style.display = "block";
+            }
+          },
+          error: function(error){
+            alert("다시 시도해주세요.");
+          }
+        });
        };
 
        // x 혹은 외부 클릭 시 모달 꺼짐

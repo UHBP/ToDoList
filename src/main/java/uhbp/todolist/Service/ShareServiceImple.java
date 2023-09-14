@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import uhbp.todolist.domain.Member;
 import uhbp.todolist.domain.TodoList;
 import uhbp.todolist.domain.TodoShareApproveQueue;
+import uhbp.todolist.exception.SharedTodoNotFoundException;
 import uhbp.todolist.repository.MemberRepository;
 import uhbp.todolist.repository.TodoListRepository;
 import uhbp.todolist.repository.TodoShareApproveQueueRepository;
@@ -70,6 +71,17 @@ public class ShareServiceImple implements ShareService {
             // sse 알림 (공유받는 사용자의 index 넘겨서 해당 사용자의 emitter에 알림 이벤트 발행)
             alarmService.alarmShareEvent(selectedMember.getMemberIndex());
         }
+    }
+
+    @Override
+    public List<TodoShareApproveQueue> getSharedTodo(Long loginIndex) {
+        Member loginMember = memberRepository.findById(loginIndex).get();
+        List<TodoShareApproveQueue> sharedTodo = shareRepository.findBySharedMemberIndex(loginMember);
+        if(sharedTodo == null){
+            // 예외 발생 : 공유된 ToDo가 없음
+            throw new SharedTodoNotFoundException("공유된 ToDo가 없습니다.");
+        }
+        return sharedTodo;
     }
 
     @Override

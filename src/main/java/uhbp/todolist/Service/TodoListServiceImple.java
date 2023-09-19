@@ -131,5 +131,14 @@ public class TodoListServiceImple implements TodoListService {
 
     }
 
+    @Override
+    public List<TodoList> filterTodoByCategory(String category, HttpServletRequest request) throws NoSuchMemberException {
+        Member currentMember = getCurrentMember(request);
+        if ("ALL".equals(category)) {
+            return todoListRepository.findAllByMemberOrderByTodoIspinnedDesc(currentMember);
+        }
+        return todoListRepository.findByTodoCategoryAndMemberOrderByTodoIspinnedDesc(TodoCategory.valueOf(category), currentMember);
+    }
+
 
 }

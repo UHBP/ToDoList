@@ -65,7 +65,7 @@ public class TodoListController {
         }
         model.addAttribute("todoLists", todoLists);
         // log.info("받아온 정렬 리스트 = {}", todoLists);
-        return "index::sortTodo"; // th:fragment 해당 템플릿 조각을 렌더링
+        return "index::todoListFragment"; // th:fragment 해당 템플릿 조각을 렌더링
     }
 
 
@@ -81,6 +81,22 @@ public class TodoListController {
     public String unpinTodo(@RequestParam("todoIndex") Long todoIndex) {
         todoListService.setTodoIspinned(todoIndex, false);
         return "redirect:/";
+    }
+
+    // (Category) 카테고리 선택
+    @GetMapping("/selectCategory")
+    public String selectCategory(Model model, @RequestParam String category, HttpServletRequest request) throws NoSuchMemberException {
+        List<TodoList> todoLists;
+        if ("ALL".equals(category)) {
+            // 전체 카테고리인 경우 정렬된 전체 할일 목록을 가져옴
+            todoLists = todoListService.readTodo(request);
+        } else {
+            // 선택한 카테고리로 할일을 필터링
+            todoLists = todoListService.filterTodoByCategory(category, request);
+        }
+        // log.info("카테고리에 해당하는 글 = {}", todoLists);
+        model.addAttribute("todoLists", todoLists);
+        return "index::todoListFragment"; // th:fragment 해당 템플릿 조각을 렌더링
     }
 
 }

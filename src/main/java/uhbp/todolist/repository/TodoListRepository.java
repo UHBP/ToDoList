@@ -3,6 +3,7 @@ package uhbp.todolist.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import uhbp.todolist.domain.Member;
+import uhbp.todolist.domain.TodoCategory;
 import uhbp.todolist.domain.TodoList;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public interface TodoListRepository extends JpaRepository<TodoList, Long>, Custo
 
     void deleteByTodoIndex(Long todoIndex);
 
+   // List<TodoList> findByMemberAndTodoCategoryOrderByTodoDuedateAsc(Member currentMember, TodoCategory todoCategory);
+
+    List<TodoList> findByTodoCategoryAndMemberOrderByTodoIspinnedDesc(TodoCategory todoCategory, Member currentMember);
 }

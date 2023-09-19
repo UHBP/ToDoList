@@ -75,4 +75,22 @@ public class ShareController {
         }
     }
 
+    @PostMapping("/approve")
+    @ResponseBody
+    public String approveSelectedShares(@RequestParam("selectedShares") List<TodoShareApproveQueue> selectedShares, HttpServletRequest request){
+        System.out.println("선택된 공유 목록: " + selectedShares);
+        shareService.approveSelectedShares(selectedShares, request);
+
+        return "승인 완료";
+    }
+
+    @PostMapping("/refuse")
+    @ResponseBody
+    public String refuseSelectedShares(@RequestParam("selectedRefuses") List<TodoShareApproveQueue> selectedRefuses){
+        shareService.refuseSelectedShares(selectedRefuses);
+
+        return "거절 완료";
+    }
+
 }
+

@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uhbp.todolist.domain.Member;
 import uhbp.todolist.domain.TodoList;
+import uhbp.todolist.domain.TodoMemberManage;
 import uhbp.todolist.domain.TodoShareApproveQueue;
 import uhbp.todolist.exception.SharedTodoNotFoundException;
 import uhbp.todolist.repository.MemberRepository;
 import uhbp.todolist.repository.TodoListRepository;
+import uhbp.todolist.repository.TodoMemberManageRepository;
 import uhbp.todolist.repository.TodoShareApproveQueueRepository;
 import uhbp.todolist.session.CookieMemberStore;
 
@@ -17,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -27,6 +28,8 @@ public class ShareServiceImple implements ShareService {
 
     private final AlarmServiceImpl alarmService;
 
+    private final CookieMemberStore cookieMemberStore;
+
     @Autowired
     MemberRepository memberRepository;
 
@@ -35,6 +38,9 @@ public class ShareServiceImple implements ShareService {
 
     @Autowired
     TodoListRepository todoRepository;
+
+    @Autowired
+    TodoMemberManageRepository memberManageRepository;
 
     @Override
     public List<Member> search(String searchId) {
@@ -82,6 +88,37 @@ public class ShareServiceImple implements ShareService {
             throw new SharedTodoNotFoundException("공유된 ToDo가 없습니다.");
         }
         return sharedTodo;
+    }
+
+    @Override
+    public void approveSelectedShares(List<TodoShareApproveQueue> selectedShares, HttpServletRequest request) {
+        // 현재 로그인한 사용자의 index
+        long memberIndex = cookieMemberStore.findValueByKey(request);
+        Member loginMember = memberRepository.findById(memberIndex).get();
+
+        // 승인할 todo 하나씩 꺼내기
+        for(TodoShareApproveQueue selectedShare : selectedShares){
+            TodoList todo = selectedShare.getTodoIndex();
+
+            // 팩토리를 통해 Entity 생성
+            TodoMemberManage memberManage = TodoMemberManage.todoMemberManageFactory(loginMember, todo);
+            // 위에서 생성한 Entity를 DB(member_manage)에 저장
+            memberManageRepository.save(memberManage);
+
+            // 승인 대기큐에서는 삭제해주기
+            long approveIndex = selectedShare.getApproveIndex();
+            shareRepository.deleteById(approveIndex);
+        }
+    }
+
+    @Override
+    public void refuseSelectedShares(List<TodoShareApproveQueue> selectedRefuses) {
+        // 거절할 todo 하나씩 꺼내기
+        for(TodoShareApproveQueue selectedRefuse : selectedRefuses){
+            // 대기큐에서 삭제
+            long refuseIndex = selectedRefuse.getApproveIndex();
+            shareRepository.deleteById(refuseIndex);
+        }
     }
 
     @Override

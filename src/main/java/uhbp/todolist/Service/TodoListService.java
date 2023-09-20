@@ -21,4 +21,11 @@ public interface TodoListService {
 
     void deleteTodo(Long todoIndex);
 
+    List<TodoList> genDateAscTodo(HttpServletRequest request) throws NoSuchMemberException;
+
+    List<TodoList> dueDateAscTodo(HttpServletRequest request) throws NoSuchMemberException;
+
+    void setTodoIspinned(Long todoIndex, boolean isPinned);
+
+    List<TodoList> filterTodoByCategory(String category, HttpServletRequest request) throws NoSuchMemberException;
 }

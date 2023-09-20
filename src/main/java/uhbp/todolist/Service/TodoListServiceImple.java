@@ -59,7 +59,7 @@ public class TodoListServiceImple implements TodoListService {
     @Override
     public List<TodoList> readTodo(HttpServletRequest request) throws NoSuchMemberException {
         Member currentMember = getCurrentMember(request);
-        return todoListRepository.findAllByMember(currentMember);
+        return todoListRepository.findAllByMemberOrderByTodoIspinnedDesc(currentMember);
     }
 
 
@@ -100,23 +100,45 @@ public class TodoListServiceImple implements TodoListService {
         );
     }
 
-
     // 할일 삭제
     @Override
     public void deleteTodo(Long todoIndex) {
         todoListRepository.deleteByTodoIndex(todoIndex);
     }
 
-//    @Override
-//    public void deleteTodo(Long todoIndex, HttpServletRequest request) throws NoSuchMemberException {
-//        Member currentMember = getCurrentMember(request);
-//        // 삭제하려는 할일이 현재 로그인한 회원의 것인지 확인
-//        TodoList todoToDelete = todoListRepository.findByTodoIndexAndMember(todoIndex, currentMember);
-//        if (todoToDelete != null) {
-//            // 할일 삭제
-//            todoListRepository.delete(todoToDelete);
-//        } else {
-//            throw new NoSuchMemberException("삭제할 할일을 찾을 수 없습니다.");
-//        }
-//    }
+
+    // 기본 순 정렬
+    @Override
+    public List<TodoList> genDateAscTodo(HttpServletRequest request) throws NoSuchMemberException {
+        Member currentMember = getCurrentMember(request);
+        return todoListRepository.findAllByOrderByTodoGendateAsc(currentMember);
+    }
+
+    // 마감일 순 정렬
+    @Override
+    public List<TodoList> dueDateAscTodo(HttpServletRequest request) throws NoSuchMemberException {
+        Member currentMember = getCurrentMember(request);
+        return todoListRepository.findAllByOrderByTodoDuedateAsc(currentMember);
+    }
+
+    // 핀 설정
+    @Override
+    public void setTodoIspinned(Long todoIndex, boolean isPinned) {
+        TodoList todoList = todoListRepository.findById(todoIndex)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 할일 목록이 존재하지 않습니다."));
+        todoList.setTodoIspinned(isPinned);
+        todoListRepository.save(todoList);
+
+    }
+
+    @Override
+    public List<TodoList> filterTodoByCategory(String category, HttpServletRequest request) throws NoSuchMemberException {
+        Member currentMember = getCurrentMember(request);
+        if ("ALL".equals(category)) {
+            return todoListRepository.findAllByMemberOrderByTodoIspinnedDesc(currentMember);
+        }
+        return todoListRepository.findByTodoCategoryAndMemberOrderByTodoIspinnedDesc(TodoCategory.valueOf(category), currentMember);
+    }
+
+
 }

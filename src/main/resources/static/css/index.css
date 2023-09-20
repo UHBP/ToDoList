@@ -511,5 +511,11 @@ body {
   color: white;
   border: none;
 }
+.pinned {
+  display: block;
+}
+.unpinned {
+  display: none;
+}
 
 /*# sourceMappingURL=index.css.map */

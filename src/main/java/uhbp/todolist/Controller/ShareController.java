@@ -44,14 +44,14 @@ public class ShareController {
         Long loginIndex = cookieMemberStore.findValueByKey(request);
 
         // 공유할 todo의 index
-        String todoIndex = requestData.getTodoIndex();
+        Long todoIndex = requestData.getTodoIndex();
         log.info("index = {}", todoIndex);
 
         // 체크박스 선택된 사용자들의 아이디 리스트
         List<String> selectedMembers = requestData.getSelectedMembers();
 
         // 현재 로그인한 사용자의 loginIndex, 공유할 todo의 index, 공유받을 사용자들의 아이디 리스트 대기큐에 저장
-        shareService.shareTodo(loginIndex, todoIndex, selectedMembers);
+        //shareService.shareTodo(loginIndex, todoIndex, selectedMembers);
 
         String result = "공유 완료";
         return ResponseEntity.ok(result);

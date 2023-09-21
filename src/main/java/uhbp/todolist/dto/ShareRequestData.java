@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 public class ShareRequestData {
-    private String todoIndex;
+    private Long todoIndex;
     private List<String> selectedMembers;
 }

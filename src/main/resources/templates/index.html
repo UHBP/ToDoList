@@ -1,183 +1,297 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="/resources/css/index.css"/>
-    <link rel="stylesheet" href="/resources/css/font.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/resources/css/index.css" />
+    <link rel="stylesheet" href="/resources/css/font.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/resources/js/addEmitter.js"></script>
+    <script src="/resources/js/alarmShare.js"></script>
+    <script src="/resources/js/searchShareTarget.js"></script>
+    <script src="/resources/js/shareTodo.js"></script>
     <title>Document</title>
-</head>
-<body>
-<div id="content">
-    <div id="titleLine">
+  </head>
+
+  <body>
+    <div id="content">
+      <div id="titleLine">
         <div id="title">
-            <div th:if="${memberInfo}">
-                <span th:text="${memberInfo.memberNickname}"></span>
-            </div>
-            <div th:unless="${memberInfo}">
-                <span>No member info available.</span>
-            </div>
-            님의 ToDoList
+          <div th:if="${memberInfo}">
+            <span th:text="${memberInfo.memberNickname}"></span>
+          </div>
+          <div th:unless="${memberInfo}">
+            <span>No member info available.</span>
+          </div>
+          님의 ToDoList
         </div>
-        <div id="setting"></div>
+        <div id="sse">
+          <img src="/resources/img/notification_black.png" />
+          <span
+            th:if="${shareCount > 0}"
+            th:text="${shareCount}"
+            style="
+              color: white;
+              border-radius: 50%;
+              background-color: red;
+              width: 20px;
+              height: 20px;
+            "
+          ></span>
+        </div>
+
         <div id="addToDoList">ToDo 추가</div>
-    </div>
-    <div id="tagAndSelect">
+      </div>
+      <div id="tagAndSelect">
         <div id="tag">
-            <div style="background-color: lightcoral" onclick="selectCategory('ALL')">전체</div>
-            <div style="background-color: orange" onclick="selectCategory('STUDY')">공부</div>
-            <div style="background-color: rgb(130, 186, 146)" onclick="selectCategory('EXERCISE')">운동</div>
-            <div style="background-color: skyblue" onclick="selectCategory('APPOINTMENT')">약속</div>
-            <div style="background-color: midnightblue" onclick="selectCategory('OTHER')">기타</div>
-            <div style="background-color: rgb(105, 59, 149)">공유</div>
+          <div
+            style="background-color: lightcoral"
+            onclick="selectCategory('ALL')"
+          >
+            전체
+          </div>
+          <div
+            style="background-color: orange"
+            onclick="selectCategory('STUDY')"
+          >
+            공부
+          </div>
+          <div
+            style="background-color: rgb(130, 186, 146)"
+            onclick="selectCategory('EXERCISE')"
+          >
+            운동
+          </div>
+          <div
+            style="background-color: skyblue"
+            onclick="selectCategory('APPOINTMENT')"
+          >
+            약속
+          </div>
+          <div
+            style="background-color: midnightblue"
+            onclick="selectCategory('OTHER')"
+          >
+            기타
+          </div>
+          <div style="background-color: rgb(105, 59, 149)">공유</div>
         </div>
         <form id="sortingForm">
-            <select id="selectOption" name="sortingOption">
-                <option value="gendate">기본 순</option>
-                <option value="duedate">마감일 순</option>
-            </select>
+          <select id="selectOption" name="sortingOption">
+            <option value="gendate">기본 순</option>
+            <option value="duedate">마감일 순</option>
+          </select>
         </form>
-        <input type="hidden" id="category" name="category" value="ALL">
-    </div>
-    <!-- /* 할일 목록 (정렬 th:fragment 사용) */ -->
-    <div id="todoListContainer" th:fragment="todoListFragment">
+        <input type="hidden" id="category" name="category" value="ALL" />
+      </div>
+      <!-- /* 할일 목록 (정렬 th:fragment 사용) */ -->
+      <div id="todoListContainer" th:fragment="todoListFragment">
         <div class="ToDoList" th:each="todoList : ${todoLists}">
-            <div class="checkbox-wrap">
-                <input type="checkbox" class="ListCheckbox"/>
+          <div class="checkbox-wrap">
+            <input type="checkbox" class="ListCheckbox" />
+          </div>
+          <div class="TodoIndex" th:text="${todoList.todoIndex}" style="display: none"></div>
+          <div class="TodoTitle" th:text="${todoList.todoTitle}"></div>
+          <div class="DueDate" th:text="${todoList.todoDuedate}"></div>
+          <div class="Category" th:text="${todoList.todoCategory}"></div>
+          <div class="ShareMember">닉네임</div>
+          <div class="pin">
+            <div class="pinned" th:if="${todoList.todoIspinned}">
+              <img src="/resources/img/pin.png" />
             </div>
-            <div class="TodoIndex" th:text="${todoList.todoIndex}" style="display:none;"></div>
-            <div class="TodoTitle" th:text="${todoList.todoTitle}"></div>
-            <div class="DueDate" th:text="${todoList.todoDuedate}"></div>
-            <div class="Category" th:text="${todoList.todoCategory}"></div>
-            <div class="ShareMember">닉네임</div>
-            <div class="pin">
-                <div class="pinned" th:if="${todoList.todoIspinned}"><img src="/resources/img/pin.png"/></div>
-                <div class="unpinned" th:unless="${todoList.todoIspinned}"></div>
-            </div>
-            <div>
-                <img class="dots" src="/resources/img/dots.png"/>
-            </div>
-            <div class="ToDoListSetting">
-                <div class="complete">완료하기</div>
-                <div id="share">공유하기</div>
-                <!-- 삭제 버튼을 클릭했을 때 todoIndex를 파라미터로 전달 -->
-                <form th:action="@{/todo/delete}" method="post">
-                    <input type="hidden" th:name="todoIndex" th:value="${todoList.todoIndex}"/>
-                    <button type="submit">삭제하기</button>
-                </form>
-                <form th:action="@{/todo/pin}" method="post">
-                    <input type="hidden" name="todoIndex" th:value="${todoList.todoIndex}"/>
-                    <button type="submit">핀 표시</button>
-                </form>
-                <form th:action="@{/todo/unpin}" method="post">
-                    <input type="hidden" name="todoIndex" th:value="${todoList.todoIndex}"/>
-                    <button type="submit">핀 해제</button>
-                </form>
-            </div>
+            <div class="unpinned" th:unless="${todoList.todoIspinned}"></div>
+          </div>
+          <div>
+            <img class="dots" src="/resources/img/dots.png" />
+          </div>
+          <div class="ToDoListSetting">
+            <div class="complete">완료하기</div>
+            <div id="share">공유하기</div>
+            <!-- 삭제 버튼을 클릭했을 때 todoIndex를 파라미터로 전달 -->
+            <form th:action="@{/todo/delete}" method="post">
+              <input
+                type="hidden"
+                th:name="todoIndex"
+                th:value="${todoList.todoIndex}"
+              />
+              <button type="submit">삭제하기</button>
+            </form>
+            <form th:action="@{/todo/pin}" method="post">
+              <input
+                type="hidden"
+                name="todoIndex"
+                th:value="${todoList.todoIndex}"
+              />
+              <button type="submit">핀 표시</button>
+            </form>
+            <form th:action="@{/todo/unpin}" method="post">
+              <input
+                type="hidden"
+                name="todoIndex"
+                th:value="${todoList.todoIndex}"
+              />
+              <button type="submit">핀 해제</button>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<!-- /* Modal - title클릭 시 (클릭 시 해당 화면 내에서 팝업 뜨는 것) */ -->
-<div id="titleModal" class="modal">
-    <div class="titleModal-content">
+    <!-- /* Modal - title클릭 시 (클릭 시 해당 화면 내에서 팝업 뜨는 것) */ -->
+    <div id="titleModal" class="modal">
+      <div class="titleModal-content">
         <div class="close">
-            <div class="close-shape">x</div>
+          <div class="close-shape">x</div>
         </div>
         <p class="modalTitle"></p>
         <div class="TodoGenDate">23/8/21</div>
         <div class="TodoUpdateDate">23/8/22</div>
-        <div class="TodoDueDate">마감기한 <input type="date"/></div>
-        <div class="TodoListCategory">카테고리
-            <select id="CategorySelect">
-                <option selected>공부</option>
-                <option value="">운동</option>
-                <option value="">약속</option>
-                <option value="">기타</option>
-            </select>
+        <div class="TodoDueDate">마감기한 <input type="date" /></div>
+        <div class="TodoListCategory">
+          카테고리
+          <select id="CategorySelect">
+            <option selected>공부</option>
+            <option value="">운동</option>
+            <option value="">약속</option>
+            <option value="">기타</option>
+          </select>
         </div>
         <form action="">
-            <div class="TodoContent">메모 내용</div>
-            <textarea class="TodoContentEdit"></textarea>
-            <div class="modalTitleButtons">
-                <div class="TodoEdit">수정</div>
-                <button type="submit" class="TodoEditSubmit">수정완료</button>
-                <div class="TodoDelete">삭제</div>
-                <div class="TodoCancel">취소</div>
-                <input type="hidden" id="todoIndex" value="<%= todoList.getTodoIndex() %>">
-            </div>
+          <div class="TodoContent">메모 내용</div>
+          <textarea class="TodoContentEdit"></textarea>
+          <div class="modalTitleButtons">
+            <div class="TodoEdit">수정</div>
+            <button type="submit" class="TodoEditSubmit">수정완료</button>
+            <div class="TodoDelete">삭제</div>
+            <div class="TodoCancel">취소</div>
+          </div>
         </form>
+      </div>
     </div>
-</div>
-<!-- Modal - Todo 추가 버튼 클릭 시 -->
-<div id="AddModal" class="modal1">
-    <div class="AddModal-content">
+    <!-- Modal - Todo 추가 버튼 클릭 시 -->
+    <div id="AddModal" class="modal1">
+      <div class="AddModal-content">
         <div class="close1">
-            <div class="close1-shape">x</div>
+          <div class="close1-shape">x</div>
         </div>
-        <form th:action="@{/todo/create}" method="post" th:object="${todoListRequest}">
-            <textarea placeholder="제목" id="modalTitle" name="todoTitle" th:field="*{todoTitle}"></textarea>
-            <div class="TodoGenDate1"></div>
-            <div class="TodoUpdateDate1"></div>
-            <div class="TodoDueDate">마감기한 <input type="date" name="todoDuedate" th:field="*{todoDuedate}"/></div>
-            <div class="TodoListCategory">카테고리
-                <select class="CategorySelect" name="category">
-                    <option value="STUDY">공부</option>
-                    <option value="EXERCISE">운동</option>
-                    <option value="APPOINTMENT">약속</option>
-                    <option value="OTHER">기타</option>
-                </select>
-            </div>
-            <textarea placeholder="내용" class="TodoContentAdd" name="todoContent" th:field="*{todoContent}"></textarea>
-            <div class="modalTitleButtons">
-                <button type="submit" class="TodoAddSubmit">추가</button>
-            </div>
+        <form
+          th:action="@{/todo/create}"
+          method="post"
+          th:object="${todoListRequest}"
+        >
+          <textarea
+            placeholder="제목"
+            id="modalTitle"
+            name="todoTitle"
+            th:field="*{todoTitle}"
+          ></textarea>
+          <div class="TodoGenDate1"></div>
+          <div class="TodoUpdateDate1"></div>
+          <div class="TodoDueDate">
+            마감기한
+            <input type="date" name="todoDuedate" th:field="*{todoDuedate}" />
+          </div>
+          <div class="TodoListCategory">
+            카테고리
+            <select class="CategorySelect" name="category">
+              <option value="STUDY">공부</option>
+              <option value="EXERCISE">운동</option>
+              <option value="APPOINTMENT">약속</option>
+              <option value="OTHER">기타</option>
+            </select>
+          </div>
+          <textarea
+            placeholder="내용"
+            class="TodoContentAdd"
+            name="todoContent"
+            th:field="*{todoContent}"
+          ></textarea>
+          <div class="modalTitleButtons">
+            <button type="submit" class="TodoAddSubmit">추가</button>
+          </div>
         </form>
+      </div>
     </div>
-</div>
-<!-- /* Modal - 세팅 중 공유하기 클릭 시  */ -->
-<div id="shareModal" class="modal2">
-    <div class="shareModal-search">
+    <!-- /* Modal - 세팅 중 공유하기 클릭 시  */ -->
+    <div id="shareModal" class="modal2">
+      <div class="shareModal-search">
         <div class="close2">
-            <div class="close2-shape">x</div>
+          <div class="close2-shape">x</div>
         </div>
         <div class="search-container">
-            <div class="search-icon">
-                <img src="/resources/img/search.png" id="search-image"/>
-            </div>
-            <form th:action="@{/share/search}" th:object="${shareTargetSearch}" method="post">
-                <input
-                        th:field="*{searchId}"
-                        type="text"
-                        name="searchId"
-                        class="search-input"
-                        placeholder="공유할 회원의 아이디를 입력해주세요"
-                />
-            </form>
+          <div class="search-icon">
+            <img src="/resources/img/search.png" id="search-image" />
+          </div>
+          <form
+            th:action="@{/share/search}"
+            th:object="${shareTargetSearch}"
+            method="post"
+          >
+            <input
+              th:field="*{searchId}"
+              type="text"
+              name="searchId"
+              class="search-input"
+              placeholder="공유할 회원의 아이디를 입력해주세요"
+            />
+          </form>
         </div>
-        <br/>
+        <br />
         <div class="search-result1">
-            <div class="search-result-content1">
-                <div class="search-checkbox1"></div>
-                <div class="search-id1">아이디</div>
-                <div class="search-nickname1">닉네임</div>
-            </div>
+          <div class="search-result-content1">
+            <div class="search-checkbox1"></div>
+            <div class="search-id1">아이디</div>
+            <div class="search-nickname1">닉네임</div>
+          </div>
         </div>
         <form th:action="@{/share/selected}" method="post">
-            <input type="hidden" name="todoIndex" th:value="${todoIndex}">
-            <div class="search-result">
-                <div class="search-result-content">
-                    <div class="search-checkbox"></div>
-                    <div class="search-id">아이디</div>
-                    <div class="search-nickname">닉네임</div>
-                </div>
+          <input type="hidden" name="todoIndex" th:value="${todoIndex}" />
+          <div class="search-result">
+            <div class="search-result-content">
+              <div class="search-checkbox"></div>
+              <div class="search-id">아이디</div>
+              <div class="search-nickname">닉네임</div>
             </div>
-            <button class="shareButton">공유하기</button>
+          </div>
+          <button class="shareButton">공유하기</button>
         </form>
-
+      </div>
     </div>
-</div>
-</body>
+    <!--modal - 알람 클릭 시-->
+    <div id="alarmModal" class="modal3">
+      <div class="alarmModal-content">
+        <div class="close3">
+          <div class="close3-shape">x</div>
+        </div>
+
+        <div style="font-weight: bold">회원님에게 공유된 ToDoList 내역</div>
+        <br />
+        <div>
+          <div>
+            <div class="approve-checkbox1"></div>
+            <div class="shared-nickname1">공유자</div>
+            <div class="shared-title1">제목</div>
+            <div class="shared-content1">내용</div>
+            <div class="shared-date1">공유일자</div>
+          </div>
+        </div>
+
+        <form>
+          <div class="share-result">
+            <!--<div class="share-result-content">
+                    <div class="approve-checkbox"></div>
+                    <div class="shared-nickname">공유자</div>
+                    <div class="shared-title">제목</div>
+                    <div class="shared-content">내용</div>
+                    <div class="shared-date">공유일자</div>
+                </div>-->
+          </div>
+          <button class="approveButton">승인</button>
+          <button class="refuseButton">거절</button>
+        </form>
+      </div>
+    </div>
+  </body>
+
 <script>
     function selectCategory(category) {
     // 선택한 카테고리 값을 서버로 전송
@@ -559,25 +673,113 @@ cancelButton.addEventListener("click", resetModal);
 
 </script>
 <script>
-    //모달창 1 - Todo 추가 클릭 시 열리는 것
-    document.addEventListener("DOMContentLoaded", function () {
-      var modal = document.getElementById("AddModal");
-      var title = document.getElementById("addToDoList");
-      var modalTitle = document.querySelector(".modalTitle");
-      var span = document.getElementsByClassName("close1")[0];
+  //제목 클릭 시 생기는 모달에서 수정일 있을 시 생성일 안 보이고, 없을 시 생성일 보이게 하기
+  window.addEventListener("DOMContentLoaded", (event) => {
+    // 수정일 있을 경우
+    let updateDate = document.querySelector(".TodoUpdateDate");
+    let genDate = document.querySelector(".TodoGenDate");
+    if (updateDate && updateDate.textContent.trim() !== "") {
+      // 생성일 없애기
+      if (genDate) {
+        updateDate.style.display = "block";
+        genDate.style.display = "none";
+      }
+    } else {
+      // 수정일의 내용이 없을 경우
+      if (genDate) {
+        updateDate.style.display = "none";
+        genDate.style.display = "block";
+      }
+    }
+  });
+</script>
+<script>
+  // title클릭 시 나오는 모달의 설정 - 수정 클릭 시
+  document.addEventListener("DOMContentLoaded", function () {
+    const editButton = document.querySelector(".TodoEdit");
+    const completeButton = document.querySelector(".TodoEditSubmit");
+    const contentDiv = document.querySelector(".TodoContent");
+    const contentTextarea = document.querySelector(".TodoContentEdit");
+    const deleteButton = document.querySelector(".TodoDelete");
+    const cancelButton = document.querySelector(".TodoCancel");
 
-      //#addToDoList(ToDo 추가) 클릭 시
-      title.onclick = function () {
-        modalTitle.textContent = this.textContent;
-        modal.style.display = "block";
-      };
+    editButton.addEventListener("click", function () {
+      // 기존 내용을 textarea로 복사
+      contentTextarea.value = contentDiv.textContent;
 
-      // x 혹은 외부 클릭 시 모달 꺼짐
-      span.onclick = function () {
+      // 요소를 보이거나 숨김
+      contentDiv.style.display = "none";
+      contentTextarea.style.display = "block";
+      editButton.style.display = "none";
+      deleteButton.style.display = "none";
+      completeButton.style.display = "block";
+      cancelButton.style.display = "block";
+    });
+
+    completeButton.addEventListener("click", function () {
+      const updatedContent = contentTextarea.value;
+
+      //
+      $.ajax({
+        url: "/updateTodoContent", // 여기에 서버 엔드포인트 URL을 지정
+        method: "POST",
+        data: {
+          content: updatedContent,
+        },
+        success: function (response) {
+          // 성공 시 .TodoContent 갱신 및 원래 상태로 되돌리기
+          contentDiv.textContent = updatedContent;
+          contentDiv.style.display = "block";
+          contentTextarea.style.display = "none";
+          editButton.style.display = "block";
+          completeButton.style.display = "none";
+          deleteButton.style.display = "block";
+          cancelButton.style.display = "none";
+        },
+        error: function (error) {
+          console.error("Error updating content:", error);
+        },
+      });
+    });
+    cancelButton.addEventListener("click", function () {
+      // 수정 취소 클릭 시에 display상태
+      contentDiv.style.display = "block";
+      contentTextarea.style.display = "none";
+      editButton.style.display = "block";
+      deleteButton.style.display = "block";
+      completeButton.style.display = "none";
+      cancelButton.style.display = "none";
+    });
+  });
+</script>
+<script>
+  //모달창 1 - Todo 추가 클릭 시 열리는 것
+  document.addEventListener("DOMContentLoaded", function () {
+    var modal = document.getElementById("AddModal");
+    var title = document.getElementById("addToDoList");
+    var modalTitle = document.querySelector(".modalTitle");
+    var span = document.getElementsByClassName("close1")[0];
+
+    //#addToDoList(ToDo 추가) 클릭 시
+    title.onclick = function () {
+      modalTitle.textContent = this.textContent;
+      modal.style.display = "block";
+    };
+
+    // x 혹은 외부 클릭 시 모달 꺼짐
+    span.onclick = function () {
+      modal.style.display = "none";
+      contentDiv.style.display = "block";
+      contentTextarea.style.display = "none";
+    };
+
+    //모달 외부 클릭 시 모달 꺼짐
+    window.onclick = function (event) {
+      if (event.target == modal) {
         modal.style.display = "none";
         contentDiv.style.display = "block";
         contentTextarea.style.display = "none";
-      };
+      }};
 
       //모달 외부 클릭 시 모달 꺼짐
       window.onclick = function (event) {
@@ -588,7 +790,7 @@ cancelButton.addEventListener("click", resetModal);
         }
       };
     });
-
+  
 </script>
 <script>
     //todo추가 버튼 클릭해서 나오는 모달에서 수정일 있을 시 생성일 안 보이고, 없을 시 생성일 보이게 하기
@@ -613,44 +815,25 @@ cancelButton.addEventListener("click", resetModal);
 
 </script>
 <script>
-    //모달창 2 - 공유하기 클릭 시
-    document.addEventListener("DOMContentLoaded", function () {
-      var modal = document.getElementById("shareModal");
-      var share = document.getElementById("share");
-      var close = document.getElementsByClassName("close2-shape")[0];
-      var shareTargetSearch;
-
-      share.onclick = function () {
-        var todoIndex = this.closest(".ToDoList").querySelector(".TodoIndex").textContent;
-
-        $.ajax({
-            url: '/',
-            success: function(data){
-                modal.style.display = "block";
-            },
-            error: function(error){
-                alert("다시 시도해주세요.");
-            }
-        });
-      };
-
-      // x 혹은 외부 클릭 시 모달 꺼짐
-      close.onclick = function () {
-        $('.search-input').val('');
-        $('.search-result').empty();
-        modal.style.display = "none";
-      };
-
-      //모달 외부 클릭 시 모달 꺼짐
-      window.onclick = function (event) {
-        if (event.target == modal) {
-          $('.search-input').val('');
-          $('.search-result').empty();
-          modal.style.display = "none";
-        }
-      };
-    });
-
-
+  //todo추가 버튼 클릭해서 나오는 모달에서 수정일 있을 시 생성일 안 보이고, 없을 시 생성일 보이게 하기
+  window.addEventListener("DOMContentLoaded", (event) => {
+    // 수정일 있을 경우
+    let updateDate = document.querySelector(".TodoUpdateDate1");
+    let genDate = document.querySelector(".TodoGenDate1");
+    if (updateDate && updateDate.textContent.trim() !== "") {
+      // 생성일 없애기
+      if (genDate) {
+        updateDate.style.display = "block";
+        genDate.style.display = "none";
+      }
+    } else {
+      // 수정일의 내용이 없을 경우
+      if (genDate) {
+        updateDate.style.display = "none";
+        genDate.style.display = "block";
+      }
+    }
+  });
 </script>
+
 </html>

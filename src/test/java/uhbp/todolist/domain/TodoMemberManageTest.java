@@ -25,10 +25,10 @@ class TodoMemberManageTest {
     void todoMemberManageFactory() {
         Member joinMember = Member.memberFactory("temp", "temp", "temp", LocalDate.now());
         Member genMember = Member.memberFactory("genTemp", "genTemp", "genTemp", LocalDate.now());
-        TodoCategory category = TodoCategory.todoCategoryFactory("공부");
+        TodoCategory category = TodoCategory.APPOINTMENT;
         em.persist(joinMember);
         em.persist(genMember);
-        em.persist(category);
+        //em.persist(category);
 
         log.info("joinMember = {}", joinMember);
         log.info("genMember = {}", genMember);

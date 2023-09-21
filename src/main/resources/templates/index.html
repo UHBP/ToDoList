@@ -163,7 +163,7 @@
             <button type="submit" class="TodoEditSubmit">수정완료</button>
             <div class="TodoDelete">삭제</div>
             <div class="TodoCancel">취소</div>
-            <input type="hidden" id="todoIndex" th:value="${todoList.todoIndex}">
+            <input type="hidden" id="todoIndex" value="<%= todoList.getTodoIndex() %>">
           </div>
         </form>
       </div>

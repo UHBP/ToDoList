@@ -23,7 +23,7 @@ public class AvoidLoginMemberAspect {
             "execution(* uhbp.todolist.Controller.*.join(..)) && args(model,request,..)")
     public void checkCookie(JoinPoint joinPoint, Model model, HttpServletRequest request){
         if(cookieMemberStore.findValueByKey(request) != null){
-            throw new IllegalStateException("로그인 사용자에게 허가되지 않은 기능입니다. ");
+            throw new IllegalStateException("로그인된 사용자에게 허가되지 않은 기능입니다. ");
         }
     }
 }

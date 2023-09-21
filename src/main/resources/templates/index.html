@@ -10,6 +10,8 @@
     <script src="/resources/js/alarmShare.js"></script>
     <script src="/resources/js/searchShareTarget.js"></script>
     <script src="/resources/js/shareTodo.js"></script>
+    <script src="/resources/js/sort.js"></script>
+    <script src="/resources/js/category.js"></script>
     <title>Document</title>
   </head>
 
@@ -294,23 +296,6 @@
   </body>
 
 <script>
-    function selectCategory(category) {
-    // 선택한 카테고리 값을 서버로 전송
-    $.ajax({
-        type: 'GET',
-        url: '/todo/selectCategory',
-        data: { category: category },
-        success: function (data) {
-            // 성공적으로 데이터를 받았을 때
-            $('#todoListContainer').html(data);
-            console.log('카테고리 필터링 성공');
-        },
-        error: function () {
-            console.error('카테고리 필터링 실패');
-        }
-    });
-}
-
       //특정 ㅇㅇ순 정렬할 때 스크립트
       //마감기한 지났을 때 색깔,상태 조정
   function setDueDateWarnings() {
@@ -375,32 +360,9 @@
       setDueDateWarnings();
       setCategoryBackgroundColors();
   });
-
-  // 정렬 관련 Ajax
-  document.getElementById('selectOption').addEventListener('change', function () {
-      const selectedOption = this.value;
-
-      $.ajax({
-          type: 'GET',
-          url: '/todo/sort',
-          data: { sortingOption: selectedOption },
-          success: function (data) {
-              $('#todoListContainer').html(data);
-              // 정렬 후에도 해당 함수를 다시 호출하여 적용
-              setDueDateWarnings();
-              setCategoryBackgroundColors();
-              console.log('정렬 성공');
-          },
-          error: function () {
-              console.error('정렬 실패');
-          }
-      });
-  });
-
 </script>
-
 <script>
-    //TodoList의 체크박스 체크됬을때 상태 조절
+    //TodoList의 체크박스 체크됐을때 상태 조절
     document.addEventListener("DOMContentLoaded", function () {
       function applyStylesByCheckboxState(checkbox) {
         const todoList = checkbox.closest(".ToDoList");
@@ -451,7 +413,6 @@
         });
       });
     });
-
 </script>
 <script>
     //dots 클릭시 메뉴 나오는 것

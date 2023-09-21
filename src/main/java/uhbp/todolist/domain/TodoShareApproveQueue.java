@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Getter
 @EqualsAndHashCode
 @ToString
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class TodoShareApproveQueue {
 
     @Id

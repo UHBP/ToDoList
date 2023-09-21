@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "TODO_MEMBER_MANAGE")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString
 public class TodoMemberManage {
     @Id

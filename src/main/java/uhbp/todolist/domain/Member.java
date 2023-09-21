@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Getter
 @EqualsAndHashCode
 @ToString
-@NoArgsConstructor(access = AccessLevel.PUBLIC) // PROTECTED : 다른 패키지의 클래스는 접근 불가
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Member {
 

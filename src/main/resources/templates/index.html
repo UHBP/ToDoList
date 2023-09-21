@@ -1,35 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="/resources/css/index.css"/>
     <link rel="stylesheet" href="/resources/css/font.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Document</title>
-
 </head>
-
 <body>
-  <div id="content">
+<div id="content">
     <div id="titleLine">
-      <div id="title">
-        <div th:if="${memberInfo}">
-          <span th:text="${memberInfo.memberNickname}"></span>
+        <div id="title">
+            <div th:if="${memberInfo}">
+                <span th:text="${memberInfo.memberNickname}"></span>
+            </div>
+            <div th:unless="${memberInfo}">
+                <span>No member info available.</span>
+            </div>
+            님의 ToDoList
         </div>
-        <div th:unless="${memberInfo}">
-          <span>No member info available.</span>
-        </div>
-        님의 ToDoList
-      </div>
-      <div id="sse">
-        <img src="/resources/img/notification_black.png" />
-        <span th:if="${shareCount > 0}" th:text="${shareCount}"
-          style="color:white; border-radius:50%; background-color:red; width:20px; height:20px"></span>
-      </div>
-      
+        <div id="setting"></div>
         <div id="addToDoList">ToDo 추가</div>
     </div>
     <div id="tagAndSelect">
@@ -85,11 +76,10 @@
                 </form>
             </div>
         </div>
-
     </div>
-  </div>
-  <!-- /* Modal - title클릭 시 (클릭 시 해당 화면 내에서 팝업 뜨는 것) */ -->
-  <div id="titleModal" class="modal">
+</div>
+<!-- /* Modal - title클릭 시 (클릭 시 해당 화면 내에서 팝업 뜨는 것) */ -->
+<div id="titleModal" class="modal">
     <div class="titleModal-content">
         <div class="close">
             <div class="close-shape">x</div>
@@ -118,27 +108,13 @@
             </div>
         </form>
     </div>
-  </div>
-  <!-- Modal - Todo 추가 버튼 클릭 시 -->
-  <div id="AddModal" class="modal1">
+</div>
+<!-- Modal - Todo 추가 버튼 클릭 시 -->
+<div id="AddModal" class="modal1">
     <div class="AddModal-content">
-      <div class="close1">
-        <div class="close1-shape">x</div>
-      </div>
-      <form th:action="@{/todo/create}" method="post" th:object="${todoListRequest}">
-        <textarea placeholder="제목" id="modalTitle" name="todoTitle" th:field="*{todoTitle}"></textarea>
-        <div class="TodoGenDate1"></div>
-        <div class="TodoUpdateDate1"></div>
-        <div class="TodoDueDate">마감기한 <input type="date" name="todoDuedate" th:field="*{todoDuedate}" /></div>
-        <div class="TodoListCategory">카테고리
-          <select class="CategorySelect" name="category">
-            <option value="STUDY">공부</option>
-            <option value="EXERCISE">운동</option>
-            <option value="APPOINTMENT">약속</option>
-            <option value="OTHER">기타</option>
-          </select>
+        <div class="close1">
+            <div class="close1-shape">x</div>
         </div>
-
         <form th:action="@{/todo/create}" method="post" th:object="${todoListRequest}">
             <textarea placeholder="제목" id="modalTitle" name="todoTitle" th:field="*{todoTitle}"></textarea>
             <div class="TodoGenDate1"></div>
@@ -158,209 +134,51 @@
             </div>
         </form>
     </div>
-  </div>
-  <!-- /* Modal - 세팅 중 공유하기 클릭 시  */ -->
-  <div id="shareModal" class="modal2">
+</div>
+<!-- /* Modal - 세팅 중 공유하기 클릭 시  */ -->
+<div id="shareModal" class="modal2">
     <div class="shareModal-search">
-      <div class="close2">
-        <div class="close2-shape">x</div>
-      </div>
-      <div class="search-container">
-        <div class="search-icon">
-          <img src="/resources/img/search.png" id="search-image" />
+        <div class="close2">
+            <div class="close2-shape">x</div>
         </div>
-        <form th:action="@{/share/search}" th:object="${shareTargetSearch}" method="post">
-          <input th:field="*{searchId}" type="text" name="searchId" class="search-input"
-            placeholder="공유할 회원의 아이디를 입력해주세요" />
+        <div class="search-container">
+            <div class="search-icon">
+                <img src="/resources/img/search.png" id="search-image"/>
+            </div>
+            <form th:action="@{/share/search}" th:object="${shareTargetSearch}" method="post">
+                <input
+                        th:field="*{searchId}"
+                        type="text"
+                        name="searchId"
+                        class="search-input"
+                        placeholder="공유할 회원의 아이디를 입력해주세요"
+                />
+            </form>
+        </div>
+        <br/>
+        <div class="search-result1">
+            <div class="search-result-content1">
+                <div class="search-checkbox1"></div>
+                <div class="search-id1">아이디</div>
+                <div class="search-nickname1">닉네임</div>
+            </div>
+        </div>
+        <form th:action="@{/share/selected}" method="post">
+            <input type="hidden" name="todoIndex" th:value="${todoIndex}">
+            <div class="search-result">
+                <div class="search-result-content">
+                    <div class="search-checkbox"></div>
+                    <div class="search-id">아이디</div>
+                    <div class="search-nickname">닉네임</div>
+                </div>
+            </div>
+            <button class="shareButton">공유하기</button>
         </form>
-      </div>
-      <br />
-      <div class="search-result1">
-        <div class="search-result-content1">
-          <div class="search-checkbox1"></div>
-          <div class="search-id1">아이디</div>
-          <div class="search-nickname1">닉네임</div>
-        </div>
-      </div>
-      <form th:action="@{/share/selected}" method="post">
-        <input type="hidden" name="todoIndex" th:value="${todoIndex}">
-        <div class="search-result">
-          <div class="search-result-content">
-            <div class="search-checkbox"></div>
-            <div class="search-id">아이디</div>
-            <div class="search-nickname">닉네임</div>
-          </div>
-        </div>
-        <button class="shareButton">공유하기</button>
-      </form>
 
     </div>
-  </div>
-  <!--modal - 알람 클릭 시-->
-  <div id="alarmModal" class="modal3">
-    <div class="alarmModal-content">
-      <div class="close3">
-        <div class="close3-shape">x</div>
-      </div>
-
-      <div style="font-weight:bold;">회원님에게 공유된 ToDoList 내역</div>
-      <br>
-      <div>
-        <div>
-          <div class="approve-checkbox1"></div>
-          <div class="shared-nickname1">공유자</div>
-          <div class="shared-title1">제목</div>
-          <div class="shared-content1">내용</div>
-          <div class="shared-date1">공유일자</div>
-        </div>
-      </div>
-
-      <form>
-        <div class="share-result">
-          <!--<div class="share-result-content">
-                    <div class="approve-checkbox"></div>
-                    <div class="shared-nickname">공유자</div>
-                    <div class="shared-title">제목</div>
-                    <div class="shared-content">내용</div>
-                    <div class="shared-date">공유일자</div>
-                </div>-->
-        </div>
-        <button class="approveButton">승인</button>
-        <button class="refuseButton">거절</button>
-      </form>
-
-
-    </div>
-  </div>
+</div>
 </body>
-
 <script>
-  //모달창 1 - .alarmTitle 클릭시 열리는 것
-  document.addEventListener("DOMContentLoaded", function () {
-    var modal = document.getElementById("alarmModal");
-    var span = document.getElementsByClassName("close3")[0];
-    var alarm = document.getElementById("sse");
-
-    //.alarmTitle 클릭 시 모달 열림
-    alarm.onclick = function () {
-      $.ajax({
-        type: 'POST',
-        url: '/share/getSharedTodo',
-        success: function (response) {
-          if (typeof response === 'string' && response === "새로운 알림이 없습니다.") {
-            alert(response);
-          } else {
-            console.log(response);
-            modal.style.display = "block";
-            // 검색 결과가 표시될 영역 선택
-            var shareResult = $('.share-result');
-
-            // 컨트롤러부터 받아온 공유 내역들을 순회하며 표시
-            response.forEach(function (share) {
-              var giveNickname = share.shareMemberIndex.memberNickname;
-              var todoTitle = share.todoIndex.todoTitle;
-              var todoContent = share.todoIndex.todoContent;
-              var shareDate = share.approveDate;
-              var approveIndex = share.approveIndex;
-
-              // 각 공유 내역을 추가할 HTML 요소 생성
-              var shareContent = $('<div class="share-result-content"></div>');
-              var approveCheckbox = $('<div class="approve-checkbox"><input type="checkbox" name="selectedShares" value="' + approveIndex + '"/></div>');
-              var sharedNickname = $('<div class="shared-nickname">' + giveNickname + '</div>');
-              var sharedTitle = $('<div class="shared-title">' + todoTitle + '</div>');
-              var sharedContent = $('<div class="shared-content">' + todoContent + '</div>');
-              var sharedDate = $('<div class="shared-date">' + shareDate + '</div>');
-
-              // 생성한 HTML 요소들을 결과 영역에 추가
-              shareContent.append(approveCheckbox);
-              shareContent.append(sharedNickname);
-              shareContent.append(sharedTitle);
-              shareContent.append(sharedContent);
-              shareContent.append(sharedDate);
-              shareResult.append(shareContent);
-            });
-          }
-        },
-        error: function (error) {
-          alert("다시 시도해주세요.");
-        }
-      });
-    };
-
-    // x 혹은 외부 클릭 시 모달 꺼짐
-    span.onclick = function () {
-      $('.share-result').empty();
-      modal.style.display = "none";
-    };
-
-    //모달 외부 클릭 시 모달 꺼짐
-    window.onclick = function (event) {
-      if (event.target == modal) {
-        $('.share-result').empty();
-        modal.style.display = "none";
-      }
-    };
-
-    
-    $(document).ready(function () {
-      // 사용자가 승인한 공유 todo를 컨트롤러로 넘기는 코드
-      // 승인 버튼 클릭 이벤트 감지
-      $('.approveButton').click(function (e) {
-        e.preventDefault();
-
-        // 선택된 공유 index를 가져와 배열로 저장
-        var selectedShares = [];
-        $('input[name="selectedShares"]:checked').each(function () {
-          selectedShares.push($(this).val());
-        });
-
-        // ajax를 통해 컨트롤러로 전송
-        $.ajax({
-          url: '/share/approve',
-          type: 'POST',
-          data: { selectedShares: selectedShares },
-          traditional: true, // 배열 데이터를 전송할 때 필요한 옵션
-          success: function (response) {
-            alert("ToDoList 공유가 승인되었습니다.");
-            $('.share-result').empty();
-            modal.style.display = "none";
-          },
-          error: function (error) {
-            alert("실패하였습니다. 다시 시도해주세요.");
-          }
-        });
-      });
-
-      // 사용자가 거절한 공유 todo를 컨트롤러로 넘기는 코드
-      // 거절 버튼 클릭 이벤트 감지
-      $('.refuseButton').click(function(e){
-        e.preventDefault();
-
-        // 선택된 공유(거절) index를 가져와 배열로 저장
-        var selectedRefuses = [];
-        $('input[name="selectedShares"]:checked').each(function(){
-          selectedRefuses.push($(this).val());
-        });
-
-        // ajax를 통해 컨트롤러로 전송
-        $.ajax({
-          url: '/share/refuse',
-          type: 'POST',
-          data: { selectedRefuses: selectedRefuses },
-          traditional: true,
-          success: function(response){
-            alert("ToDoList 공유가 거절되었습니다.");
-            $('share-result').empty();
-            modal.style.display = "none";
-          },
-          error: function(error){
-            alert("실패하였습니다. 다시 시도해주세요.");
-          }
-        });
-      });
-    });
-  </script>
-  <script>
     function selectCategory(category) {
     // 선택한 카테고리 값을 서버로 전송
     $.ajax({
@@ -468,70 +286,152 @@
 
 <script>
     // Todo를 공유할 회원의 아이디 검색하는 코드
-  $(document).ready(function () {
-    // 검색 이미지 클릭 이벤트 감지
-    $('#search-image').click(function () {
-      $('.search-result').empty();
-      $('.search-result').css('visibility', 'visible');
-      // 입력된 아이디 값 가져오기
-      var inputId = $('.search-input').val();
+    $(document).ready(function(){
+      // 검색 이미지 클릭 이벤트 감지
+      $('#search-image').click(function(){
+        $('.search-result').empty();
+        $('.search-result').css('visibility','visible');
+        // 입력된 아이디 값 가져오기
+        var inputId = $('.search-input').val();
 
-      // 컨트롤러로 ajax 요청 보내기
-      $.ajax({
-        url: '/share/search',
-        type: 'POST',
-        data: { searchId: inputId },
-        success: function (response) {
-          console.log('서버 응답: ', response);
+        // 컨트롤러로 ajax 요청 보내기
+        $.ajax({
+          url: '/share/search',
+          type: 'POST',
+          data: { searchId: inputId },
+          success: function(response){
+            console.log('서버 응답: ', response);
 
-          // 검색 결과가 없는 경우
-          if (response === null || response.length === 0) {
-            alert("검색 결과가 없습니다. 다시 검색해주세요.");
+            // 검색 결과가 없는 경우
+            if(response === null || response.length === 0){
+                alert("검색 결과가 없습니다. 다시 검색해주세요.");
+            }
+
+            // 검색 결과가 표시될 영역 선택
+            var searchResult = $('.search-result');
+
+            // 컨트롤러부터 받아온 Member 객체들을 순회하며 표시
+            response.forEach(function(member){
+                var memberId = member.memberId;
+                var memberNickname = member.memberNickname;
+
+                // 각 Member 객체의 정보를 추가할 HTML 요소 생성
+                var resultContent = $('<div class="search-result-content"></div>');
+                var checkbox = $('<div class="search-checkbox"><input type="checkbox" name="selectedMembers" value="' + memberId + '"/></div>');
+                var idElement = $('<div class="search-id">' + memberId + '</div>');
+                var nicknameElement = $('<div class="search-nickname">' + memberNickname + '</div>');
+
+                // 생성한 HTML 요소들을 결과 영역에 추가
+                resultContent.append(checkbox);
+                resultContent.append(idElement);
+                resultContent.append(nicknameElement);
+                searchResult.append(resultContent);
+            });
+          },
+          error: function(error){
+            console.error('에러: ', error);
           }
-
-          // 검색 결과가 표시될 영역 선택
-          var searchResult = $('.search-result');
-
-          // 컨트롤러부터 받아온 Member 객체들을 순회하며 표시
-          response.forEach(function (member) {
-            var memberId = member.memberId;
-            var memberNickname = member.memberNickname;
-
-            // 각 Member 객체의 정보를 추가할 HTML 요소 생성
-            var resultContent = $('<div class="search-result-content"></div>');
-            var checkbox = $('<div class="search-checkbox"><input type="checkbox" name="selectedMembers" value="' + memberId + '"/></div>');
-            var idElement = $('<div class="search-id">' + memberId + '</div>');
-            var nicknameElement = $('<div class="search-nickname">' + memberNickname + '</div>');
-
-            // 생성한 HTML 요소들을 결과 영역에 추가
-            resultContent.append(checkbox);
-            resultContent.append(idElement);
-            resultContent.append(nicknameElement);
-            searchResult.append(resultContent);
-          });
-        },
-        error: function (error) {
-          console.error('에러: ', error);
-        }
+        });
       });
     });
-  });
+
 </script>
-         
 <script>
-  // SSE를 위한 에미터 등록하는 코드 & 실시간으로 공유알림(alarm) 받는 코드
-  $(document).ready(function () {
-    const eventSource = new EventSource("/sub");
+    // todoIndex와 선택한 회원의 아이디를 컨트롤러로 넘기는 코드
+    $(document).ready(function(){
+        // 공유하기 버튼 클릭 이벤트 감지
+        $('.shareButton').click(function(e){
+            e.preventDefault(); // 폼 기본 제출 동작 방지
 
-    eventSource.addEventListener("alarm", function (event) {
-      let message = event.data;
-      alert(message);
+            // 선택된 회원들의 아이디 값을 가져와 배열로 저장
+            var selectedMembers = [];
+            $('input[name="selectedMembers"]:checked').each(function(){
+                selectedMembers.push($(this).val());
+            });
+
+            // .TodoIndex 값 가져오기
+            var todoIndex = $('.TodoIndex').text();
+
+            // ajax로 보낼 data 객체 생성
+            var dataToSend = {
+              'todoIndex': todoIndex,
+              'selectedMembers': selectedMembers
+            };
+
+            // 선택된 회원들과 todoIndex 정보를 컨트롤러로 전송
+            $.ajax({
+                url: '/share/selected',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(dataToSend),
+                success: function(response){
+                    alert("공유 요청이 전송되었습니다.");
+                    modal.style.display = "none";
+
+                },
+                error: function(error){
+                    alert("실패하였습니다. 다시 시도해주세요.");
+                    $('.search-input').val('');
+                    $('.search-result').empty();
+                }
+            });
+        });
     });
 
-    eventSource.addEventListener("error", function (event) {
-      eventSource.close();
+</script>
+<script>
+    //TodoList의 체크박스 체크됬을때 상태 조절
+    document.addEventListener("DOMContentLoaded", function () {
+      function applyStylesByCheckboxState(checkbox) {
+        const todoList = checkbox.closest(".ToDoList");
+        const title = todoList.querySelector(".TodoTitle");
+        const listdate = todoList.querySelector(".DueDate");
+        const listdatespan = listdate.querySelector("span");
+        const completeButton = todoList.querySelector(".complete");
+
+        if (checkbox.checked) {
+          title.style.textDecoration = "line-through";
+          title.style.color = "gray";
+          listdate.style.textDecoration = "line-through";
+          listdate.style.color = "gray";
+          completeButton.textContent = "완료취소";
+          if (listdatespan) {
+            listdatespan.style.textDecoration = "none";
+          }
+        } else {
+          title.style.textDecoration = "none";
+          title.style.color = "";
+          listdate.style.textDecoration = "none";
+          listdate.style.color = "";
+          completeButton.textContent = "완료하기";
+          if (listdatespan) {
+            listdatespan.style.textDecoration = "none";
+          }
+        }
+      }
+
+      // 체크박스 상태 변경 이벤트 리스너
+      document.querySelectorAll(".ListCheckbox").forEach(function (checkbox) {
+        checkbox.addEventListener("change", function () {
+          applyStylesByCheckboxState(this);
+        });
+      });
+
+      // 완료하기 버튼 클릭 이벤트 리스너
+      document.querySelectorAll(".complete").forEach(function (element) {
+        element.addEventListener("click", function () {
+          const parentToDoList = element.closest(".ToDoList");
+          const checkbox = parentToDoList.querySelector(".ListCheckbox");
+          if (element.textContent === "완료하기") {
+            checkbox.checked = true;
+          } else {
+            checkbox.checked = false;
+          }
+          applyStylesByCheckboxState(checkbox);
+        });
+      });
     });
-  });
+
 </script>
 <script>
     //dots 클릭시 메뉴 나오는 것
@@ -567,9 +467,6 @@
        }
     });
 
-    let categoryDivs = document.querySelectorAll(".ToDoList > .Category");
-    categoryDivs.forEach(setCategoryBackgroundColor);
-  });
 </script>
 <script>
     //title 클릭 시 모달창 보여주는 스크립트
@@ -659,143 +556,101 @@ completeButton.addEventListener("click", function() {
 
 // 취소 버튼 클릭시의 동작을 정의
 cancelButton.addEventListener("click", resetModal);
+
 </script>
 <script>
-  //모달창 1 - Todo 추가 클릭 시 열리는 것
-  document.addEventListener("DOMContentLoaded", function () {
-    var modal = document.getElementById("AddModal");
-    var title = document.getElementById("addToDoList");
-    var modalTitle = document.querySelector(".modalTitle");
-    var span = document.getElementsByClassName("close1")[0];
+    //모달창 1 - Todo 추가 클릭 시 열리는 것
+    document.addEventListener("DOMContentLoaded", function () {
+      var modal = document.getElementById("AddModal");
+      var title = document.getElementById("addToDoList");
+      var modalTitle = document.querySelector(".modalTitle");
+      var span = document.getElementsByClassName("close1")[0];
 
-    //#addToDoList(ToDo 추가) 클릭 시
-    title.onclick = function () {
-      modalTitle.textContent = this.textContent;
-      modal.style.display = "block";
-    };
+      //#addToDoList(ToDo 추가) 클릭 시
+      title.onclick = function () {
+        modalTitle.textContent = this.textContent;
+        modal.style.display = "block";
+      };
 
-    // x 혹은 외부 클릭 시 모달 꺼짐
-    span.onclick = function () {
-      modal.style.display = "none";
-      contentDiv.style.display = "block";
-      contentTextarea.style.display = "none";
-    };
-
-    //모달 외부 클릭 시 모달 꺼짐
-    window.onclick = function (event) {
-      if (event.target == modal) {
+      // x 혹은 외부 클릭 시 모달 꺼짐
+      span.onclick = function () {
         modal.style.display = "none";
         contentDiv.style.display = "block";
         contentTextarea.style.display = "none";
-      }
-    };
-  });
+      };
 
-</script>
-<script>
-  //todo추가 버튼 클릭해서 나오는 모달에서 수정일 있을 시 생성일 안 보이고, 없을 시 생성일 보이게 하기
-  window.addEventListener("DOMContentLoaded", (event) => {
-    // 수정일 있을 경우
-    let updateDate = document.querySelector(".TodoUpdateDate1");
-    let genDate = document.querySelector(".TodoGenDate1");
-    if (updateDate && updateDate.textContent.trim() !== "") {
-      // 생성일 없애기
-      if (genDate) {
-        updateDate.style.display = "block";
-        genDate.style.display = "none";
-      }
-    } else {
-      // 수정일의 내용이 없을 경우
-      if (genDate) {
-        updateDate.style.display = "none";
-        genDate.style.display = "block";
-      }
-    }
-  });
-</script>
-<script>
-  //모달창 2 - 공유하기 클릭 시
-  document.addEventListener("DOMContentLoaded", function () {
-    var modal = document.getElementById("shareModal");
-    var share = document.getElementById("share");
-    var close = document.getElementsByClassName("close2-shape")[0];
-    var shareTargetSearch;
-
-    share.onclick = function () {
-      var todoIndex = this.closest(".ToDoList").querySelector(".TodoIndex").textContent;
-
-      $.ajax({
-        url: '/',
-        success: function (data) {
-          modal.style.display = "block";
-        },
-        error: function (error) {
-          alert("다시 시도해주세요.");
+      //모달 외부 클릭 시 모달 꺼짐
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+          contentDiv.style.display = "block";
+          contentTextarea.style.display = "none";
         }
-      });
-    };
+      };
+    });
 
-    // x 혹은 외부 클릭 시 모달 꺼짐
-    close.onclick = function () {
-      $('.search-input').val('');
-      $('.search-result').empty();
-      modal.style.display = "none";
-    };
+</script>
+<script>
+    //todo추가 버튼 클릭해서 나오는 모달에서 수정일 있을 시 생성일 안 보이고, 없을 시 생성일 보이게 하기
+    window.addEventListener("DOMContentLoaded", (event) => {
+      // 수정일 있을 경우
+      let updateDate = document.querySelector(".TodoUpdateDate1");
+      let genDate = document.querySelector(".TodoGenDate1");
+      if (updateDate && updateDate.textContent.trim() !== "") {
+        // 생성일 없애기
+        if (genDate) {
+          updateDate.style.display = "block";
+          genDate.style.display = "none";
+        }
+      } else {
+        // 수정일의 내용이 없을 경우
+        if (genDate) {
+          updateDate.style.display = "none";
+          genDate.style.display = "block";
+        }
+      }
+    });
 
-    //모달 외부 클릭 시 모달 꺼짐
-    window.onclick = function (event) {
-      if (event.target == modal) {
+</script>
+<script>
+    //모달창 2 - 공유하기 클릭 시
+    document.addEventListener("DOMContentLoaded", function () {
+      var modal = document.getElementById("shareModal");
+      var share = document.getElementById("share");
+      var close = document.getElementsByClassName("close2-shape")[0];
+      var shareTargetSearch;
+
+      share.onclick = function () {
+        var todoIndex = this.closest(".ToDoList").querySelector(".TodoIndex").textContent;
+
+        $.ajax({
+            url: '/',
+            success: function(data){
+                modal.style.display = "block";
+            },
+            error: function(error){
+                alert("다시 시도해주세요.");
+            }
+        });
+      };
+
+      // x 혹은 외부 클릭 시 모달 꺼짐
+      close.onclick = function () {
         $('.search-input').val('');
         $('.search-result').empty();
         modal.style.display = "none";
-      }
-    };
+      };
 
-    // todoIndex와 선택한 회원의 아이디를 컨트롤러로 넘기는 코드
-    $(document).ready(function () {
-      // 공유하기 버튼 클릭 이벤트 감지
-      $('.shareButton').click(function (e) {
-        e.preventDefault(); // 폼 기본 제출 동작 방지
-
-        // 선택된 회원들의 아이디 값을 가져와 배열로 저장
-        var selectedMembers = [];
-        $('input[name="selectedMembers"]:checked').each(function () {
-          selectedMembers.push($(this).val());
-        });
-
-        // .TodoIndex 값 가져오기
-        var todoIndex = $('.TodoIndex').text();
-
-        // ajax로 보낼 data 객체 생성
-        var dataToSend = {
-          'todoIndex': todoIndex,
-          'selectedMembers': selectedMembers
-        };
-
-        // 선택된 회원들과 todoIndex 정보를 컨트롤러로 전송
-        $.ajax({
-          url: '/share/selected',
-          type: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify(dataToSend),
-          success: function (response) {
-            alert("공유 요청이 전송되었습니다.");
-            $('.search-input').val('');
-            $('.search-result').empty();
-            modal.style.display = "none";
-
-          },
-          error: function (error) {
-            alert("실패하였습니다. 다시 시도해주세요.");
-            $('.search-input').val('');
-            $('.search-result').empty();
-          }
-        });
-      });
+      //모달 외부 클릭 시 모달 꺼짐
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          $('.search-input').val('');
+          $('.search-result').empty();
+          modal.style.display = "none";
+        }
+      };
     });
-  });
 
 
 </script>
-
 </html>

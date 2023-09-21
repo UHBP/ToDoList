@@ -31,9 +31,6 @@ public class MemberController {
 
     @GetMapping("/login")
     public String login(Model model, HttpServletRequest request) {
-        if(cookieMemberStore.findValueByKey(request) != null){
-            throw new IllegalStateException();
-        }
         MemberLoginForm memberLoginForm = new MemberLoginForm();
         model.addAttribute("loginForm", memberLoginForm);
         return "login";
@@ -82,9 +79,6 @@ public class MemberController {
 
     @GetMapping("/join")
     public String join(Model model, HttpServletRequest request) {
-        if(cookieMemberStore.findValueByKey(request) != null){
-            throw new IllegalStateException();
-        }
         MemberJoinForm memberJoinForm = new MemberJoinForm();
         model.addAttribute("joinForm", memberJoinForm);
         return "join";

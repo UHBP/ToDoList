@@ -5,27 +5,17 @@ import uhbp.todolist.dto.TodoListRequest;
 import uhbp.todolist.exception.NoSuchMemberException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 public interface TodoListService {
 
     void createTodo(TodoListRequest todoListRequest, HttpServletRequest request) throws NoSuchMemberException;
 
-    List<TodoList> readTodo(HttpServletRequest request) throws NoSuchMemberException;
+    TodoList getTodoListById(Long todoIndex);
 
-//    // 할일 수정
-//    void updateTodo(Long todoIndex, TodoListRequest updateRequest, HttpServletRequest request) throws NoSuchMemberException;
+    void deleteTodoListById(Long todoIndex);
 
-    // 할일 수정
-    void updateTodo(Long todoIndex, TodoListRequest todoListRequest);
+//  void updateTodo(Long todoIndex, TodoListRequest todoListRequest, Long categoryIndex, HttpServletRequest request);
 
-    void deleteTodo(Long todoIndex);
+//  Member getMemberById(Long memberId) throws NoSuchMemberException;
 
-    List<TodoList> genDateAscTodo(HttpServletRequest request) throws NoSuchMemberException;
-
-    List<TodoList> dueDateAscTodo(HttpServletRequest request) throws NoSuchMemberException;
-
-    void setTodoIspinned(Long todoIndex, boolean isPinned);
-
-    List<TodoList> filterTodoByCategory(String category, HttpServletRequest request) throws NoSuchMemberException;
 }

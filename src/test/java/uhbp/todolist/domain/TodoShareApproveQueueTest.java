@@ -24,17 +24,17 @@ class TodoShareApproveQueueTest {
     @Test
     void todoShareApproveQueueFactory() {
         // Given
-        TodoCategory category = TodoCategory.todoCategoryFactory("Study");
+        TodoCategory category = TodoCategory.APPOINTMENT;
         Member sharedMember = Member.memberFactory("testSharedId", "testSharedPw", "testSharedNickname", LocalDate.now());
         Member shareMember = Member.memberFactory("testShareId", "testSharePw", "testShareNickname", LocalDate.now());
 
         // Save Entities
-        TodoCategory savedCategory = em.persistAndFlush(category);
+        //TodoCategory savedCategory = em.persistAndFlush(category);
         Member savedSharedMember = em.persistAndFlush(sharedMember);
         Member savedShareMember = em.persistAndFlush(shareMember);
 
         TodoList todoIndex = TodoList.todoListFactory(
-                savedCategory,
+                category,
                 savedSharedMember,
                 "testTitle",
                 "testContent",

@@ -2,14 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="/resources/css/index.css"/>
-    <link rel="stylesheet" href="/resources/css/font.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Document</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/resources/css/index.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Document</title>
 </head>
 
 <body>
@@ -29,94 +26,74 @@
         <span th:if="${shareCount > 0}" th:text="${shareCount}"
           style="color:white; border-radius:50%; background-color:red; width:20px; height:20px"></span>
       </div>
-      
-        <div id="addToDoList">ToDo 추가</div>
+      <div id="addToDoList" th:href="@{/todo/init}">ToDo 추가</div>
     </div>
     <div id="tagAndSelect">
-        <div id="tag">
-            <div style="background-color: lightcoral" onclick="selectCategory('ALL')">전체</div>
-            <div style="background-color: orange" onclick="selectCategory('STUDY')">공부</div>
-            <div style="background-color: rgb(130, 186, 146)" onclick="selectCategory('EXERCISE')">운동</div>
-            <div style="background-color: skyblue" onclick="selectCategory('APPOINTMENT')">약속</div>
-            <div style="background-color: midnightblue" onclick="selectCategory('OTHER')">기타</div>
-            <div style="background-color: rgb(105, 59, 149)">공유</div>
-        </div>
-        <form id="sortingForm">
-            <select id="selectOption" name="sortingOption">
-                <option value="gendate">기본 순</option>
-                <option value="duedate">마감일 순</option>
-            </select>
-        </form>
-        <input type="hidden" id="category" name="category" value="ALL">
+      <div id="tag">
+        <div style="background-color: lightcoral">전체</div>
+        <div style="background-color: orange">공부</div>
+        <div style="background-color: rgb(130, 186, 146)">운동</div>
+        <div style="background-color: skyblue">약속</div>
+        <div style="background-color: midnightblue">기타</div>
+        <div style="background-color: rgb(105, 59, 149)">공유</div>
+      </div>
+      <select id="selectOption">
+        <option selected>기본 순</option>
+        <option value="">마감일 순</option>
+      </select>
     </div>
-    <!-- /* 할일 목록 (정렬 th:fragment 사용) */ -->
-    <div id="todoListContainer" th:fragment="todoListFragment">
-        <div class="ToDoList" th:each="todoList : ${todoLists}">
-            <div class="checkbox-wrap">
-                <input type="checkbox" class="ListCheckbox"/>
-            </div>
-            <div class="TodoIndex" th:text="${todoList.todoIndex}" style="display:none;"></div>
-            <div class="TodoTitle" th:text="${todoList.todoTitle}"></div>
-            <div class="DueDate" th:text="${todoList.todoDuedate}"></div>
-            <div class="Category" th:text="${todoList.todoCategory}"></div>
-            <div class="ShareMember">닉네임</div>
-            <div class="pin">
-                <div class="pinned" th:if="${todoList.todoIspinned}"><img src="/resources/img/pin.png"/></div>
-                <div class="unpinned" th:unless="${todoList.todoIspinned}"></div>
-            </div>
-            <div>
-                <img class="dots" src="/resources/img/dots.png"/>
-            </div>
-            <div class="ToDoListSetting">
-                <div class="complete">완료하기</div>
-                <div id="share">공유하기</div>
-                <!-- 삭제 버튼을 클릭했을 때 todoIndex를 파라미터로 전달 -->
-                <form th:action="@{/todo/delete}" method="post">
-                    <input type="hidden" th:name="todoIndex" th:value="${todoList.todoIndex}"/>
-                    <button type="submit">삭제하기</button>
-                </form>
-                <form th:action="@{/todo/pin}" method="post">
-                    <input type="hidden" name="todoIndex" th:value="${todoList.todoIndex}"/>
-                    <button type="submit">핀 표시</button>
-                </form>
-                <form th:action="@{/todo/unpin}" method="post">
-                    <input type="hidden" name="todoIndex" th:value="${todoList.todoIndex}"/>
-                    <button type="submit">핀 해제</button>
-                </form>
-            </div>
-        </div>
-
+    <div class="ToDoList">
+      <div class="checkbox-wrap">
+        <input type="checkbox" class="ListCheckbox"> <!--th:checked="${todoList.todoIspinned}"-->
+      </div>
+      <div class="TodoIndex" style="display:none;">20</div>
+      <div class="TodoTitle">제목</div>
+      <div class="DueDate">2023/8/22</div>
+      <div class="Category">공부</div>
+      <div class="ShareMember">닉네임</div>
+      <div class="pin">
+        <div class="pinned"><img src="/resources/img/pin.png" /></div>
+        <div class="unpinned"></div>
+      </div>
+      <div>
+        <img class="dots" src="/resources/img/dots.png" />
+      </div>
+      <div class="ToDoListSetting">
+        <div class="complete">완료하기</div>
+        <div id="share">공유하기</div>
+        <div>삭제하기</div>
+        <div>핀 표시</div>
+      </div>
     </div>
   </div>
   <!-- /* Modal - title클릭 시 (클릭 시 해당 화면 내에서 팝업 뜨는 것) */ -->
   <div id="titleModal" class="modal">
     <div class="titleModal-content">
-        <div class="close">
-            <div class="close-shape">x</div>
+      <div class="close">
+        <div class="close-shape">x</div>
+      </div>
+      <p class="modalTitle"></p>
+      <div class="TodoGenDate">23/8/21</div>
+      <div class="TodoUpdateDate">23/8/22</div>
+      <div class="TodoDueDate">마감기한 <input type="date" /></div>
+      <div class="TodoListCategory">카테고리
+        <select id="CategorySelect">
+          <option selected>공부</option>
+          <option value="">운동</option>
+          <option value="">약속</option>
+          <option value="">기타</option>
+        </select>
+      </div>
+      <form action="">
+        <div class="TodoContent">메모 내용</div>
+        <textarea class="TodoContentEdit"></textarea>
+        <div class="modalTitleButtons">
+          <div class="TodoEdit">수정</div>
+          <button type="submit" class="TodoEditSubmit">수정완료</button>
+          <div class="TodoDelete">삭제</div>
+          <div class="TodoCancel">취소</div>
         </div>
-        <p class="modalTitle"></p>
-        <div class="TodoGenDate">23/8/21</div>
-        <div class="TodoUpdateDate">23/8/22</div>
-        <div class="TodoDueDate">마감기한 <input type="date"/></div>
-        <div class="TodoListCategory">카테고리
-            <select id="CategorySelect">
-                <option selected>공부</option>
-                <option value="">운동</option>
-                <option value="">약속</option>
-                <option value="">기타</option>
-            </select>
-        </div>
-        <form action="">
-            <div class="TodoContent">메모 내용</div>
-            <textarea class="TodoContentEdit"></textarea>
-            <div class="modalTitleButtons">
-                <div class="TodoEdit">수정</div>
-                <button type="submit" class="TodoEditSubmit">수정완료</button>
-                <div class="TodoDelete">삭제</div>
-                <div class="TodoCancel">취소</div>
-                <input type="hidden" id="todoIndex" value="<%= todoList.getTodoIndex() %>">
-            </div>
-        </form>
+      </form>
     </div>
   </div>
   <!-- Modal - Todo 추가 버튼 클릭 시 -->
@@ -138,25 +115,12 @@
             <option value="OTHER">기타</option>
           </select>
         </div>
+        <textarea placeholder="내용" class="TodoContentAdd" name="todoContent" th:field="*{todoContent}"></textarea>
 
-        <form th:action="@{/todo/create}" method="post" th:object="${todoListRequest}">
-            <textarea placeholder="제목" id="modalTitle" name="todoTitle" th:field="*{todoTitle}"></textarea>
-            <div class="TodoGenDate1"></div>
-            <div class="TodoUpdateDate1"></div>
-            <div class="TodoDueDate">마감기한 <input type="date" name="todoDuedate" th:field="*{todoDuedate}"/></div>
-            <div class="TodoListCategory">카테고리
-                <select class="CategorySelect" name="category">
-                    <option value="STUDY">공부</option>
-                    <option value="EXERCISE">운동</option>
-                    <option value="APPOINTMENT">약속</option>
-                    <option value="OTHER">기타</option>
-                </select>
-            </div>
-            <textarea placeholder="내용" class="TodoContentAdd" name="todoContent" th:field="*{todoContent}"></textarea>
-            <div class="modalTitleButtons">
-                <button type="submit" class="TodoAddSubmit">추가</button>
-            </div>
-        </form>
+        <div class="modalTitleButtons">
+          <button type="submit" class="TodoAddSubmit">추가</button>
+        </div>
+      </form>
     </div>
   </div>
   <!-- /* Modal - 세팅 중 공유하기 클릭 시  */ -->
@@ -252,6 +216,7 @@
           } else {
             console.log(response);
             modal.style.display = "block";
+
             // 검색 결과가 표시될 영역 선택
             var shareResult = $('.share-result');
 
@@ -359,115 +324,32 @@
         });
       });
     });
-  </script>
-  <script>
-    function selectCategory(category) {
-    // 선택한 카테고리 값을 서버로 전송
-    $.ajax({
-        type: 'GET',
-        url: '/todo/selectCategory',
-        data: { category: category },
-        success: function (data) {
-            // 성공적으로 데이터를 받았을 때
-            $('#todoListContainer').html(data);
-            console.log('카테고리 필터링 성공');
-        },
-        error: function () {
-            console.error('카테고리 필터링 실패');
-        }
-    });
-}
 
-      //특정 ㅇㅇ순 정렬할 때 스크립트
-      //마감기한 지났을 때 색깔,상태 조정
-  function setDueDateWarnings() {
-      let toDoLists = document.querySelectorAll(".ToDoList");
+    
 
-      toDoLists.forEach((toDoList) => {
-          let checkbox = toDoList.querySelector(".ListCheckbox");
-          let dueDateDiv = toDoList.querySelector(".DueDate");
 
-          if (!checkbox.checked) {
-              let dueDateValue = new Date(dueDateDiv.textContent);
-              let now = new Date();
 
-              if (dueDateValue < now) {
-                  let breakTag = document.createElement("br");
-                  dueDateDiv.appendChild(breakTag);
-                  let overdueNote = document.createElement("span");
-                  overdueNote.textContent = "(마감 기한 지남)";
-                  overdueNote.style.color = "red";
-                  dueDateDiv.appendChild(overdueNote);
-              }
-          }
-      });
-  }
 
-      //카테고리 종류에 따른 색깔 지정
-  function setCategoryBackgroundColors() {
-      var categoryElements = document.querySelectorAll('.ToDoList .Category');
 
-      function setCategoryBackgroundColor(categoryElement) {
-          let category = categoryElement.textContent.trim();
-
-          switch (category) {
-              case "STUDY":
-                  categoryElement.style.backgroundColor = "orange";
-                  categoryElement.textContent = "공부";
-                  break;
-              case "EXERCISE":
-                  categoryElement.style.backgroundColor = "rgb(130, 186, 146)";
-                  categoryElement.textContent = "운동";
-                  break;
-              case "APPOINTMENT":
-                  categoryElement.style.backgroundColor = "skyblue";
-                  categoryElement.textContent = "약속";
-                  break;
-              case "OTHER":
-                  categoryElement.style.backgroundColor = "midnightblue";
-                  categoryElement.textContent = "그 외";
-                  break;
-              default:
-                  categoryElement.style.backgroundColor = "";
-          }
-      }
-
-      categoryElements.forEach(function (categoryElement) {
-          setCategoryBackgroundColor(categoryElement);
-      });
-  }
-
-  // 페이지가 처음 로드될 때 적용
-  document.addEventListener("DOMContentLoaded", function () {
-      setDueDateWarnings();
-      setCategoryBackgroundColors();
   });
-
-  // 정렬 관련 Ajax
-  document.getElementById('selectOption').addEventListener('change', function () {
-      const selectedOption = this.value;
-
-      $.ajax({
-          type: 'GET',
-          url: '/todo/sort',
-          data: { sortingOption: selectedOption },
-          success: function (data) {
-              $('#todoListContainer').html(data);
-              // 정렬 후에도 해당 함수를 다시 호출하여 적용
-              setDueDateWarnings();
-              setCategoryBackgroundColors();
-              console.log('정렬 성공');
-          },
-          error: function () {
-              console.error('정렬 실패');
-          }
-      });
-  });
-
 </script>
-
 <script>
-    // Todo를 공유할 회원의 아이디 검색하는 코드
+  // SSE를 위한 에미터 등록하는 코드 & 실시간으로 공유알림(alarm) 받는 코드
+  $(document).ready(function () {
+    const eventSource = new EventSource("/sub");
+
+    eventSource.addEventListener("alarm", function (event) {
+      let message = event.data;
+      alert(message);
+    });
+
+    eventSource.addEventListener("error", function (event) {
+      eventSource.close();
+    });
+  });
+</script>
+<script>
+  // Todo를 공유할 회원의 아이디 검색하는 코드
   $(document).ready(function () {
     // 검색 이미지 클릭 이벤트 감지
     $('#search-image').click(function () {
@@ -517,148 +399,260 @@
     });
   });
 </script>
-         
-<script>
-  // SSE를 위한 에미터 등록하는 코드 & 실시간으로 공유알림(alarm) 받는 코드
-  $(document).ready(function () {
-    const eventSource = new EventSource("/sub");
 
-    eventSource.addEventListener("alarm", function (event) {
-      let message = event.data;
-      alert(message);
+<script>
+  //TodoList의 체크박스 체크됬을때 상태 조절
+  document.addEventListener("DOMContentLoaded", function () {
+    function applyStylesByCheckboxState(checkbox) {
+      const todoList = checkbox.closest(".ToDoList");
+      const title = todoList.querySelector(".TodoTitle");
+      const listdate = todoList.querySelector(".DueDate");
+      const listdatespan = listdate.querySelector("span");
+      const completeButton = todoList.querySelector(".complete");
+
+      if (checkbox.checked) {
+        title.style.textDecoration = "line-through";
+        title.style.color = "gray";
+        listdate.style.textDecoration = "line-through";
+        listdate.style.color = "gray";
+        completeButton.textContent = "완료취소";
+        if (listdatespan) {
+          listdatespan.style.textDecoration = "none";
+        }
+      } else {
+        title.style.textDecoration = "none";
+        title.style.color = "";
+        listdate.style.textDecoration = "none";
+        listdate.style.color = "";
+        completeButton.textContent = "완료하기";
+        if (listdatespan) {
+          listdatespan.style.textDecoration = "none";
+        }
+      }
+    }
+
+    // 체크박스 상태 변경 이벤트 리스너
+    document.querySelectorAll(".ListCheckbox").forEach(function (checkbox) {
+      checkbox.addEventListener("change", function () {
+        applyStylesByCheckboxState(this);
+      });
     });
 
-    eventSource.addEventListener("error", function (event) {
-      eventSource.close();
+    // 완료하기 버튼 클릭 이벤트 리스너
+    document.querySelectorAll(".complete").forEach(function (element) {
+      element.addEventListener("click", function () {
+        const parentToDoList = element.closest(".ToDoList");
+        const checkbox = parentToDoList.querySelector(".ListCheckbox");
+        if (element.textContent === "완료하기") {
+          checkbox.checked = true;
+        } else {
+          checkbox.checked = false;
+        }
+        applyStylesByCheckboxState(checkbox);
+      });
     });
   });
 </script>
 <script>
-    //dots 클릭시 메뉴 나오는 것
+  //마감일에 따라서 마감 기한 지남 경고 주는 코드
+  document.addEventListener("DOMContentLoaded", function () {
+    let toDoLists = document.querySelectorAll(".ToDoList");
 
-    //menuItem 전부 닫은 상태로 처음 index 불러오려고
-    let menuItemOpen = null;
+    toDoLists.forEach((toDoList) => {
+      let checkbox = toDoList.querySelector(".ListCheckbox");
+      let dueDateDiv = toDoList.querySelector(".DueDate");
 
-    document.body.addEventListener('click', function(event) {
-        // .dots 클릭시의 로직
-        if (event.target.matches('.dots')) {
-            let menuItem = event.target.parentElement.nextElementSibling;
+      // 체크박스가 unchecked 상태이고
+      if (!checkbox.checked) {
+        let dueDateValue = new Date(dueDateDiv.textContent); // 마감일을 Date 객체로 변환 (마감일 형식은 YYYY-MM-DD나 다른 형식에 따라 파싱 코드를 수정해야 할 수 있습니다.)
+        let now = new Date();
 
-            //dots가 많으니까 클릭한 dots가 기존에 클릭해둔 dots이거나 dots 외부 클릭 시에 메뉴창 닫으려고
-            if (menuItemOpen && menuItemOpen !== menuItem) {
-                menuItemOpen.style.display = "none";
-            }
-
-            if (menuItem && menuItem.classList.contains("ToDoListSetting")) {
-                if (menuItem.style.display === "none" || menuItem.style.display === "") {
-                    menuItem.style.display = "block";
-                   menuItemOpen = menuItem;
-                } else {
-                    menuItem.style.display = "none";
-                    menuItemOpen = null;
-                }
-           }
-
-          event.stopPropagation(); // 이 이벤트가 상위 Dom에 적용 안되게 막음
-      } else if (menuItemOpen) {
-           // menuItem 외부 클릭 시 menuItem 숨김
-          menuItemOpen.style.display = "none";
-         menuItemOpen = null;
-       }
+        // 마감일이 현재 시각보다 이전이면
+        if (dueDateValue < now) {
+          let breakTag = document.createElement("br");
+          dueDateDiv.appendChild(breakTag);
+          let overdueNote = document.createElement("span");
+          overdueNote.textContent = "(마감 기한 지남)";
+          overdueNote.style.color = "red";
+          dueDateDiv.appendChild(overdueNote);
+        }
+      }
     });
+  });
+</script>
+<script>
+  //카테고리 값에 따라서 .ToDoList > .Category의 background-color값이 지정된 값으로 변환
+  //이 때, #tagAndSelect > #tag와 색을 동일하게 만들어줌
+  document.addEventListener("DOMContentLoaded", function () {
+    function setCategoryBackgroundColor(categoryDiv) {
+      let category = categoryDiv.textContent;
+
+      switch (category) {
+        case "전체":
+          categoryDiv.style.backgroundColor = "lightcoral";
+          break;
+        case "공부":
+          categoryDiv.style.backgroundColor = "orange";
+          break;
+        case "운동":
+          categoryDiv.style.backgroundColor = "rgb(130, 186, 146)";
+          break;
+        case "약속":
+          categoryDiv.style.backgroundColor = "skyblue";
+          break;
+        case "기타":
+          categoryDiv.style.backgroundColor = "midnightblue";
+          break;
+        case "공유":
+          categoryDiv.style.backgroundColor = "rgb(105, 59, 149)";
+          break;
+        default:
+          categoryDiv.style.backgroundColor = ""; // 기본값이나 다른 색상으로 설정하실 수 있습니다.
+      }
+    }
 
     let categoryDivs = document.querySelectorAll(".ToDoList > .Category");
     categoryDivs.forEach(setCategoryBackgroundColor);
   });
 </script>
 <script>
-    //title 클릭 시 모달창 보여주는 스크립트
-    // DOM 캐싱 (문서의 요소를 변수에 저장)
-const modal = document.getElementById("titleModal");
-const modalTitle = document.querySelector(".modalTitle");
-const span = document.getElementsByClassName("close")[0];
-const todoIndex = document.querySelector("#todoIndex").value;
-const editButton = document.querySelector(".TodoEdit");
-const completeButton = document.querySelector(".TodoEditSubmit");
-const contentDiv = document.querySelector(".TodoContent");
-const contentTextarea = document.querySelector(".TodoContentEdit");
-const deleteButton = document.querySelector(".TodoDelete");
-const cancelButton = document.querySelector(".TodoCancel");
+  //.dots 클릭 시 세팅 내용 보이게/ 안 보이게 조절
+  document.addEventListener("DOMContentLoaded", function () {
+    const settingIcon = document.querySelector(".dots");
+    const menuItems = document.querySelector(".ToDoListSetting");
 
-document.body.addEventListener("click", function(event) {
-    // .TodoTitle 클릭 시 모달창을 연다.
-    if (event.target.matches('.TodoTitle')) {
-        modalTitle.textContent = event.target.textContent;
-        modal.style.display = "block";
-    }
+    settingIcon.addEventListener("click", function () {
+      if (
+        menuItems.style.display === "none" ||
+        menuItems.style.display === ""
+      ) {
+        menuItems.style.display = "block";
+      } else {
+        menuItems.style.display = "none";
+      }
+    });
+  });
 
-    // x 혹은 모달 외부 클릭 시 모달창을 닫는다.
-    if (event.target === modal || event.target.matches('.close-shape')) {
+
+</script>
+<script>
+  //모달창 1 - 타이틀 클릭시 열리는 것
+  document.addEventListener("DOMContentLoaded", function () {
+    var modal = document.getElementById("titleModal");
+    var title = document.querySelector(".TodoTitle");
+    var modalTitle = document.querySelector(".modalTitle");
+    var span = document.getElementsByClassName("close")[0];
+
+    //.TodoTitle 클릭 시 모달 열림
+    title.onclick = function () {
+      modalTitle.textContent = this.textContent;
+      modal.style.display = "block";
+    };
+
+    // x 혹은 외부 클릭 시 모달 꺼짐
+    span.onclick = function () {
+      modal.style.display = "none";
+      contentDiv.style.display = "block";
+      contentTextarea.style.display = "none";
+      editButton.style.display = "block";
+      deleteButton.style.display = "block";
+      completeButton.style.display = "none";
+      cancelButton.style.display = "none";
+    };
+
+    //모달 외부 클릭 시 모달 꺼짐
+    window.onclick = function (event) {
+      if (event.target == modal) {
         modal.style.display = "none";
-        resetModal();
-    }
-});
-
-// 수정일 있을 경우 생성일을 숨기고, 없을 경우 생성일을 보여준다.
-function checkAndUpdateDateDisplay() {
-    const updateDate = document.querySelector(".TodoUpdateDate");
-    const genDate = document.querySelector(".TodoGenDate");
-
+        contentDiv.style.display = "block";
+        contentTextarea.style.display = "none";
+        editButton.style.display = "block";
+        deleteButton.style.display = "block";
+        completeButton.style.display = "none";
+        cancelButton.style.display = "none";
+      }
+    };
+  });
+</script>
+<script>
+  //제목 클릭 시 생기는 모달에서 수정일 있을 시 생성일 안 보이고, 없을 시 생성일 보이게 하기
+  window.addEventListener("DOMContentLoaded", (event) => {
+    // 수정일 있을 경우
+    let updateDate = document.querySelector(".TodoUpdateDate");
+    let genDate = document.querySelector(".TodoGenDate");
     if (updateDate && updateDate.textContent.trim() !== "") {
-        if (genDate) {
-            updateDate.style.display = "block";
-            genDate.style.display = "none";
-        }
+      // 생성일 없애기
+      if (genDate) {
+        updateDate.style.display = "block";
+        genDate.style.display = "none";
+      }
     } else {
-        if (genDate) {
-            updateDate.style.display = "none";
-            genDate.style.display = "block";
-        }
+      // 수정일의 내용이 없을 경우
+      if (genDate) {
+        updateDate.style.display = "none";
+        genDate.style.display = "block";
+      }
     }
-}
+  });
+</script>
+<script>
+  // title클릭 시 나오는 모달의 설정 - 수정 클릭 시
+  document.addEventListener("DOMContentLoaded", function () {
+    const editButton = document.querySelector(".TodoEdit");
+    const completeButton = document.querySelector(".TodoEditSubmit");
+    const contentDiv = document.querySelector(".TodoContent");
+    const contentTextarea = document.querySelector(".TodoContentEdit");
+    const deleteButton = document.querySelector(".TodoDelete");
+    const cancelButton = document.querySelector(".TodoCancel");
 
-function resetModal() {
-    contentDiv.style.display = "block";
-    contentTextarea.style.display = "none";
-    editButton.style.display = "block";
-    deleteButton.style.display = "block";
-    completeButton.style.display = "none";
-    cancelButton.style.display = "none";
-}
+    editButton.addEventListener("click", function () {
+      // 기존 내용을 textarea로 복사
+      contentTextarea.value = contentDiv.textContent;
 
-// 수정 버튼 클릭시의 동작을 정의
-editButton.addEventListener("click", function() {
-    contentTextarea.value = contentDiv.textContent;
-    contentDiv.style.display = "none";
-    contentTextarea.style.display = "block";
-    editButton.style.display = "none";
-    deleteButton.style.display = "none";
-    completeButton.style.display = "block";
-    cancelButton.style.display = "block";
-});
+      // 요소를 보이거나 숨김
+      contentDiv.style.display = "none";
+      contentTextarea.style.display = "block";
+      editButton.style.display = "none";
+      deleteButton.style.display = "none";
+      completeButton.style.display = "block";
+      cancelButton.style.display = "block";
+    });
 
-// 수정 완료 버튼 클릭시의 동작을 정의
-completeButton.addEventListener("click", function() {
-    const updatedContent = contentTextarea.value;
-    $.ajax({
-        url: `/todo/update/${todoIndex}`,
+    completeButton.addEventListener("click", function () {
+      const updatedContent = contentTextarea.value;
+
+      //
+      $.ajax({
+        url: "/updateTodoContent", // 여기에 서버 엔드포인트 URL을 지정
         method: "POST",
         data: {
-            todoIndex: todoIndex,
-            content: updatedContent,
+          content: updatedContent,
         },
-        success: function(response) {
-            contentDiv.textContent = updatedContent;
-            resetModal();
+        success: function (response) {
+          // 성공 시 .TodoContent 갱신 및 원래 상태로 되돌리기
+          contentDiv.textContent = updatedContent;
+          contentDiv.style.display = "block";
+          contentTextarea.style.display = "none";
+          editButton.style.display = "block";
+          completeButton.style.display = "none";
+          deleteButton.style.display = "block";
+          cancelButton.style.display = "none";
         },
-        error: function(error) {
-            console.error("내용 업데이트 중 오류:", error);
+        error: function (error) {
+          console.error("Error updating content:", error);
         },
+      });
     });
-});
-
-// 취소 버튼 클릭시의 동작을 정의
-cancelButton.addEventListener("click", resetModal);
+    cancelButton.addEventListener("click", function () {
+      // 수정 취소 클릭 시에 display상태
+      contentDiv.style.display = "block";
+      contentTextarea.style.display = "none";
+      editButton.style.display = "block";
+      deleteButton.style.display = "block";
+      completeButton.style.display = "none";
+      cancelButton.style.display = "none";
+    });
+  });
 </script>
 <script>
   //모달창 1 - Todo 추가 클릭 시 열리는 것
@@ -690,7 +684,6 @@ cancelButton.addEventListener("click", resetModal);
       }
     };
   });
-
 </script>
 <script>
   //todo추가 버튼 클릭해서 나오는 모달에서 수정일 있을 시 생성일 안 보이고, 없을 시 생성일 보이게 하기

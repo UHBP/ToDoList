@@ -1,6 +1,9 @@
 package uhbp.todolist.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,7 +14,6 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "TODO_LIST")
 @Getter
-@Setter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class TodoList {
@@ -67,14 +69,4 @@ public class TodoList {
     public static TodoList todoListFactory(TodoCategory todoCategory, Member member, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate) {
         return new TodoList(todoCategory, member, todoTitle, todoContent, todoGendate, todoUpdatedate, todoIspinned, todoDuedate);
     }
-
-    // 할일 수정
-    public void updateTodo(String todoTitle, String todoContent, LocalDate todoDuedate, TodoCategory todoCategory) {
-        this.todoTitle = todoTitle;
-        this.todoContent = todoContent;
-        this.todoDuedate = todoDuedate;
-        this.todoCategory = todoCategory;
-        this.todoUpdatedate = LocalDate.now();
-    }
-
 }

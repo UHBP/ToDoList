@@ -1,8 +1,6 @@
 package uhbp.todolist.dto;
 
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
-import uhbp.todolist.domain.TodoCategory;
 import uhbp.todolist.domain.TodoList;
 
 import java.time.LocalDate;
@@ -17,10 +15,10 @@ public class TodoListResponse {
     private LocalDate todoGendate;
     private LocalDate todoUpdatedate;
     private boolean todoIspinned;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate todoDuedate;
-    private TodoCategory todoCategory;
+    private Long categoryIndex;
     private Long todoMemberIndex;
+    private String todoCategory;
 
     public static TodoListResponse fromEntity(TodoList todoList) {
         TodoListResponse response = new TodoListResponse();
@@ -31,7 +29,7 @@ public class TodoListResponse {
         response.setTodoUpdatedate(todoList.getTodoUpdatedate());
         response.setTodoIspinned(todoList.isTodoIspinned());
         response.setTodoDuedate(todoList.getTodoDuedate());
-        response.setTodoCategory(todoList.getTodoCategory());
+//      response.setTodoCategory(todoList.getTodoCategory().name());
         return response;
     }
 }

@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             // .TodoIndex 값 가져오기
-            var todoIndex = $('.TodoIndex').text();
+            var todoIndex = $('#shareTodoIndex').text();
 
             // ajax로 보낼 data 객체 생성
             var dataToSend = {

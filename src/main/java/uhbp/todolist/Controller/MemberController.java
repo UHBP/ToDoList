@@ -30,7 +30,10 @@ public class MemberController {
     private final CookieMemberStore cookieMemberStore;
 
     @GetMapping("/login")
-    public String login(Model model) {
+    public String login(Model model, HttpServletRequest request) {
+        if(cookieMemberStore.findValueByKey(request) != null){
+            throw new IllegalStateException();
+        }
         MemberLoginForm memberLoginForm = new MemberLoginForm();
         model.addAttribute("loginForm", memberLoginForm);
         return "login";
@@ -38,7 +41,6 @@ public class MemberController {
 
     @PostMapping("/login")
     public String login(@Valid MemberLoginForm loginForm, BindingResult bindingResult, Model model, HttpServletResponse response) {
-
         if (bindingResult.hasErrors()) {
             model.addAttribute("loginForm", new MemberLoginForm());
             model.addAttribute("errors", bindingResult.getAllErrors());
@@ -79,7 +81,10 @@ public class MemberController {
     }
 
     @GetMapping("/join")
-    public String join(Model model) {
+    public String join(Model model, HttpServletRequest request) {
+        if(cookieMemberStore.findValueByKey(request) != null){
+            throw new IllegalStateException();
+        }
         MemberJoinForm memberJoinForm = new MemberJoinForm();
         model.addAttribute("joinForm", memberJoinForm);
         return "join";

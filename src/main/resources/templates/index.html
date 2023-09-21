@@ -179,22 +179,7 @@
 </div>
 </body>
 <script>
-    function selectCategory(category) {
-    // 선택한 카테고리 값을 서버로 전송
-    $.ajax({
-        type: 'GET',
-        url: '/todo/selectCategory',
-        data: { category: category },
-        success: function (data) {
-            // 성공적으로 데이터를 받았을 때
-            $('#todoListContainer').html(data);
-            console.log('카테고리 필터링 성공');
-        },
-        error: function () {
-            console.error('카테고리 필터링 실패');
-        }
-    });
-}
+
 
       //특정 ㅇㅇ순 정렬할 때 스크립트
       //마감기한 지났을 때 색깔,상태 조정
@@ -259,27 +244,6 @@
   document.addEventListener("DOMContentLoaded", function () {
       setDueDateWarnings();
       setCategoryBackgroundColors();
-  });
-
-  // 정렬 관련 Ajax
-  document.getElementById('selectOption').addEventListener('change', function () {
-      const selectedOption = this.value;
-
-      $.ajax({
-          type: 'GET',
-          url: '/todo/sort',
-          data: { sortingOption: selectedOption },
-          success: function (data) {
-              $('#todoListContainer').html(data);
-              // 정렬 후에도 해당 함수를 다시 호출하여 적용
-              setDueDateWarnings();
-              setCategoryBackgroundColors();
-              console.log('정렬 성공');
-          },
-          error: function () {
-              console.error('정렬 실패');
-          }
-      });
   });
 
 </script>

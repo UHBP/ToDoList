@@ -94,8 +94,9 @@ button{
 }
 .ToDoList {
   display: flex;
-  margin-top: 2rem;
+  margin-top: 1.4rem;
   margin-left: 1.8rem;
+  height: 2.5rem;
   div:not(
       .ShareMember,
       .pinned,

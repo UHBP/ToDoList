@@ -3,17 +3,13 @@ package uhbp.todolist.Controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uhbp.todolist.Service.ShareServiceImple;
 import uhbp.todolist.domain.Member;
-import uhbp.todolist.domain.TodoShareApproveQueue;
-import uhbp.todolist.dto.MemberInfo;
 import uhbp.todolist.dto.ShareRequestData;
-import uhbp.todolist.exception.SharedTodoNotFoundException;
 import uhbp.todolist.session.CookieMemberStore;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,41 +52,4 @@ public class ShareController {
         String result = "공유 완료";
         return ResponseEntity.ok(result);
     }
-
-    @PostMapping("/getSharedTodo")
-    @ResponseBody
-    // <?>는 와일드카드 타입으로, 다양한 데이터 유형을 반환할 수 있어 유연한 처리가 가능함
-    public ResponseEntity<?> getSharedTodo(HttpServletRequest request){
-        // 현재 로그인한 사용자의 index
-        Long loginIndex = cookieMemberStore.findValueByKey(request);
-        log.info("로그인 사용자 index = {}", loginIndex);
-
-        // 현재 로그인한 사용자에게 공유된 todo가 있는지 확인
-        List<TodoShareApproveQueue> sharedTodo = shareService.getSharedTodo(loginIndex);
-        if(sharedTodo.isEmpty()){
-            return ResponseEntity.ok("새로운 알림이 없습니다.");
-        } else{
-            log.info("공유목록 = {}", sharedTodo);
-            return ResponseEntity.ok(sharedTodo);
-        }
-    }
-
-    @PostMapping("/approve")
-    @ResponseBody
-    public String approveSelectedShares(@RequestParam("selectedShares") List<TodoShareApproveQueue> selectedShares, HttpServletRequest request){
-        System.out.println("선택된 공유 목록: " + selectedShares);
-        shareService.approveSelectedShares(selectedShares, request);
-
-        return "승인 완료";
-    }
-
-    @PostMapping("/refuse")
-    @ResponseBody
-    public String refuseSelectedShares(@RequestParam("selectedRefuses") List<TodoShareApproveQueue> selectedRefuses){
-        shareService.refuseSelectedShares(selectedRefuses);
-
-        return "거절 완료";
-    }
-
 }
-

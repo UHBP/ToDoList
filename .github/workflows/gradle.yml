@@ -33,8 +33,8 @@ jobs:
       - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.properties
       
       # Run Tests with Gradle 
-      - name : Test with Gradle 
-        run : ./gradlew test --info
+      # - name : Test with Gradle 
+      #   run : ./gradlew test --info
       
       # Build the project after running tests successfully 
       

@@ -24,6 +24,9 @@ class TodoListTest {
 
     @Test
     void todoListFactory(){
+        // 테스트 데이터(Category)를 생성하고 TestEntityManager를 사용하여 DB에 저장
+        TodoCategory newCategory = TodoCategory.todoCategoryFactory("운동");
+        TodoCategory savedCategory = tem.persistAndFlush(newCategory);
 
         // 테스트 데이터(Member)를 생성하고 TestEntityManager를 사용하여 DB에 저장
         Member newMember = Member.memberFactory("testId", "testPw", "testNickname", LocalDate.now());
@@ -38,7 +41,7 @@ class TodoListTest {
         LocalDate todoDuedate = LocalDate.now();
 
         // 테스트 데이터(TodoList)를 생성하고 TestEntityManager를 사용하여 DB에 저장
-        TodoList newTodoList = TodoList.todoListFactory(TodoCategory.APPOINTMENT, savedMember, todoTitle, todoContent, todoGendate, todoUpdatedate, todoIspinned, todoDuedate);
+        TodoList newTodoList = TodoList.todoListFactory(savedCategory, savedMember, todoTitle, todoContent, todoGendate, todoUpdatedate, todoIspinned, todoDuedate);
         TodoList savedTodoList = tem.persistAndFlush(newTodoList);
 
         // 저장된 데이터 불러오기

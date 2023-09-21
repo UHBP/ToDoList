@@ -33,7 +33,8 @@ public class HomeController {
     private final AlarmService alarmService;
 
     @GetMapping("/")
-    public String home(@CookieValue(name = SESSION_COOKIE_NAME, required = false)String cookie, Model model, HttpServletRequest request){
+    public String home(@CookieValue(name = SESSION_COOKIE_NAME, required = false)String cookie, Model model, HttpServletRequest request) throws NoSuchMemberException {
+
         if(cookie != null){
             MemberInfo memberInfoByKey = cookieMemberStore.getViewUsingMemberFormByKey(cookie);
             model.addAttribute("memberInfo", memberInfoByKey);

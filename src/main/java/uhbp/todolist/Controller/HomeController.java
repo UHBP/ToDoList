@@ -20,6 +20,7 @@ import uhbp.todolist.session.CookieMemberStore;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import static uhbp.todolist.session.CookieMemberStore.SESSION_COOKIE_NAME;
 
@@ -49,7 +50,16 @@ public class HomeController {
             model.addAttribute("shareCount", shareCount);
 
             // (Read) 할일 목록 조회
-            List<TodoList> todoLists = todoListService.readTodo(request);
+            List<TodoList> mainTodoLists = todoListService.readTodo(request);
+            List<TodoList> sharedTodoList = todoListService.readSharedTodo(request);
+            log.info("공유 받은 글 = {}", sharedTodoList);
+
+            // 두 목록 합치기
+            List<TodoList> todoLists = new ArrayList<>();
+            todoLists.addAll(mainTodoLists);
+            todoLists.addAll(sharedTodoList);
+
+            // 모델에 추가
             model.addAttribute("todoLists", todoLists);
 
         }

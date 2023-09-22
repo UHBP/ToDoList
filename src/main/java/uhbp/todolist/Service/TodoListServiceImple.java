@@ -62,6 +62,13 @@ public class TodoListServiceImple implements TodoListService {
         return todoListRepository.findAllByMemberOrderByTodoIspinnedDesc(currentMember);
     }
 
+    // 공유 할일 목록 조회
+    @Override
+    public List<TodoList> readSharedTodo(HttpServletRequest request) throws NoSuchMemberException {
+        Member currentMember = getCurrentMember(request);
+        return todoListRepository.findSharedTodoListsByMember(currentMember.getMemberId());
+    }
+
 
 //    // 할일 수정
 //    @Override
@@ -131,6 +138,7 @@ public class TodoListServiceImple implements TodoListService {
 
     }
 
+    // 카테고리 선택
     @Override
     public List<TodoList> filterTodoByCategory(String category, HttpServletRequest request) throws NoSuchMemberException {
         Member currentMember = getCurrentMember(request);

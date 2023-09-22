@@ -4,9 +4,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import uhbp.todolist.domain.Member;
-import uhbp.todolist.domain.QTodoList;
-import uhbp.todolist.domain.TodoList;
+import uhbp.todolist.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -48,6 +46,7 @@ public class CustomRepositoryImpl implements CustomRepository {
         // OrderSpecifier : Querydsl 라이브러리에서 제공하는 클래스, JPA 쿼리에서 정렬 순서를 지정할 때 사용
         OrderSpecifier<LocalDate> orderByGenDateAsc = todoList.todoGendate.asc();
 
+        // 핀 상단 고정 포함
         return queryFactory.selectFrom(todoList)
                 .where(todoList.member.eq(currentMember))
                 .orderBy(todoList.todoIspinned.desc(), orderByGenDateAsc)
@@ -63,6 +62,19 @@ public class CustomRepositoryImpl implements CustomRepository {
         return queryFactory.selectFrom(todoList)
                 .where(todoList.member.eq(currentMember))
                 .orderBy(todoList.todoIspinned.desc(), orderByDueDateAsc)
+                .fetch();
+    }
+
+
+    @Override
+    public List<TodoList> findSharedTodoListsByMember(String memberId) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QTodoList qTodoList = QTodoList.todoList;
+        QTodoMemberManage qTodoMemberManage = QTodoMemberManage.todoMemberManage;
+
+        return queryFactory.selectFrom(qTodoList)
+                .innerJoin(qTodoMemberManage).on(qTodoList.todoIndex.eq(qTodoMemberManage.todoList.todoIndex))
+                .where(qTodoMemberManage.member.memberId.eq(memberId))
                 .fetch();
     }
 

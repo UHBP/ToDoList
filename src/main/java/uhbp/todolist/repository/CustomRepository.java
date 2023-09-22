@@ -12,4 +12,5 @@ public interface CustomRepository {
     List<TodoList> findAllByOrderByTodoGendateAsc(Member currentMember);
     List<TodoList> findAllByOrderByTodoDuedateAsc(Member currentMember);
 
+    List<TodoList> findSharedTodoListsByMember(String memberId);
 }

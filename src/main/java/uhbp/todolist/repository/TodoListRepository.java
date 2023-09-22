@@ -8,6 +8,7 @@ import uhbp.todolist.domain.TodoList;
 
 import java.util.List;
 
+// CustomRepository 추가
 @Repository
 public interface TodoListRepository extends JpaRepository<TodoList, Long>, CustomRepository {
     // 할일 목록 Read

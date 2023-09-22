@@ -22,7 +22,7 @@ public class TodoListController {
     private final TodoListService todoListService;
     private final TodoListRepository todoListRepository;
 
-
+    // Controller : View or Server로 연결하는 관심사
     // (Create) 할일 생성
     @PostMapping("/create")
     public String createTodo(@ModelAttribute("todoListRequest") TodoListRequest todoListRequest, HttpServletRequest request) throws NoSuchMemberException {

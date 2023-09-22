@@ -16,6 +16,9 @@ public interface TodoListService {
 //    // 할일 수정
 //    void updateTodo(Long todoIndex, TodoListRequest updateRequest, HttpServletRequest request) throws NoSuchMemberException;
 
+    // 공유 할일 목록 조회
+    List<TodoList> readSharedTodo(HttpServletRequest request) throws NoSuchMemberException;
+
     // 할일 수정
     void updateTodo(Long todoIndex, TodoListRequest todoListRequest);
 

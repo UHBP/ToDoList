@@ -53,6 +53,16 @@ public class TodoListController {
         return "redirect:/";
     }
 
+//    // (Delete) 공유 할일 삭제
+//    @PostMapping("/delete")
+//    public String deleteSharedTodo(@RequestParam("todoIndex") Long todoIndex, HttpServletRequest request) throws NoSuchMemberException {
+//        todoListService.deleteSharedTodo(todoIndex, request);
+//        return "redirect:/";
+//    }
+
+
+
+
 
     // (Sort) 할일 목록 정렬
     @GetMapping("/sort")
@@ -99,4 +109,14 @@ public class TodoListController {
         return "index::todoListFragment"; // th:fragment 해당 템플릿 조각을 렌더링
     }
 
+
+    // (Category) 공유 카테고리 선택
+    // 문제) 공유 받은 사람 공유 탭에만 뜸.. 공유 해준 사람(원래 글 주인) 공유 탭에는 안뜸...
+    @GetMapping("/shareCategory")
+    public String shareCategory(Model model, HttpServletRequest request) throws NoSuchMemberException {
+        List<TodoList> todoLists = todoListService.readSharedTodo(request);
+        model.addAttribute("todoLists", todoLists);
+        log.info("내가 공유 받은 글 & 글 주인 정보 = {}", todoLists);
+        return "index::todoListFragment";
+    }
 }

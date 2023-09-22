@@ -14,7 +14,7 @@ public interface TodoListRepository extends JpaRepository<TodoList, Long>, Custo
     // 할일 목록 Read
     // List<TodoList> findAllByMember(Member currentMember);
 
-    // 할일 목록 Read + Pin 포함
+    // 할일 목록 Read + Pin 상단 고정 포함
     List<TodoList> findAllByMemberOrderByTodoIspinnedDesc(Member currnetMember);
 
     void deleteByTodoIndex(Long todoIndex);

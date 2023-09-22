@@ -55,19 +55,30 @@ public class TodoListServiceImple implements TodoListService {
     }
 
 
-    // 할일 목록 조회
-    @Override
-    public List<TodoList> readTodo(HttpServletRequest request) throws NoSuchMemberException {
-        Member currentMember = getCurrentMember(request);
-        return todoListRepository.findAllByMemberOrderByTodoIspinnedDesc(currentMember);
-    }
+//    // 할일 목록 조회
+//    @Override
+//    public List<TodoList> readTodo(HttpServletRequest request) throws NoSuchMemberException {
+//        Member currentMember = getCurrentMember(request);
+//        return todoListRepository.findAllByMemberOrderByTodoIspinnedDesc(currentMember);
+//    }
 
-    // 공유 할일 목록 조회
+
+    // 공유 받은 할일 목록만 조회 (공유해준 회원의 정보 포함)
+    // TodoListController 의 ShareCategory 에서 사용
     @Override
     public List<TodoList> readSharedTodo(HttpServletRequest request) throws NoSuchMemberException {
         Member currentMember = getCurrentMember(request);
         return todoListRepository.findSharedTodoListsByMember(currentMember.getMemberId());
     }
+
+    // 모든 할일 목록 조회 (본인이 작성한 할일 목록 + 공유 받은 할일 목록)
+    // 현재 HomeController 에서 사용
+    @Override
+    public List<TodoList> readTodo(HttpServletRequest request) throws NoSuchMemberException {
+        Member currentMember = getCurrentMember(request);
+        return todoListRepository.findAllByMemberOrSharedMember(currentMember, currentMember);
+    }
+
 
 
 //    // 할일 수정
@@ -113,6 +124,24 @@ public class TodoListServiceImple implements TodoListService {
         todoListRepository.deleteByTodoIndex(todoIndex);
     }
 
+//    // 공유 할일 삭제
+//    @Override
+//    public void deleteSharedTodo(Long todoIndex, HttpServletRequest request) throws NoSuchMemberException {
+//        Member currentMember = getCurrentMember(request);
+//
+//        // 공유된 글 목록 조회
+//        List<TodoList> sharedTodoList = todoListRepository.findSharedTodoListsByMember(currentMember.getMemberId());
+//
+//        // 삭제할 공유된 글을 찾아서 삭제
+//        for (TodoList sharedTodo : sharedTodoList) {
+//            if (sharedTodo.getTodoIndex().equals(todoIndex)) {
+//                todoListRepository.delete(sharedTodo);
+//                return; // 삭제 완료
+//            }
+//        }
+//        // 공유된 글을 찾지 못한 경우에 대한 처리
+//        throw new RuntimeException("삭제할 수 없는 공유된 글입니다.");
+//    }
 
     // 기본 순 정렬
     @Override
@@ -147,6 +176,8 @@ public class TodoListServiceImple implements TodoListService {
         }
         return todoListRepository.findByTodoCategoryAndMemberOrderByTodoIspinnedDesc(TodoCategory.valueOf(category), currentMember);
     }
+
+
 
 
 }

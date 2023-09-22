@@ -37,7 +37,7 @@ public class CustomRepositoryImpl implements CustomRepository {
                 .fetch();  // fetch() : 조회 대상 전체를 반환
     }
 
-
+    // 기본 순 정렬
     @Override
     public List<TodoList> findAllByOrderByTodoGendateAsc(Member currentMember) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
@@ -53,6 +53,7 @@ public class CustomRepositoryImpl implements CustomRepository {
                 .fetch();
     }
 
+    // 마감일 순 정렬
     @Override
     public List<TodoList> findAllByOrderByTodoDuedateAsc(Member currentMember) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
@@ -65,7 +66,23 @@ public class CustomRepositoryImpl implements CustomRepository {
                 .fetch();
     }
 
+    // 모든 할일 목록 조회 (본인이 작성한 할일 목록 + 공유 받은 할일 목록)
+    // 현재 HomeController 에서 사용
+    @Override
+    public List<TodoList> findAllByMemberOrSharedMember(Member member, Member sharedMember) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QTodoList qTodoList = QTodoList.todoList;
+        QTodoMemberManage qTodoMemberManage = QTodoMemberManage.todoMemberManage;
 
+        return queryFactory.selectFrom(qTodoList)
+                .leftJoin(qTodoMemberManage).on(qTodoList.todoIndex.eq(qTodoMemberManage.todoList.todoIndex))
+                .where(qTodoList.member.eq(member).or(qTodoMemberManage.member.eq(sharedMember)))
+                .orderBy(qTodoList.todoIspinned.desc(), qTodoList.todoGendate.asc())
+                .fetch();
+    }
+
+    // 공유 받은 할일 목록만 조회 (공유해준 회원의 정보 포함되어 있음)
+    // TodoListController 의 ShareCategory 에서 사용
     @Override
     public List<TodoList> findSharedTodoListsByMember(String memberId) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
@@ -75,6 +92,7 @@ public class CustomRepositoryImpl implements CustomRepository {
         return queryFactory.selectFrom(qTodoList)
                 .innerJoin(qTodoMemberManage).on(qTodoList.todoIndex.eq(qTodoMemberManage.todoList.todoIndex))
                 .where(qTodoMemberManage.member.memberId.eq(memberId))
+                .orderBy(qTodoList.todoIspinned.desc(), qTodoList.todoGendate.asc())
                 .fetch();
     }
 

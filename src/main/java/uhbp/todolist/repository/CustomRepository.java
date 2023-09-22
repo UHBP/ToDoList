@@ -12,5 +12,8 @@ public interface CustomRepository {
     List<TodoList> findAllByOrderByTodoGendateAsc(Member currentMember);
     List<TodoList> findAllByOrderByTodoDuedateAsc(Member currentMember);
 
+    List<TodoList> findAllByMemberOrSharedMember(Member member, Member sharedMember);
+
     List<TodoList> findSharedTodoListsByMember(String memberId);
+
 }

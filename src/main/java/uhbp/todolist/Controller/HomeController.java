@@ -6,12 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import uhbp.todolist.Service.AlarmService;
 import uhbp.todolist.Service.TodoListService;
 import uhbp.todolist.domain.TodoList;
-
-import uhbp.todolist.Service.AlarmService;
-
 import uhbp.todolist.dto.MemberInfo;
 import uhbp.todolist.dto.ShareTargetSearch;
 import uhbp.todolist.dto.TodoListRequest;
@@ -19,9 +16,8 @@ import uhbp.todolist.exception.NoSuchMemberException;
 import uhbp.todolist.session.CookieMemberStore;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.ArrayList;
 import java.util.List;
+
 import static uhbp.todolist.session.CookieMemberStore.SESSION_COOKIE_NAME;
 
 @Slf4j
@@ -50,14 +46,13 @@ public class HomeController {
             model.addAttribute("shareCount", shareCount);
 
             // (Read) 할일 목록 조회
-            List<TodoList> mainTodoLists = todoListService.readTodo(request);
-            List<TodoList> sharedTodoList = todoListService.readSharedTodo(request);
-            log.info("공유 받은 글 = {}", sharedTodoList);
+            List<TodoList> todoLists = todoListService.readTodo(request);
 
-            // 두 목록 합치기
-            List<TodoList> todoLists = new ArrayList<>();
-            todoLists.addAll(mainTodoLists);
-            todoLists.addAll(sharedTodoList);
+
+            // 공유 정보 확인
+//            List<TodoList> sharedTodoList = todoListService.readSharedTodo(request);
+//            log.info("내가 공유 받은 글 & 글 주인 정보 = {}", sharedTodoList);
+
 
             // 모델에 추가
             model.addAttribute("todoLists", todoLists);

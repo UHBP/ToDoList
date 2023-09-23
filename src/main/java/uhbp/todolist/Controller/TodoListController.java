@@ -22,7 +22,7 @@ public class TodoListController {
     private final TodoListService todoListService;
     private final TodoListRepository todoListRepository;
 
-
+    // Controller : View or Server로 연결하는 관심사
     // (Create) 할일 생성
     @PostMapping("/create")
     public String createTodo(@ModelAttribute("todoListRequest") TodoListRequest todoListRequest, HttpServletRequest request) throws NoSuchMemberException {
@@ -52,6 +52,16 @@ public class TodoListController {
         todoListService.deleteTodo(todoIndex);
         return "redirect:/";
     }
+
+//    // (Delete) 공유 할일 삭제
+//    @PostMapping("/delete")
+//    public String deleteSharedTodo(@RequestParam("todoIndex") Long todoIndex, HttpServletRequest request) throws NoSuchMemberException {
+//        todoListService.deleteSharedTodo(todoIndex, request);
+//        return "redirect:/";
+//    }
+
+
+
 
 
     // (Sort) 할일 목록 정렬
@@ -99,4 +109,13 @@ public class TodoListController {
         return "index::todoListFragment"; // th:fragment 해당 템플릿 조각을 렌더링
     }
 
+
+    // (Category) 공유 카테고리 선택
+    @GetMapping("/shareCategory")
+    public String shareCategory(Model model, HttpServletRequest request) throws NoSuchMemberException {
+        List<TodoList> todoLists = todoListService.readSharedTodo(request);
+        model.addAttribute("todoLists", todoLists);
+        log.info("공유되고 있는 글 & 글 주인 정보 = {}", todoLists);
+        return "index::todoListFragment";
+    }
 }

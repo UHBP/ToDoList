@@ -4,9 +4,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import uhbp.todolist.domain.Member;
-import uhbp.todolist.domain.QTodoList;
-import uhbp.todolist.domain.TodoList;
+import uhbp.todolist.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -39,7 +37,7 @@ public class CustomRepositoryImpl implements CustomRepository {
                 .fetch();  // fetch() : 조회 대상 전체를 반환
     }
 
-
+    // 기본 순 정렬
     @Override
     public List<TodoList> findAllByOrderByTodoGendateAsc(Member currentMember) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
@@ -48,12 +46,14 @@ public class CustomRepositoryImpl implements CustomRepository {
         // OrderSpecifier : Querydsl 라이브러리에서 제공하는 클래스, JPA 쿼리에서 정렬 순서를 지정할 때 사용
         OrderSpecifier<LocalDate> orderByGenDateAsc = todoList.todoGendate.asc();
 
+        // 핀 상단 고정 포함
         return queryFactory.selectFrom(todoList)
                 .where(todoList.member.eq(currentMember))
                 .orderBy(todoList.todoIspinned.desc(), orderByGenDateAsc)
                 .fetch();
     }
 
+    // 마감일 순 정렬
     @Override
     public List<TodoList> findAllByOrderByTodoDuedateAsc(Member currentMember) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
@@ -63,6 +63,37 @@ public class CustomRepositoryImpl implements CustomRepository {
         return queryFactory.selectFrom(todoList)
                 .where(todoList.member.eq(currentMember))
                 .orderBy(todoList.todoIspinned.desc(), orderByDueDateAsc)
+                .fetch();
+    }
+
+    // 모든 할일 목록 조회 (본인이 작성한 할일 목록 + 공유 할일 목록)
+    // HomeController 에서 Read 할 때 사용
+    @Override
+    public List<TodoList> findAllByMemberOrSharedMember(Member member, Member sharedMember) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QTodoList qTodoList = QTodoList.todoList;
+        QTodoMemberManage qTodoMemberManage = QTodoMemberManage.todoMemberManage;
+
+        return queryFactory.selectFrom(qTodoList)
+                .leftJoin(qTodoMemberManage).on(qTodoList.todoIndex.eq(qTodoMemberManage.todoList.todoIndex))
+                .where(qTodoList.member.eq(member).or(qTodoMemberManage.member.eq(sharedMember)))
+                .orderBy(qTodoList.todoIspinned.desc(), qTodoList.todoGendate.asc())
+                .fetch();
+    }
+
+    // 공유 할일 목록만 조회 (회원 정보 포함)
+    // TodoListController 의 ShareCategory(공유 카테고리 선택)에서 사용
+    @Override
+    public List<TodoList> findSharedTodoListsByMember(String memberId) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QTodoList qTodoList = QTodoList.todoList;
+        QTodoMemberManage qTodoMemberManage = QTodoMemberManage.todoMemberManage;
+
+        return queryFactory.selectFrom(qTodoList)
+                .leftJoin(qTodoMemberManage).on(qTodoList.todoIndex.eq(qTodoMemberManage.todoList.todoIndex)) // TodoList와 TodoMemberManage를 todoIndex로 조인
+                .where(qTodoMemberManage.member.memberId.eq(memberId)  // 공유 받는 할일 목록
+                         .or(qTodoList.member.memberId.eq(memberId)))  // 공유 해준 할일 목록
+                .orderBy(qTodoList.todoIspinned.desc(), qTodoList.todoGendate.asc())
                 .fetch();
     }
 

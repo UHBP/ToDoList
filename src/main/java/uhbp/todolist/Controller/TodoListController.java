@@ -111,12 +111,11 @@ public class TodoListController {
 
 
     // (Category) 공유 카테고리 선택
-    // 문제) 공유 받은 사람 공유 탭에만 뜸.. 공유 해준 사람(원래 글 주인) 공유 탭에는 안뜸...
     @GetMapping("/shareCategory")
     public String shareCategory(Model model, HttpServletRequest request) throws NoSuchMemberException {
         List<TodoList> todoLists = todoListService.readSharedTodo(request);
         model.addAttribute("todoLists", todoLists);
-        log.info("내가 공유 받은 글 & 글 주인 정보 = {}", todoLists);
+        log.info("공유되고 있는 글 & 글 주인 정보 = {}", todoLists);
         return "index::todoListFragment";
     }
 }

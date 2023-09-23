@@ -66,8 +66,8 @@ public class CustomRepositoryImpl implements CustomRepository {
                 .fetch();
     }
 
-    // 모든 할일 목록 조회 (본인이 작성한 할일 목록 + 공유 받은 할일 목록)
-    // 현재 HomeController 에서 사용
+    // 모든 할일 목록 조회 (본인이 작성한 할일 목록 + 공유 할일 목록)
+    // HomeController 에서 Read 할 때 사용
     @Override
     public List<TodoList> findAllByMemberOrSharedMember(Member member, Member sharedMember) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
@@ -81,8 +81,8 @@ public class CustomRepositoryImpl implements CustomRepository {
                 .fetch();
     }
 
-    // 공유 받은 할일 목록만 조회 (공유해준 회원의 정보 포함되어 있음)
-    // TodoListController 의 ShareCategory 에서 사용
+    // 공유 할일 목록만 조회 (회원 정보 포함)
+    // TodoListController 의 ShareCategory(공유 카테고리 선택)에서 사용
     @Override
     public List<TodoList> findSharedTodoListsByMember(String memberId) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
@@ -90,8 +90,9 @@ public class CustomRepositoryImpl implements CustomRepository {
         QTodoMemberManage qTodoMemberManage = QTodoMemberManage.todoMemberManage;
 
         return queryFactory.selectFrom(qTodoList)
-                .innerJoin(qTodoMemberManage).on(qTodoList.todoIndex.eq(qTodoMemberManage.todoList.todoIndex))
-                .where(qTodoMemberManage.member.memberId.eq(memberId))
+                .leftJoin(qTodoMemberManage).on(qTodoList.todoIndex.eq(qTodoMemberManage.todoList.todoIndex)) // TodoList와 TodoMemberManage를 todoIndex로 조인
+                .where(qTodoMemberManage.member.memberId.eq(memberId)  // 공유 받는 할일 목록
+                         .or(qTodoList.member.memberId.eq(memberId)))  // 공유 해준 할일 목록
                 .orderBy(qTodoList.todoIspinned.desc(), qTodoList.todoGendate.asc())
                 .fetch();
     }

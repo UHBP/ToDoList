@@ -97,6 +97,15 @@ button{
   margin-top: 1.4rem;
   margin-left: 1.8rem;
   height: 2.5rem;
+
+  .pinned {
+    visibility:visible;
+  }
+  .unpinned {
+    width:1.5rem;
+    height:1.5rem;
+    visibility:hidden;
+  }
   div:not(
       .ShareMember,
       .pinned,
@@ -174,6 +183,20 @@ button{
       height: 1.3rem;
       border: 1px solid black;
       cursor: pointer;
+    }
+    form{
+      width: 5.1rem;
+      height: 2.4rem;
+      font-size: 1rem;
+      button{
+        width: 5.1rem;
+        height: 2.4rem;
+        font-size: 1rem;
+        background-color: white;
+        font-family: 'NeoDunggeunmo';
+        padding: 0.5rem 0;
+        border: 1px solid;
+      }
     }
   }
 }
@@ -591,6 +614,70 @@ button{
           cursor: pointer;
         }
       }
+    }
+    .share-form{
+      display:flex;
+      .approve-checkbox1{
+        width:1rem;
+        height:1rem;
+        margin-right: 0.2rem;
+      }
+      .shared-nickname1{
+        width: 8rem;
+      }
+      .shared-title1{
+        width: 10rem;
+      }
+      .shared-content1{
+        width: 15rem;
+      }
+      .shared-date1{
+        width: 8rem;
+      }
+    }
+    .share-result{
+       height:28rem;
+      .share-result-content{
+        display:flex;
+        margin-top:0.5rem
+        .approve-checkbox{
+          width:1rem;
+          height:1rem;
+          margin-right: 0.2rem;
+        }
+         .shared-nickname{
+           width: 8rem;
+         }
+         .shared-title{
+            width: 10rem;
+         }
+         .shared-content{
+            width: 15rem;
+         }
+          .shared-date{
+           width: 8rem;
+         }
+      }
+    .approveButton{
+       color: white;
+       position: relative;
+       left: 34rem;
+       font-family: 'NeoDunggeunmo';
+       padding: 0.5rem;
+       border-radius: 10px;
+       border: none;
+       background: mediumseagreen;
+    }
+    .refuseButton{
+       position: relative;
+       left: 34rem;
+       font-family: 'NeoDunggeunmo';
+       padding: 0.5rem;
+       border-radius: 10px;
+       border: none;
+       color: white;
+       background: red;
+    }
     }
   }
 }

@@ -8,6 +8,8 @@
             // 성공적으로 데이터를 받았을 때
             $('#todoListContainer').html(data);
             console.log('카테고리 필터링 성공');
+            warningAndColor();
+            checkboxFunction();
         },
         error: function () {
             console.error('카테고리 필터링 실패');

@@ -18,10 +18,12 @@ public class TodoMemberManage {
     @Column(name = "MANAGE_INDEX")
     private Long manageIndex;
 
+    // 공유 받은 사람 Index
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_INDEX", nullable = false, referencedColumnName="MEMBER_INDEX")
     private Member member;
 
+    // 공유 받은 글 Index
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TODO_INDEX", nullable = false, referencedColumnName="TODO_INDEX")
     private TodoList todoList;

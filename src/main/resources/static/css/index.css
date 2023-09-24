@@ -176,6 +176,20 @@ button{
   border: 1px solid black;
   cursor: pointer;
 }
+.ToDoList .ToDoListSetting form{
+  width: 5.1rem;
+  height: 2.4rem;
+  font-size: 1rem;
+}
+.ToDoList .ToDoListSetting form button{
+  width: 5.1rem;
+  height: 2.4rem;
+  font-size: 1rem;
+  background-color: white;
+  font-family: 'NeoDunggeunmo';
+  padding: 0.5rem 0;
+  border: 1px solid;
+}
 
 .modal {
   display: none;
@@ -529,10 +543,12 @@ button{
   border: none;
 }
 .pinned {
-  display: block;
+  visibility:visible;
 }
 .unpinned {
-  display: none;
+  width:1.5rem;
+  height:1.5rem;
+  visibility:hidden;
 }
 
 /* alarm modal 클릭 시 나타나는 modal 창의 css*/
@@ -574,6 +590,85 @@ button{
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+.modal3 .alarmModal-content .share-form {
+  display: flex;
+}
+
+.modal3 .alarmModal-content .share-form .approve-checkbox1 {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.2rem;
+}
+
+.modal3 .alarmModal-content .share-form .shared-nickname1 {
+  width: 8rem;
+}
+
+.modal3 .alarmModal-content .share-form .shared-title1 {
+  width: 10rem;
+}
+
+.modal3 .alarmModal-content .share-form .shared-content1 {
+  width: 15rem;
+}
+
+.modal3 .alarmModal-content .share-form .shared-date1 {
+  width: 8rem;
+}
+
+.modal3 .alarmModal-content .share-result{
+  height:28rem;
+}
+
+.modal3 .alarmModal-content .share-result .share-result-content {
+  display: flex;
+  margin-top:0.5rem
+}
+
+.modal3 .alarmModal-content .share-result .share-result-content .approve-checkbox {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.2rem;
+}
+
+.modal3 .alarmModal-content .share-result .share-result-content .shared-nickname {
+  width: 8rem;
+}
+
+.modal3 .alarmModal-content .share-result .share-result-content .shared-title {
+  width: 10rem;
+}
+
+.modal3 .alarmModal-content .share-result .share-result-content .shared-content {
+  width: 15rem;
+}
+
+.modal3 .alarmModal-content .share-result .share-result-content .shared-date {
+  width: 8rem;
+}
+
+.modal3 .alarmModal-content .approveButton{
+    color: white;
+    position: relative;
+    left: 34rem;
+    font-family: 'NeoDunggeunmo';
+    padding: 0.5rem;
+    border-radius: 10px;
+    border: none;
+    background: mediumseagreen;
+}
+
+.modal3 .alarmModal-content .refuseButton{
+    position: relative;
+    left: 34rem;
+    font-family: 'NeoDunggeunmo';
+    padding: 0.5rem;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    background: red;
+
 }
 
 /*# sourceMappingURL=index.css.map */

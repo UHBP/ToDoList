@@ -12,6 +12,7 @@
               setDueDateWarnings();
               setCategoryBackgroundColors();
               console.log('정렬 성공');
+              checkboxFunction();
           },
           error: function () {
               console.error('정렬 실패');

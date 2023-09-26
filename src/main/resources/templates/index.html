@@ -105,7 +105,7 @@
           <div class="TodoTitle" th:text="${todoList.todoTitle}"></div>
           <div class="DueDate" th:text="${todoList.todoDuedate}"></div>
           <div class="Category" th:text="${todoList.todoCategory}"></div>
-          <div class="ShareMember">닉네임</div>
+          <div class="ShareMember" th:if="${todoList.member.memberNickname != memberInfo.memberNickname}" th:text="${todoList.member.memberNickname}">닉네임</div>
           <div class="pin">
             <div class="pinned" th:if="${todoList.todoIspinned}">
               <img src="/resources/img/pin.png" />

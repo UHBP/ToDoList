@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var shareTargetSearch;
 
     share.onclick = function () {
-        var todoIndex = this.closest(".ToDoList").querySelector(".TodoIndex").textContent;
+        //var todoIndex = this.closest(".ToDoList").querySelector("#shareTodoIndex").textContent;
 
         $.ajax({
             url: '/',

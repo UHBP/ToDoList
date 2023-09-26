@@ -69,13 +69,19 @@ public class ShareServiceImple implements ShareService {
             Member selectedMember = findById(memberId);
             log.info("선택된 회원의 정보 = {}", selectedMember);
 
-            // 팩토리를 통해 Entity 생성
-            TodoShareApproveQueue shareTodo = TodoShareApproveQueue.todoShareApproveQueueFactory(todo, selectedMember, loginMember, LocalDate.now());
-            // 위에서 생성한 Entity를 DB에 저장
-            shareRepository.save(shareTodo);
+            // 이미 공유된 todo인지 확인 (alert창 따로 빼면 좋을텐데 더 좋은 방법 없을까)
+            List<TodoShareApproveQueue> approveAlready = shareRepository.findAlreadyShare(todo, loginMember, selectedMember);
+            List<TodoMemberManage> todoAlready = memberManageRepository.findAlreadyShareTodo(todo, selectedMember);
 
-            // sse 알림 (공유받는 사용자의 index 넘겨서 해당 사용자의 emitter에 알림 이벤트 발행)
-            alarmService.alarmShareEvent(selectedMember.getMemberIndex());
+            if(approveAlready.isEmpty() && todoAlready.isEmpty()){
+                // 팩토리를 통해 Entity 생성
+                TodoShareApproveQueue shareTodo = TodoShareApproveQueue.todoShareApproveQueueFactory(todo, selectedMember, loginMember, LocalDate.now());
+                // 위에서 생성한 Entity를 DB에 저장
+                shareRepository.save(shareTodo);
+
+                // sse 알림 (공유받는 사용자의 index 넘겨서 해당 사용자의 emitter에 알림 이벤트 발행)
+                alarmService.alarmShareEvent(selectedMember.getMemberIndex());
+            }
         }
     }
 

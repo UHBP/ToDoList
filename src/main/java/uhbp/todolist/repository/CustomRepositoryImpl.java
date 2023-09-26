@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static uhbp.todolist.domain.QMember.member;
+import static uhbp.todolist.domain.QTodoShareApproveQueue.todoShareApproveQueue;
+import static uhbp.todolist.domain.QTodoMemberManage.todoMemberManage;
 
 @Repository
 @Transactional
@@ -94,6 +96,33 @@ public class CustomRepositoryImpl implements CustomRepository {
                 .where(qTodoMemberManage.member.memberId.eq(memberId)  // 공유 받는 할일 목록
                          .or(qTodoList.member.memberId.eq(memberId)))  // 공유 해준 할일 목록
                 .orderBy(qTodoList.todoIspinned.desc(), qTodoList.todoGendate.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<TodoShareApproveQueue> findAlreadyShare(TodoList todo, Member loginMember, Member selectedMember) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+
+        return queryFactory
+                .selectFrom(todoShareApproveQueue)
+                .where(
+                        todoShareApproveQueue.todoIndex.eq(todo),
+                        todoShareApproveQueue.shareMemberIndex.eq(loginMember),
+                        todoShareApproveQueue.sharedMemberIndex.eq(selectedMember)
+                )
+                .fetch();
+    }
+
+    @Override
+    public List<TodoMemberManage> findAlreadyShareTodo(TodoList todo, Member selectedMember) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+
+        return queryFactory
+                .selectFrom(todoMemberManage)
+                .where(
+                        todoMemberManage.todoList.eq(todo),
+                        todoMemberManage.member.eq(selectedMember)
+                )
                 .fetch();
     }
 

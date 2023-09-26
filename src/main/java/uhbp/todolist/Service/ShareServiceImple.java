@@ -53,11 +53,11 @@ public class ShareServiceImple implements ShareService {
     }
 
     @Override
-    public void shareTodo(Long loginIndex, String todoIndex, List<String> selectedMembers) {
+    public void shareTodo(Long loginIndex, Long todoIndex, List<String> selectedMembers) {
         // String 타입의 todoIndex를 Long 타입으로 변환
-        Long todoLong = Long.parseLong(todoIndex);
+        // Long todoLong = Long.parseLong(todoIndex);
         // todoIndex를 통해 해당 TodoList 객체 불러오기
-        TodoList todo = todoRepository.findById(todoLong).get();
+        TodoList todo = todoRepository.findById(todoIndex).get();
 
         // 현재 로그인한 사용자의 Member 객체 불러오기
         Member loginMember = memberRepository.findById(loginIndex).get();

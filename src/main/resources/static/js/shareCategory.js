@@ -7,6 +7,8 @@ $(document).ready(function () {
                    success: function (data) {
                     // 서버로부터 받은 데이터를 #todoListContainer(todoLists)에 적용
                     $('#todoListContainer').html(data);
+                    warningAndColor();
+                    checkboxFunction();
                    },
                    error: function (error) {
                        console.log('공유 카테고리 실패:', error);

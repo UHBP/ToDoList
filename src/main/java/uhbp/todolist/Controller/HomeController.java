@@ -49,13 +49,6 @@ public class HomeController {
             List<TodoList> todoLists = todoListService.readTodo(request);
             log.info("공유 + 본인 todo = {}", todoLists);
 
-            ///*
-            // 공유 정보 확인
-            List<TodoList> sharedTodoList = todoListService.readSharedTodo(request);
-            //log.info("공유되고 있는 글 & 글 주인 정보 = {}", sharedTodoList);
-            //*/
-
-
             // 모델에 추가
             model.addAttribute("todoLists", todoLists);
 

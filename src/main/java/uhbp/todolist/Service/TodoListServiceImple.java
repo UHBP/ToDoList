@@ -16,6 +16,7 @@ import uhbp.todolist.session.CookieMemberStore;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -177,7 +178,12 @@ public class TodoListServiceImple implements TodoListService {
         return todoListRepository.findByTodoCategoryAndMemberOrderByTodoIspinnedDesc(TodoCategory.valueOf(category), currentMember);
     }
 
-
+    @Override
+    public void setTodoIsfinished(Long todoIndex, boolean isFinished) {
+        TodoList todoList = todoListRepository.findById(todoIndex).get();
+        todoList.setTodoIsfinished(isFinished);
+        todoListRepository.save(todoList);
+    }
 
 
 }

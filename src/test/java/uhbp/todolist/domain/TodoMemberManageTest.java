@@ -34,7 +34,7 @@ class TodoMemberManageTest {
         log.info("genMember = {}", genMember);
         log.info("category = {}", category);
 
-        TodoList todoList = TodoList.todoListFactory(category, genMember, "tempTitle", "TempContent", LocalDate.now(), LocalDate.now(), true, LocalDate.now());
+        TodoList todoList = TodoList.todoListFactory(category, genMember, "tempTitle", "TempContent", LocalDate.now(), LocalDate.now(), true, LocalDate.now(), false);
 
         em.persist(todoList);
         log.info("todoList = {}", todoList);

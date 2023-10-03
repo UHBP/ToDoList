@@ -33,7 +33,8 @@ public class TodoListRequest {
                 now, // 생성 날짜
                 todoUpdatedate, // 업데이트 날짜
                 false, // TODO_ISPINNED는 false로
-                todoDuedate
+                todoDuedate,
+                false
         );
     }
 }

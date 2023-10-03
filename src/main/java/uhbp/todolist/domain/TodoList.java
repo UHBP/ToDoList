@@ -47,10 +47,13 @@ public class TodoList {
     @Column(name = "TODO_DUEDATE", nullable = false)
     private LocalDate todoDuedate;
 
+    @Column(name = "TODO_ISFINISHED", nullable = false)
+    private boolean todoIsfinished;
+
     /**
      * todoListFactory에 사용되는 생성자
      */
-    private TodoList(TodoCategory todoCategory, Member member, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate) {
+    private TodoList(TodoCategory todoCategory, Member member, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate, boolean todoIsfinished) {
         this.todoCategory = todoCategory;
         this.member = member;
         this.todoTitle = todoTitle;
@@ -59,13 +62,14 @@ public class TodoList {
         this.todoUpdatedate = todoUpdatedate;
         this.todoIspinned = todoIspinned;
         this.todoDuedate = todoDuedate;
+        this.todoIsfinished = todoIsfinished;
     }
 
     /**
      * TodoList Entity를 생성하기 위한 정적 팩토리
      */
-    public static TodoList todoListFactory(TodoCategory todoCategory, Member member, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate) {
-        return new TodoList(todoCategory, member, todoTitle, todoContent, todoGendate, todoUpdatedate, todoIspinned, todoDuedate);
+    public static TodoList todoListFactory(TodoCategory todoCategory, Member member, String todoTitle, String todoContent, LocalDate todoGendate, LocalDate todoUpdatedate, boolean todoIspinned, LocalDate todoDuedate, boolean todoIsfinished) {
+        return new TodoList(todoCategory, member, todoTitle, todoContent, todoGendate, todoUpdatedate, todoIspinned, todoDuedate, todoIsfinished);
     }
 
     // 할일 수정

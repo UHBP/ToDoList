@@ -72,7 +72,7 @@ class ShareServiceTest {
     void testShareTodo() {
         // Given
         Long loginIndex = 1L;
-        String todoIndex = "2";
+        Long todoIndex = 1L;
         // "member1"과 "member2"를 원소로 갖는 리스트 생성
         List<String> selectedMembers = Arrays.asList("member1", "member2");
 

@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 traditional: true,
                 success: function (response) {
                     alert("ToDoList 공유가 거절되었습니다.");
-                    $('share-result').empty();
+                    $('.share-result').empty();
                     modal.style.display = "none";
                 },
                 error: function (error) {

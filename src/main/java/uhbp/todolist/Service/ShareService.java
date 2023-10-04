@@ -13,7 +13,7 @@ public interface ShareService {
 
     Member findById(String memberId);
 
-    void shareTodo(Long loginIndex, String todoIndex, List<String> selectedMembers);
+    void shareTodo(Long loginIndex, Long todoIndex, List<String> selectedMembers);
 
     List<TodoShareApproveQueue> getSharedTodo(Long loginIndex);
 

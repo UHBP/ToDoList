@@ -8,6 +8,6 @@ import uhbp.todolist.domain.TodoShareApproveQueue;
 import java.util.List;
 
 @Repository
-public interface TodoShareApproveQueueRepository extends JpaRepository<TodoShareApproveQueue, Long> {
+public interface TodoShareApproveQueueRepository extends JpaRepository<TodoShareApproveQueue, Long>, CustomRepository {
     List<TodoShareApproveQueue> findBySharedMemberIndex(Member loginMember);
 }

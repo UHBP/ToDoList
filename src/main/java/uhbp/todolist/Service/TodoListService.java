@@ -34,4 +34,6 @@ public interface TodoListService {
     void setTodoIspinned(Long todoIndex, boolean isPinned);
 
     List<TodoList> filterTodoByCategory(String category, HttpServletRequest request) throws NoSuchMemberException;
+
+    void setTodoIsfinished(Long todoIndex, boolean isFinished);
 }

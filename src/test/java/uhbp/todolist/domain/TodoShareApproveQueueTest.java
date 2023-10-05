@@ -41,7 +41,8 @@ class TodoShareApproveQueueTest {
                 LocalDate.now(),
                 LocalDate.now(),
                 true,
-                LocalDate.now().plusDays(7)
+                LocalDate.now().plusDays(7),
+                false
         );
         LocalDate approveDate = LocalDate.now();
         TodoList savedTodoIndex = em.persistAndFlush(todoIndex);

@@ -118,4 +118,20 @@ public class TodoListController {
         log.info("공유되고 있는 글 & 글 주인 정보 = {}", todoLists);
         return "index::todoListFragment";
     }
+
+
+    // todo 완료
+    @PostMapping("/complete")
+    public String completeTodo(@RequestParam("todoIndex") Long todoIndex){
+        todoListService.setTodoIsfinished(todoIndex, true);
+        return "redirect:/";
+    }
+
+    // todo 완료 취소
+    @PostMapping("/uncomplete")
+    public String uncompleteTodo(@RequestParam("todoIndex") Long todoIndex){
+        todoListService.setTodoIsfinished(todoIndex, false);
+        return "redirect:/";
+    }
+
 }

@@ -38,7 +38,7 @@ class TodoListTest {
         LocalDate todoDuedate = LocalDate.now();
 
         // 테스트 데이터(TodoList)를 생성하고 TestEntityManager를 사용하여 DB에 저장
-        TodoList newTodoList = TodoList.todoListFactory(TodoCategory.APPOINTMENT, savedMember, todoTitle, todoContent, todoGendate, todoUpdatedate, todoIspinned, todoDuedate);
+        TodoList newTodoList = TodoList.todoListFactory(TodoCategory.APPOINTMENT, savedMember, todoTitle, todoContent, todoGendate, todoUpdatedate, todoIspinned, LocalDate.now(), false);
         TodoList savedTodoList = tem.persistAndFlush(newTodoList);
 
         // 저장된 데이터 불러오기
